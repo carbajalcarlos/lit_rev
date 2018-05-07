@@ -1,0 +1,55 @@
+All Databases Field Tags - These two-character field tags identify fields in records that you e-mail or save to a file.
+FN	File Name
+VR	Version Number
+PT	Publication Type (J=Journal; B=Book; S=Series; P=Patent)
+AU	Author(s) (in English)
+BA	Book Author(s)
+CA	Group Author(s)
+GP	Book Group Author(s)
+RI	Researcher ID Number
+OI	ORCID Identifier (Open Researcher and Contributor ID)
+BE	Editor(s)
+Z2	Author(s) (in second language)
+TI	Title
+Z1	Title (in second language)
+FT	Foreign Title
+PN	Part / Patent Number
+AE	Patent Assignee
+Z3	Full Source Title (in second language) (includes title and subtitle)
+SO	Full Source Title (includes title and subtitle)
+SE	Book Series Title
+BS	Book Series Subtitle
+VL	Volume
+IS	Issue
+SI	Special Issue
+MA	Meeting Abstract Number
+BP	Beginning Page
+EP	Ending Page
+AR	Article Number
+DI	Digital Object Identifier (DOI)
+D2	Book Digital Object Identifier (DOI)
+SU	Supplement
+PD	Publication Date
+PY	Publication Year
+AB	Abstract
+Z4	Abstract (in second language)
+CT	Conference Title
+CY	Conference Date
+SP	Conference Sponsor
+CL	Conference Location
+TC	Times Cites in Web of Science Core Collection
+Z8	Times Cited in Chinese Science Citation Database
+ZB	Times Cited in BIOSIS Citation Index
+Z9	Total Times Cited Count (Web of Science Core Collection, BIOSIS Citation Index, Chinese Science Citation Database, Data Citation Index, Russian Science Citation Index, SciELO Citation Index)
+U1	Usage Count (Last 180 Days)
+U2	Usage Count (Since 2013)
+SN	International Standard Serial Number (ISSN)
+EI	Electronic International Standard Serial Number (eISSN)
+BN	International Standard Book Number (ISBN)
+UT	Accession Number / ISI Unique Article Identifier
+OA	Open Access Indicator. 
+HP	ESI Hot Paper. Note that this field is valued only for ESI subscribers.
+HC	ESI Highly Cited Paper. Note that this field is valued only for ESI subscribers.
+DA	Date this report was generated.
+ER	End of Record
+EF	End of File

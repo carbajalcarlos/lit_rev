@@ -1,0 +1,66 @@
+﻿PT J
+AU Curran, Dean
+
+TI Risk, innovation, and democracy in the digital economy
+
+SO EUROPEAN JOURNAL OF SOCIAL THEORY
+
+VL 21
+
+IS 2
+
+SI SI
+
+BP 207
+
+EP 226
+
+DI 10.1177/1368431017710907
+
+PD MAY 2018
+
+PY 2018
+
+AB The study of digital economies and the sociology of risk have, with few
+   exceptions, a relationship of benign mutual neglect despite possible
+   important connections between the two. This article aims to bridge the
+   gap between these two fields using Beck's theory of risk society to
+   explore how the digital economy's momentum of innovation is generating
+   risks and limiting the scope of existing democratic decision-making via
+   the power of the digital economy to create social faits accomplis
+   outside of democratic control. Three specific risks emerging from the
+   dynamics of innovation of digital economies are discussed as vignettes
+   to illustrate these developments: (1) the remaking of interpersonal
+   co-presence and solitary life; (2) the growing threats of AI to
+   intensify unemployment and inequality; and (3) the impact on the
+   environment of an always on' and always upgrading' digital communication
+   ecosystem. With the gap between the potential and the actual use value
+   of the digitalization of the infrastructure of life continuing to grow,
+   this article argues that a different relationship between digital
+   innovation and private and public spheres needs to be established to
+   protect the effectiveness of contemporary democracy.
+
+ZB 0
+
+TC 0
+
+Z8 0
+
+ZR 0
+
+ZS 0
+
+Z9 0
+
+U1 2
+
+U2 2
+
+SN 1368-4310
+
+EI 1461-7137
+
+UT WOS:000430021200005
+
+ER
+
