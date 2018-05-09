@@ -5,7 +5,10 @@ cat(paste("bibliometrix ",packageVersion("bibliometrix")))
 citation("bibliometrix")
 
 ## ----bibliometrix loading------------------------------------------------
-library(bibliometrix)   ### load bibliometrix package
+if (require(bibliometrix) == FALSE) {
+  install.packages("bibliometrix", dependencies = TRUE)   ### load bibliometrix package
+}
+require(bibliometrix)
 
 ## ----Data loading--------------------------------------------------------
 
