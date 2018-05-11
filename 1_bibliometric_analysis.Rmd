@@ -1,0 +1,53 @@
+---
+title: "Literature Review"
+author: "Carlos Carbajal"
+date: "07 May 2018"
+output:
+  html_document:
+    self_contained: no
+---
+
+# Bibliometric analysis
+
+This is an example of the implementation of the bibliometric analysis for the topic of digital innovation, 
+
+## bibliometrix
+This example is based in the use of the blibliometrix package for R.
+
+```{r blibliometrix citation, echo = FALSE}
+cat(paste("bibliometrix version:",packageVersion("bibliometrix")))
+```
+
+For further information about the *bibliometrix* package and its instances, visit <http://bibliometrix.org>.
+
+## Analysis
+
+The analysis follows the workflow described by the package authors' Aria & Cuccurullo (2017), which consists of:
+
+
+### Loading required packages
+```{r loading packages}
+library(package =  bibliometrix) # Contains the bibliometric functions
+```
+
+### Loading citation dataset
+This dataset was obtained from Clarivate Analytics' Web of Science. This data include the results of a search on the term "digital innovation" within 2000 and 2018. This datasets contains the information of 166 publications registered on the Web of Science' Core collections. This dataset provides information about these publications such as: authors,  title, journal, keywords, abstract, cited references, times cited, year of publication for a total of 25 attributes per publication.
+```{r loading data}
+bm <- readFiles("0_data/wos-digital_innovation-2000-2018.bib")
+bm <- convert2df(bm, dbsource = "isi", format = "bibtex")
+```
+
+### Descriptive analysis
+The first part of the analysis consists of reviewing the main details of the literature body.
+```{r summary}
+bm_analysis <- biblioAnalysis(bm, sep = ";")
+bm_summary <- summary(object = bm_analysis, k = 10, pause = FALSE)
+```
+
+Additionally, it is possible to plot some descritive statistics of the workd done in this field.
+```{r plit}
+plot(x = bm_analysis, k = 10)
+```
+
+### Data cleaning
+As observed in the summary, there are some misinterpretations made by the database algorithms while aggregating the publications data; for this reason it is necesary to clean the data in the first places. Some of the common mistakes are duplicates, misspellings, and incoherent values, these errors are addressed in this initial stage.
