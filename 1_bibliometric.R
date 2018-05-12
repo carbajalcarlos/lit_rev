@@ -7,46 +7,34 @@ require(stringdist)
 bm <- readFiles("0_data/wos-digital_innovation-2000-2018.bib")
 bm <- convert2df(bm, dbsource = "isi", format = "bibtex")
 
-# Data preparation 
-rownames(bm) <- 1:nrow(bm)
-
 # Sampling
 if (F) {
-  working.set <- bm[sample(x = nrow(bm), size = ceiling(nrow(bm)/5)), ]
+  working.set <- bm[sample(x = nrow(bm), size = ceiling(nrow(bm)/10)), ]
 } else{
   working.set <- bm
 }
 
-working.set$C1[161] <- gsub(pattern = ".,", replacement = ",;", x = working.set$C1[161], fixed = TRUE)
+rownames(working.set) <- 1:nrow(working.set)
 
-# ----- Extracting full data -----
+# Extracting full name
 working.set$aut_num <- 1
-working.set$aut <- working.set$AU
-working.set$aut_ful <- ""
-working.set$aut_com <- 0
+working.set$aut_com <- ""
 
 for (i in 1:nrow(working.set)) {
-  names <- character()
-  if (is.na(working.set$C1[i]) == F) {
-    info <- unlist(strsplit(working.set$C1[i], ';'))
-    for (j in 2:length(info)) {
-      corte <- unlist(strsplit(x = info[j], split = ','))
-      corte <- trimws(x = corte, which = 'both')
-      corte <- paste(corte[1:2], collapse = ", ")
-      names <- c(names, corte)
+  authors <- unlist(strsplit(working.set$AU[i], ';'))
+  working.set$aut_num[i] <- length(authors)
+  for (j in 1:length(authors)) {
+    names <- unlist(strsplit(x = authors[j], split = ' '))
+    names[2] <- substr(names[2], 1, 1)
+    patron <- paste(c(".*", names[1], "[,]* (", names[2], "[[:alpha:]]*[.]*[[:space:]]*[[:alpha:]]*[.]*[[:space:]]*[[:alpha:]]*)(.*)"), collapse = "")
+    if (grepl(pattern = patron, x = working.set$C1[i]) == TRUE) {
+      patron <- gsub(pattern = patron, replacement = "\\1", x = working.set$C1[i])
+      patron <- paste(unlist(strsplit(x = patron, split = '[[:punct:]]')), collapse = "")
+      names[2] <- trimws(x = patron, which = "both")
     }
-  } else {
-    info <- unlist(strsplit(working.set$AU[i], ';'))
-    for (j in 1:length(info)) {
-      corte <- unlist(strsplit(x = info[j], split = ' '))
-      corte <- trimws(x = corte, which = 'both')
-      corte <- paste(corte[1:2], collapse = ", ")
-      names <- c(names, corte)
-    }
+    working.set$aut_com[i] <- paste(c(working.set$aut_com[i], names[1], ", ", names[2], "; "), collapse = "")
   }
-  working.set$aut_num[i] <- length(names)
-  working.set$aut_ful[i] <- paste(names, collapse = "; ")
-  working.set$aut_com[i] <- stringdist(a = working.set$AU[i], b = working.set$aut_ful[i], method = "jw")
+  working.set$aut_com[i] <- gsub(pattern = "(.*); $", replacement = "\\1", x = working.set$aut_com[i])
 }
 
 # ----- duplicates -----
