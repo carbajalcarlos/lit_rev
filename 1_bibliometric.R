@@ -19,6 +19,8 @@ rownames(working.set) <- 1:nrow(working.set)
 # Extracting full name
 working.set$aut_num <- 1
 working.set$aut_com <- ""
+working.set$aut_mis <- 0
+working.set$aut_len <- 0
 
 for (i in 1:nrow(working.set)) {
   authors <- unlist(strsplit(working.set$AU[i], ';'))
@@ -27,24 +29,24 @@ for (i in 1:nrow(working.set)) {
     names <- unlist(strsplit(x = authors[j], split = ' '))
     names[2] <- substr(names[2], 1, 1)
     patron <- paste(c(".*", names[1], "[,]* (", names[2], "[[:alpha:]]*[.]*[[:space:]]*[[:alpha:]]*[.]*[[:space:]]*[[:alpha:]]*)(.*)"), collapse = "")
-    if (grepl(pattern = patron, x = working.set$C1[i]) == TRUE) {
+    if (grepl(pattern = patron, x = working.set$C1[i]) == TRUE & is.na(working.set$C1[i]) == FALSE) {
       patron <- gsub(pattern = patron, replacement = "\\1", x = working.set$C1[i])
       patron <- paste(unlist(strsplit(x = patron, split = '[[:punct:]]')), collapse = "")
       names[2] <- trimws(x = patron, which = "both")
+    } else {
+      working.set$aut_mis[i] <- working.set$aut_mis[i]+1
     }
+    working.set$aut_len[i] <- working.set$aut_len[i] + nchar(paste(names, collapse = " "))
     working.set$aut_com[i] <- paste(c(working.set$aut_com[i], names[1], ", ", names[2], "; "), collapse = "")
   }
   working.set$aut_com[i] <- gsub(pattern = "(.*); $", replacement = "\\1", x = working.set$aut_com[i])
+  working.set$aut_len[i] <- working.set$aut_len[i]/working.set$aut_num[i]
 }
 
 # ----- duplicates -----
-for (i in 1:length(bm)) {
-  if (class(bm[ ,i]) == "character") {
-    bm[ ,i] <- tolower(bm[ ,i])
-  }
-}
 
-names <- unlist(strsplit(bm$AU, ';'))# Create a list of words
+names <- unlist(strsplit(working.set$aut_com, ';'))# Create a list of words
+names <- trimws(x = names, which = "both")
 df.authors <- data.frame(table(names)) # Store the list as a data frame
 
 for (i in nrow(df.authors)) {
