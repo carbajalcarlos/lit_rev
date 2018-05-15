@@ -1,7 +1,7 @@
 # ----- Initialization of the project -----
 # Installation and loading of required libraries
-require(bibliometrix)
-require(stringdist)
+require(bibliometrix, quietly = TRUE)
+require(stringdist, quietly = TRUE)
 
 # Importing data from WoS-export
 bm <- readFiles("0_data/wos-digital_innovation-2000-2018.bib")
@@ -77,79 +77,71 @@ for (i in 1:nrow(books)) {
   }
   
   # Fulfil appending values
-  append <- character()
   #grep(pattern = "^AB$", x = colnames(entry))
-  focus.index <- c(1, 12, 27)
+  focus.index <- c(1, 27)
   for (j in focus.index) {
-    for (k in 1:nrow(working.set.b)) {
-      if (is.na(working.set.b[k,j]) == FALSE) {
-        if (stringdist(a = entry[1,j], b = working.set.b[k,j], method = "jw") < .25) {
-          if (nchar(entry[1,j]) < nchar(working.set.b[k,j])) {
-            entry[1,j] <- working.set.b[k,j]
-          } 
-        } else {
-          append  <- c(append, working.set.b[k,j])
-        }
+    temp <- trimws(x = unlist(strsplit(x = c(entry[1,j], working.set.b[,j]), split = ';')), which = 'both')
+    if (all(is.na(temp)) == FALSE) {
+      temp <- as.data.frame(temp, stringsAsFactors = FALSE)
+      temp$order <- 1:nrow(temp)
+      temp <- temp[!duplicated(temp$temp), ]
+      temp$lenght <- nchar(temp$temp)
+      temp$phonetic <- ""
+      for (k in 1:nrow(temp)) {
+        temp$phonetic[k] <- paste(phonetic(unlist(strsplit(x = temp$temp[k], split = " "))), collapse = "")
+        temp$phonetic[k] <- substr(temp$phonetic[k], 1, 5)
       }
+      temp <- temp[order(temp$phonetic, temp$lenght, decreasing = TRUE), ]
+      index <- !duplicated(temp$phonetic)
+      temp <- temp[index, ]
+      temp <- temp[order(temp$order), ]
+      entry[1,j] <- paste(temp$temp, collapse = "; ")
     }
-  } # 
-  entry[1,j] < paste(c(entry[1,j], append), collapse = "; ")
+  }
   
   # authors recount
   entry$aut_num <-  max(length(unlist(strsplit(x = entry$AU, split = ';'))), 
-                        length(unlist(strsplit(x = entry$AU, split = ';'))),
+                        length(unlist(strsplit(x = entry$aut_com, split = ';'))),
                         na.rm = TRUE)
   
   # total times cited
   entry$TC <- sum(c(entry$TC, working.set.b$TC), na.rm = TRUE)
   
+  
+  
   # Fulfil decoupling values
   #grep(pattern = "^CR$", x = colnames(entry))
-  focus.index <- c(10, 11, 14, 17)
+  focus.index <- c(10, 11, 12, 13, 14, 17)
   for (j in focus.index) {
     temp <- trimws(x = unlist(strsplit(x = c(entry[1,j], working.set.b[,j]), split = ';')), which = 'both')
     if (all(is.na(temp)) == FALSE) {
       temp <- data.frame(table(na.omit(temp)))
       entry[1,j] <- paste(temp$Var1, collapse = "; ")
-      }
+    }
   }
-  
-  # safe.set.a <- working.set.a
-  # safe.set.b <- working.set.b
-  # safe.set.e <- entry
-  
-  working.set.a <- safe.set.a
-  working.set.b <- safe.set.b
-  entry <- safe.set.e
-  
-  # Reconstruction of metadata
-  temp <- trimws(x = unlist(strsplit(x = c(entry$C1, working.set.b$C1), split = ';')), which = 'both')
-  if (all(is.na(temp)) == FALSE) {
-    temp <- data.frame(table(na.omit(temp)))
-    temp$Var1 <- as.character(temp$Var1)
-    index.rep <- grep(pattern = "(REPRINT AUTHOR)", x = temp$Var1)
-    index.oth <- grep(pattern = "(REPRINT AUTHOR)", x = temp$Var1, invert = TRUE)
-  }
-  authors <- trimws(x = unlist(strsplit(x = entry$aut_com, split = ';')), which = 'both')
-  
-  for (l in 1:length(authors)) {
-    
-  }
-  
-  
-  for (l in index.oth) {
-    grep(pattern = authors[l], x = )
-  }
-  
+  # Reconstruction of C1 files pending
+  working.set.a <- rbind(working.set.a, entry)
 }
+working.set <- rbind(working.set, working.set.a)
 
+# removing temporal variables
+rm(books)
+rm(entry)
+rm(temp)
+rm(working.set.a)
+rm(working.set.b)
+rm(authors)
+rm(focus.index)
+rm(index)
+rm(i)
+rm(j)
+rm(k)
+rm(lookout)
+rm(names)
+rm(patron)
 
-
-working.set <- rbind(working.set.a, working.set.b)
-
-
-# Blibliometric analysis
-bm_analysis <- biblioAnalysis(bm, sep = ";")
+# ----- Blibliometric analysis -----
+bm_analysis <- biblioAnalysis(working.set, sep = ";")
 bm_summary <- summary(object = bm_analysis, k = 10, pause = FALSE)
 plot(x = bm_analysis, k = 10, pause = TRUE)
 
