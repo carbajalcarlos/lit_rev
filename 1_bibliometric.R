@@ -123,6 +123,7 @@ for (i in 1:nrow(books)) {
   working.set.a <- rbind(working.set.a, entry)
 }
 working.set <- rbind(working.set, working.set.a)
+working.set$AU <- gsub(pattern = ';', replacement = "; ", x = working.set$AU, fixed = TRUE)
 
 # removing temporal variables
 rm(books)
@@ -141,7 +142,7 @@ rm(names)
 rm(patron)
 
 # ----- Blibliometric analysis -----
-bm_analysis <- biblioAnalysis(working.set, sep = ";")
+bm_analysis <- biblioAnalysis(working.set, sep = "; ")
 bm_summary <- summary(object = bm_analysis, k = 10, pause = FALSE)
 plot(x = bm_analysis, k = 10, pause = TRUE)
 
