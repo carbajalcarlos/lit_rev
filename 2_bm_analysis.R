@@ -4,7 +4,7 @@ require(bibliometrix, quietly = TRUE)
 require(stringdist, quietly = TRUE)
 
 # Importing data from WoS-export
-bm <- readFiles("0_data/wos-digital_innovation-2000-2018.bib")
+bm <- readFiles("1_data/wos-digital_innovation-2000-2018.bib")
 bm <- convert2df(bm, dbsource = "isi", format = "bibtex")
 
 # ----- Creation of working dataset -----
