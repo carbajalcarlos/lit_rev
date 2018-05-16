@@ -1,0 +1,196 @@
+﻿
+@article{ ISI:000397047200015,
+Author = {Saldanha, Terence J. V. and Mithas, Sunil and Krishnan, M. S.},
+Title = {{LEVERAGING CUSTOMER INVOLVEMENT FOR FUELING INNOVATION: THE ROLE OF
+   RELATIONAL AND ANALYTICAL INFORMATION PROCESSING CAPABILITIES}},
+Journal = {{MIS QUARTERLY}},
+Year = {{2017}},
+Volume = {{41}},
+Number = {{1}},
+Pages = {{267+}},
+Month = {{MAR}},
+Abstract = {{How do IT-enabled capabilities influence firms' ability to leverage
+   customer involvement and shape the amount of firm innovation? This study
+   theorizes that effective processing and management of customer
+   information flows requires organizations to possess ``relational
+   information processing capability{''} (RIPC) and ``analytical
+   information processing capability{''} (AIPC). Drawing on and extending
+   the theories of absorptive capacity and complementarities in the context
+   of innovation, we posit that RIPC and AIPC complement product-focused
+   customer involvement (PCI) and information-intensive customer
+   involvement (ICI) practices, respectively, to enhance the amount of firm
+   innovation. To test our hypotheses, we collected archival data from more
+   than 300 large U.S. manufacturing firms and mapped their RIPC and AIPC
+   to specific IT applications.
+   Consistent with our theorizing, we find that RIPC positively moderates
+   the relationship between PCI and amount of firm innovation and that AIPC
+   positively moderates the relationship between ICI and amount of firm
+   innovation. In further exploratory analysis, we find a positive
+   three-way interaction between AIPC, RIPC, and PCI. Taken together, the
+   results suggest that configurations of IT-enabled capabilities alone are
+   not enough for innovation; instead, firms benefit more when specific
+   configurations of IT-enabled capabilities are leveraged in unison with
+   specific types of customer involvement. The study contributes to theory
+   and practice by shedding light on important complementarities between
+   specific types of customer involvement (PCI and ICI) and specific
+   IT-enabled capabilities (RIPC and AIPC).}},
+Publisher = {{SOC INFORM MANAGE-MIS RES CENT}},
+Address = {{UNIV MINNESOTA-SCH MANAGEMENT 271 19TH AVE SOUTH, MINNEAPOLIS, MN 55455
+   USA}},
+Type = {{Article}},
+Language = {{English}},
+Affiliation = {{Saldanha, TJV (Reprint Author), Washington State Univ, Carson Coll Business, Todd Hall 437G, Pullman, WA 99164 USA.
+   Saldanha, Terence J. V., Washington State Univ, Carson Coll Business, Todd Hall 437G, Pullman, WA 99164 USA.
+   Mithas, Sunil, Univ Maryland, Robert H Smith Sch Business, 4357 Van Munching Hall, College Pk, MD 20742 USA.
+   Krishnan, M. S., Univ Michigan, Stephen Ross Sch Business, 701 Tappan St, Ann Arbor, MI 48109 USA.}},
+ISSN = {{0276-7783}},
+Keywords = {{Digital innovation; customer involvement; information technology;
+   relational information processing capability; analytical information
+   processing capability; business value of IT}},
+Keywords-Plus = {{SOFTWARE-DEVELOPMENT PROJECTS; PRODUCT DEVELOPMENT; FIRM PERFORMANCE;
+   RELATIONSHIP MANAGEMENT; EMPIRICAL-EVIDENCE; ORGANIZATIONAL INNOVATION;
+   KNOWLEDGE MANAGEMENT; ABSORPTIVE-CAPACITY; MARKET ORIENTATION; DIGITAL
+   INNOVATION}},
+Research-Areas = {{Computer Science; Information Science \& Library Science; Business \&
+   Economics}},
+Web-of-Science-Categories  = {{Computer Science, Information Systems; Information Science \& Library
+   Science; Management}},
+Author-Email = {{terence.saldanha@wsu.edu
+   smithas@rhsmith.umd.edu
+   mskrish@umich.edu}},
+Cited-References = {{Ahuja G, 2008, ACAD MANAG ANN, V2, P1, DOI 10.1080/19416520802211446.
+   Aral S, 2007, ORGAN SCI, V18, P763, DOI 10.1287/orsc.1070.0306.
+   Athaide GA, 1999, J PROD INNOVAT MANAG, V16, P469, DOI 10.1111/1540-5885.1650469.
+   AtuaheneGima K, 1996, J BUS RES, V35, P93, DOI 10.1016/0148-2963(95)00051-8.
+   Auh S, 2007, J RETAILING, V83, P359, DOI 10.1016/j.jretai.2007.03.001.
+   BAGOZZI RP, 1991, ADMIN SCI QUART, V36, P421, DOI 10.2307/2393203.
+   Bajaj A, 2004, MANAGE SCI, V50, P527, DOI 10.1287/mnsc.1030.0177.
+   Banker RD, 2006, INFORM SYST RES, V17, P352, DOI 10.1287/isre.1060.0104.
+   Banker RD, 2006, MIS QUART, V30, P315.
+   Banker RD, 2011, MIS QUART, V35, P487.
+   Barczak G, 2007, J PROD INNOVAT MANAG, V24, P600, DOI 10.1111/j.1540-5885.2007.00274.x.
+   Barrett M, 2015, MIS QUART, V39, P135.
+   Becker JU, 2009, INT J RES MARK, V26, P207, DOI 10.1016/j.ijresmar.2009.03.006.
+   Bendapudi N, 2003, J MARKETING, V67, P14, DOI 10.1509/jmkg.67.1.14.18592.
+   Bharadwaj AS, 1999, MANAGE SCI, V45, P1008, DOI 10.1287/mnsc.45.7.1008.
+   Bharadwaj AS, 2000, MIS QUART, V24, P169, DOI 10.2307/3250983.
+   Bharadwaj S, 2007, INFORM SYST RES, V18, P437, DOI 10.1287/isre.1070.0148.
+   Cameron A. C., 2013, REGRESSION ANAL COUN.
+   Campbell AJ, 1999, IND MARKET MANAG, V28, P507, DOI 10.1016/S0019-8501(99)00058-9.
+   Carbonell P, 2009, J PROD INNOVAT MANAG, V26, P536, DOI 10.1111/j.1540-5885.2009.00679.x.
+   Chang W, 2010, J BUS RES, V63, P849, DOI 10.1016/j.jbusres.2009.07.003.
+   Chatterjee S, 2015, J MANAGE INFORM SYST, V32, P158, DOI 10.1080/07421222.2015.1099180.
+   Chen HC, 2012, MIS QUART, V36, P1165.
+   Chen J., 2004, J GLOB INF MANAG, V12, P1, DOI DOI 10.4018/JGIM.2004010101.
+   Chien SH, 2010, SERV IND J, V30, P185, DOI 10.1080/02642060802116354.
+   COHEN WM, 1990, ADMIN SCI QUART, V35, P128, DOI 10.2307/2393553.
+   Coltman T, 2007, J STRATEGIC INF SYST, V16, P301, DOI 10.1016/j.jsis.2007.05.001.
+   Dabholkar P. A., 1990, DEV MARKETING SCI, V13, P483.
+   Dedrick J, 2003, ACM COMPUT SURV, V35, P1, DOI 10.1145/641865.641866.
+   Desouza KC, 2008, RES TECHNOL MANAGE, V51, P35.
+   Di Benedetto CA, 2008, IEEE T ENG MANAGE, V55, P420, DOI 10.1109/TEM.2008.922645.
+   Diamantopoulos A, 2001, J MARKETING RES, V38, P269, DOI 10.1509/jmkr.38.2.269.18845.
+   Durmusoglu SS, 2006, J PROD BRAND MANAG, V15, P435, DOI 10.1108/10610420610712810.
+   El Sawy OA, 2010, INFORM SYST RES, V21, P835, DOI 10.1287/isre.1100.0326.
+   El Sawy O. A., 2016, MIS Q EXEC, V15, P141.
+   Etgar M, 2008, J ACAD MARKET SCI, V36, P97, DOI 10.1007/s11747-007-0061-1.
+   Fang E, 2008, J MARKETING, V72, P90, DOI 10.1509/jmkg.72.4.90.
+   Fichman RG, 2014, MIS QUART, V38, P329, DOI 10.25300/MISQ/2014/38.2.01.
+   Fichman RG, 2009, ANN INFORM SYST, V5, P19, DOI 10.1007/978-1-4419-1081-3\_2.
+   Foss NJ, 2011, ORGAN SCI, V22, P980, DOI 10.1287/orsc.1100.0584.
+   Garcia-Murillo M, 2002, J OPER RES SOC, V53, P875, DOI 10.1057/palgrave.jors.2601365.
+   GAREN J, 1984, ECONOMETRICA, V52, P1199, DOI 10.2307/1910996.
+   Ghosh M, 2006, J MARKETING RES, V43, P664, DOI 10.1509/jmkr.43.4.664.
+   Greene W. H., 2003, ECONOMETRIC ANAL.
+   GRILICHES Z, 1990, J ECON LIT, V28, P1661.
+   Gruner KE, 2000, J BUS RES, V49, P1, DOI 10.1016/S0148-2963(99)00013-2.
+   Gupta AK, 1998, RES TECHNOL MANAGE, V41, P38.
+   HECKMAN JJ, 1979, ECONOMETRICA, V47, P153, DOI 10.2307/1912352.
+   Heinbokel T, 1996, BEHAV INFORM TECHNOL, V15, P226, DOI 10.1080/014492996120157.
+   Hendricks KB, 2007, J OPER MANAG, V25, P65, DOI 10.1016/j.jom.2006.02.002.
+   Hoyer WD, 2010, J SERV RES-US, V13, P283, DOI 10.1177/1094670510375604.
+   Huang P., 2012, P 33 INT C INF SYST.
+   Hult GTM, 2017, J ACAD MARKET SCI, V45, P37, DOI 10.1007/s11747-016-0487-4.
+   Ittner CD, 1997, J MARKETING RES, V34, P13, DOI 10.2307/3152061.
+   Iyer A., 2014, CUSTOMER ENGAGEMENT.
+   Jayachandran S, 2005, J MARKETING, V69, P177, DOI 10.1509/jmkg.2005.69.4.177.
+   Joshi KD, 2010, INFORM SYST RES, V21, P472, DOI 10.1287/isre.1100.0298.
+   Kleis L, 2012, INFORM SYST RES, V23, P42, DOI 10.1287/isre.1100.0338.
+   Kohli R, 2008, J ASSOC INF SYST, V9, P23.
+   Kornish LJ, 2014, J MARKETING RES, V51, P14, DOI 10.1509/jmr.12.0401.
+   Kristensson P, 2008, INT J SERV IND MANAG, V19, P474, DOI 10.1108/09564230810891914.
+   Kude T., 2015, AC MAN P M S.
+   Lagrosen S, 2005, EUR J INNOV MANAG, V8, P424, DOI 10.1108/14601060510627803.
+   LAWTON L, 1980, J MARKETING, V44, P19, DOI 10.2307/1250030.
+   Leiponen A., 2000, EC INNOVATION NEW TE, V9, P1, DOI DOI 10.1080/10438590000000001.
+   Claycomb V., 2000, EUR J MARKETING, V34, P359, DOI DOI 10.1108/03090560.
+   LERNER J, 1994, RAND J ECON, V25, P319, DOI 10.2307/2555833.
+   LEVIN RC, 1987, BROOKINGS PAPERS EC, V3, P783, DOI DOI 10.2307/2534454.
+   Li T, 1998, J MARKETING, V62, P13, DOI 10.2307/1252284.
+   Liang TP, 2006, J MANAGE INFORM SYST, V23, P9, DOI 10.2753/MIS0742-1222230301.
+   Lindell MK, 2001, J APPL PSYCHOL, V86, P114, DOI 10.1037//0021-9010.86.1.114.
+   Luan YJ, 2010, J MARKETING RES, V47, P444, DOI 10.1509/jmkr.47.3.444.
+   Majchrzak A, 2013, J STRATEGIC INF SYST, V22, P257, DOI 10.1016/j.jsis.2013.07.004.
+   Malhotra A, 2005, MIS QUART, V29, P145.
+   Mithas S, 2005, J MARKETING, V69, P201, DOI 10.1509/jmkg.2005.69.4.201.
+   Mithas S, 2016, INFORM SYST RES, V27, P166, DOI 10.1287/isre.2015.0609.
+   Mithas S, 2016, MIS QUART, V40, P223, DOI 10.25300/MISQ/2016/40.1.10.
+   Mithas S, 2015, IT PROF, V17, P2, DOI 10.1109/MITP.2015.26.
+   Mithas S, 2012, MIS QUART, V36, P205.
+   Mithas S, 2008, MIS QUART, V32, P705.
+   Nambisan S, 2003, MIS QUART, V27, P1.
+   Nambisan S, 2002, ACAD MANAGE REV, V27, P392.
+   Nambisan S., 2017, MIS Q, P223.
+   Nambisan S, 2013, J ASSOC INF SYST, V14, P215.
+   Nambisan S, 2011, ACAD MANAGE PERSPECT, V25, P40, DOI 10.5465/AMP.2011.63886529.
+   Nambisan S, 2009, J PROD INNOVAT MANAG, V26, P388, DOI 10.1111/j.1540-5885.2009.00667.x.
+   NARVER JC, 1990, J MARKETING, V54, P20, DOI 10.2307/1251757.
+   Nijssen E. J., 1995, EUR J MARKETING, V29, P27.
+   Ostrom AL, 2015, J SERV RES-US, V18, P127, DOI 10.1177/1094670515576315.
+   Ottum BD, 1997, J PROD INNOVAT MANAG, V14, P258, DOI 10.1111/1540-5885.1440258.
+   Patel P, 1997, RES POLICY, V26, P141, DOI 10.1016/S0048-7333(97)00005-X.
+   Pavlou PA, 2006, INFORM SYST RES, V17, P198, DOI 10.1287/isre.1060.0094.
+   Prahalad CK, 2000, HARVARD BUS REV, V78, P79.
+   Rai A, 2012, MIS QUART, V36, P233.
+   Ramamurthy K, 2008, IEEE T SYST MAN CY A, V38, P976, DOI 10.1109/TSMCA.2008.923032.
+   Ramasubbu N, 2015, MIS QUART, V39, P787, DOI 10.25300/MISQ/2015/39.4.3.
+   Ravichandran T., 2017, INFORM SSTE IN PRESS.
+   Reimann M, 2010, J ACAD MARKET SCI, V38, P326, DOI 10.1007/s11747-009-0164-y.
+   Reinartz W, 2004, J MARKETING RES, V41, P293, DOI 10.1509/jmkr.41.3.293.35991.
+   Rigby DK, 2016, HARVARD BUS REV, V94, P41.
+   Rose C., 2013, ROTMAN MANAGEMEN FAL, P29.
+   Sabherwal R, 2007, IEEE T ENG MANAGE, V54, P409, DOI 10.1109/TEM.2007.900785.
+   Saldanha TJV, 2013, J OPER MANAG, V31, P313, DOI 10.1016/j.jom.2013.07.007.
+   Sampson RC, 2007, ACAD MANAGE J, V50, P364.
+   SAS, 2011, TURN CUST DAT AN MAR.
+   Sawhney M, 2000, KNOWLEDGE MANAGEMENT AND VIRTUAL ORGANIZATIONS, P258.
+   Schilling MA, 2007, MANAGE SCI, V53, P1113, DOI 10.1287/mnsc.1060.0624.
+   Setia P, 2013, MIS QUART, V37, P565, DOI 10.25300/MISQ/2013/37.2.11.
+   Sharma R, 2014, EUR J INFORM SYST, V23, P433, DOI 10.1057/ejis.2014.17.
+   Shaver JM, 1998, MANAGE SCI, V44, P571, DOI 10.1287/mnsc.44.4.571.
+   Song M, 2005, STRATEGIC MANAGE J, V26, P259, DOI 10.1002/smj.450.
+   Song M, 2008, J OPER MANAG, V26, P1, DOI 10.1016/j.jom.2007.06.001.
+   Song M, 2007, J PROD INNOVAT MANAG, V24, P52, DOI 10.1111/j.1540-5885.2006.00232.x.
+   Sorensen JB, 2000, ADMIN SCI QUART, V45, P81, DOI 10.2307/2666980.
+   Srinivasan R, 2005, J MARKETING, V69, P193, DOI 10.1509/jmkg.2005.69.4.193.
+   Subramanyam R, 2010, COMMUN ACM, V53, P137, DOI 10.1145/1666420.1666455.
+   Varadarajan R, 2009, J INTERACT MARK, V23, P11, DOI 10.1016/j.intmar.2008.10.002.
+   Wadhwa A, 2006, ACAD MANAGE J, V49, P819.
+   Wagner M, 2007, RES POLICY, V36, P1587, DOI 10.1016/j.respol.2007.08.004.
+   Wall TD, 1996, J OCCUP ORGAN PSYCH, V69, P153, DOI 10.1111/j.2044-8325.1996.tb00607.x.
+   Xu X, 2014, INFORM SYST RES, V25, P710, DOI 10.1287/isre.2014.0540.
+   Yadav MS, 2014, J MARKETING, V78, P20, DOI 10.1509/jm.12.0020.
+   Yadav MS, 2005, J ACAD MARKET SCI, V33, P585, DOI 10.1177/0092070305278487.
+   Yoo Y, 2012, ORGAN SCI, V23, P1398, DOI 10.1287/orsc.1120.0771.
+   Yoo YJ, 2010, INFORM SYST RES, V21, P724, DOI 10.1287/isre.1100.0322.
+   Zablah AR, 2012, INFORM SYST RES, V23, P418, DOI 10.1287/isre.1120.0419.}},
+Number-of-Cited-References = {{126}},
+Times-Cited = {{7}},
+Usage-Count-Last-180-days = {{25}},
+Usage-Count-Since-2013 = {{62}},
+Journal-ISO = {{MIS Q.}},
+Doc-Delivery-Number = {{EO9ZS}},
+Unique-ID = {{ISI:000397047200015}},
+DA = {{2018-05-07}},
+}
+
