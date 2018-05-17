@@ -2,6 +2,7 @@
 # Installation and loading of required libraries
 require(bibliometrix, quietly = TRUE)
 require(stringdist, quietly = TRUE)
+require(tm, quietly = TRUE)
 
 # Loading data from .bib file
 bg_raw <- readFiles("1_data/wos-digital_innovation-2000-2018.bib")
@@ -92,7 +93,7 @@ for (i in 1:length(tokens)) {
 }
 
 
-# ----- Manual corrections -----
+# ----- Manual corrections
 authors$original <- authors$name
 # Missing commas
 index <- grep(pattern = "[,]", x = authors$name, invert = TRUE)
@@ -102,7 +103,7 @@ index <- grep(pattern = "(^.+),(.+,.+$)", x = authors$name)
 authors$name[index] <- gsub(pattern = "(^.+),(.+,.+$)",
                             replacement = "\\1\\2", x = authors$name[index])
 
-# Abbreviated second names
+# abbrviated second names
 index <- grep(pattern = "^.*, [[:alpha:]]{2}$", x = authors$name)
 if (length(index) != 0) {
   for (i in index) {
@@ -115,35 +116,113 @@ if (length(index) != 0) {
     }
   }
 }
-
-# ----- Authors name abbreviation -----
-authors$abbre <-authors$name
 # Removing general signs
-index <- grep(pattern = "[\\.()]", x = authors$abbre)
-authors$abbre[index]<- gsub(pattern = "[\\.()]", replacement = "", x = authors$abbre[index])
+index <- grep(pattern = "[\\.()]", x = authors$name)
+authors$name[index]<- gsub(pattern = "[\\.()]", replacement = "", x = authors$name[index])
+
+# ----- Authors name abbrviation
+authors$abbr <-authors$name
 for (i in 1:nrow(authors)) {
-  temp <- trimws(unlist(strsplit(authors$abbre[i], split = ",")), which = "both")
-  temp2 <- trimws(unlist(strsplit(temp[2], split = " ")), which = "both")
-  name <- paste(c(toupper(temp[1]), ", "), collapse = "")
-  if (length(temp2) != 0) {
-    for (j in 1:length(temp2)) {
-      name <- paste(c(name, toupper(substr(temp2[j], 1, 1))), collapse = "")
+  #temp <- trimws(unlist(strsplit("carbajal,", split = ",")), which = "both")
+  temp <- trimws(unlist(strsplit(authors$abbr[i], split = ",")), which = "both")
+  if (length(temp) > 1) {
+    tokens <- trimws(unlist(strsplit(temp[2], split = " ")), which = "both")
+    name <- paste(c(toupper(temp[1]), ", "), collapse = "")
+    for (j in 1:length(tokens)) {
+      name <- paste(c(name, toupper(substr(tokens[j], 1, 1))), collapse = "")
     }
+    authors$abbr[i] <- name
+  } else {
+    authors$abbr[i] <- toupper(temp)
   }
-  authors$abbre[i] <- name
 }
 
 # Distinguishing authors
-#authors$abbre <- c(authors$abbre[1:87], authors$abbre[1:87], authors$abbre[1:174])
-authors$a.dup <- authors$abbre
+#authors$abbr <- c(authors$abbr[1:87], authors$abbr[1:87], authors$abbr[1:174])
+authors$a.dup <- authors$abbr
 index <- duplicated(authors$a.dup)
 i<-2
 while(sum(index) != 0) {
-  authors$a.dup[index] <- paste(authors$abbre[index], i, sep = "_")
+  authors$a.dup[index] <- paste(authors$abbr[index], i, sep = "_")
   i <- i+1
   index <- duplicated(authors$a.dup)
 }
 
+
+# Constructing final structure
+authors <- authors[order(authors$a.dup), ]
+authors$local.id <- paste("a", 1:nrow(authors),sep = "_")
+authors <- subset(x = authors, select = c("local.id", "name", "a.dup", "phonetic", "original"))
+colnames(authors) <- c("local.id", "name", "short", "phonetic", "original")
+rownames(authors) <- authors$local.id
+
+# ----- Extraction of unique journals -----
+# Creating unique journals
+journals <- subset(x = bg_df, select = c("journal", "journal.iso"))
+colnames(journals) <- c("original", "iso")
+journals <- journals[!is.na(journals$original), ]
+journals <- journals[!duplicated(journals$original), ]
+
+# Cleaning names
+journals$name <- journals$original
+index <- grep(pattern = "\\&", x = journals$name)
+journals$name[index] <- gsub(pattern = "\\\\&", replacement = "and", journals$name[index])
+index <- grep(pattern = "[-]", x = journals$name)
+journals$name[index] <- gsub(pattern = "[-]", replacement = " ", journals$name[index])
+# manual changes
+index <- grep(pattern = "bmj", x = journals$name)
+journals$name[index] <- gsub(pattern = "bmj", replacement = "", journals$name[index])
+index <- grep(pattern = "(^| )it ", x = journals$name)
+journals$name[index] <- gsub(pattern = "it", replacement = "I T", journals$name[index])
+index <- grep(pattern = "mis", x = journals$name)
+journals$name[index] <- gsub(pattern = "mis", replacement = "M I S", journals$name[index])
+
+# Triming and removing double spaces
+journals$name <- trimws(gsub(pattern = "[[:space:]]+", replacement = " ", x = journals$name), which = "both")
+
+# abbrviation of journals names
+journals$abbr <- journals$name
+journals$abbr <- removeWords(x = journals$abbr, stopwords(kind = "en"))
+journals$abbr <- trimws(gsub(pattern = "[[:space:]]+", replacement = " ", x = journals$abbr))
+for (i in 1:nrow(journals)) {
+  #i <- grep(pattern = "ambio", x = journals$name)
+  temp <- unlist(strsplit(x = journals$abbr[i], split = " "))
+  name <- character()
+  if (length(temp) > 1) {
+    for (j in 1:length(temp)) {
+      name <- paste(c(name, toupper(substr(temp[j], 1, 1))), collapse = "")
+    }
+  } else if (nchar(temp) > 1) {
+    name <- paste(c(toupper(substr(temp, 1, 1)), tolower(substr(temp, 2, 3))), collapse = "")
+  } else {
+    name <- toupper(substr(temp, 1, 1))
+  }
+  journals$abbr[i] <- name
+}
+
+# Distinguishing authors
+#authors$abbr <- c(authors$abbr[1:87], authors$abbr[1:87], authors$abbr[1:174])
+journals$a.dup <- journals$abbr
+index <- duplicated(journals$a.dup)
+i<-2
+while(sum(index) != 0) {
+  journals$a.dup[index] <- paste(journals$abbr[index], i, sep = "_")
+  i <- i+1
+  index <- duplicated(journals$a.dup)
+}
+
+# Constructing final structure
+journals <- journals[order(journals$a.dup), ]
+journals$local.id <- paste("j", 1:nrow(journals),sep = "_")
+journals <- subset(x = journals, select = c("local.id", "name", "a.dup", "iso", "original"))
+colnames(journals) <- c("local.id", "name", "abbr", "iso", "original")
+rownames(journals) <- journals$local.id
+
+# ----- Reconstructing of the bibliography information -----
+
+
 # Entry type
 bg_df$entry.type <- as.factor(bg_df$entry.type)
 levels(bg_df$entry.type) <- c("article", "book", "proceeding")
+
+
