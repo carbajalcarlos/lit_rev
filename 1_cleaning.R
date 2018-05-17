@@ -3,147 +3,147 @@
 require(bibliometrix, quietly = TRUE)
 require(stringdist, quietly = TRUE)
 
-# Importing data from WoS-export
-bm <- readFiles("0_data/wos-digital_innovation-2000-2018.bib")
-bm <- convert2df(bm, dbsource = "isi", format = "bibtex")
+# Loading data from .bib file
+bg_raw <- readFiles("1_data/wos-digital_innovation-2000-2018.bib")
 
-# ----- Creation of working dataset -----
-# Sampling
-if (F) {
-  working.set <- bm[sample(x = nrow(bm), size = ceiling(nrow(bm)/10)), ]
-} else{
-  working.set <- bm
+# ----- Parsing the data -----
+# Listing individual entries 
+index <- c(1, grep(pattern = "^$", x = bg_raw), length(bg_raw)+1)
+bg_list <- list()
+for (i in 1:(length(index)-1)) {
+  temp <- list(x = bg_raw[(index[i]+1):(index[i+1]-1)])
+  bg_list <- c(bg_list, temp)
 }
-# Operation of rows
-rownames(working.set) <- 1:nrow(working.set)
-working.set$DT <- factor(working.set$DT)
-levels(working.set$DT) <- c("article", "book", "proceeding")
-working.set$CR <- gsub(pattern = '.   ', replacement = "; ", x = working.set$CR, fixed = TRUE)
 
-# ----- Data cleaning -----
-# Extracting full name
-working.set$aut_num <- 1
-working.set$aut_com <- ""
-working.set$aut_len <- 0
-working.set$aut_mis <- 0
-working.set$cr1_mis <- 0
-  
-for (i in 1:nrow(working.set)) {
-  authors <- unlist(strsplit(working.set$AU[i], ';'))
-  working.set$aut_num[i] <- length(authors)
-  for (j in 1:length(authors)) {
-    names <- unlist(strsplit(x = authors[j], split = ' '))
-    names[2] <- substr(names[2], 1, 1)
-    patron <- paste(c(".*", names[1], "[,]* (", names[2], "[[:alpha:]]*[.]*[[:space:]]*[[:alpha:]]*[.]*[[:space:]]*[[:alpha:]]*)(.*)"), collapse = "")
-    if (grepl(pattern = patron, x = working.set$C1[i]) == TRUE & is.na(working.set$C1[i]) == FALSE) {
-      patron <- gsub(pattern = patron, replacement = "\\1", x = working.set$C1[i])
-      patron <- paste(unlist(strsplit(x = patron, split = '[[:punct:]]')), collapse = "")
-      names[2] <- trimws(x = patron, which = "both")
+# Retrieving all the fields used in the list
+fields <- character()
+for (i in 1:length(bg_list)) {
+  index <- grep(pattern = " = {" , x = bg_list[[i]], fixed = TRUE)
+  temp <- bg_list[[i]][index]
+  temp <- gsub(pattern = "(^.*) = (.*)",replacement = "\\1", x = temp)
+  temp <- tolower(trimws(x = temp, which = "both"))
+  fields <- c(fields, temp)
+}
+fields <- as.data.frame(table(fields), stringsAsFactors = FALSE)
+fields <- fields[order(fields$fields, decreasing = FALSE), ]
+fields <- c("entry-type", fields$fields)
+
+# Creation of bibliography dataframe
+bg_df <- data.frame(matrix(data = NA, ncol = length(fields), nrow = length(bg_list)), 
+                    stringsAsFactors = FALSE)
+colnames(bg_df) <- make.names(fields)
+for (i in 1:length(bg_list)) {
+  index <- grep(pattern = " = {" , x = bg_list[[i]], fixed = TRUE)
+  fields <- bg_list[[i]][index]
+  fields <- gsub(pattern = "(^.*) = (.*)",replacement = "\\1", x = fields)
+  fields <- make.names(tolower(trimws(x = fields, which = "both")))
+  # Filling individual attributes
+  bg_df$entry.type[i] <- gsub(pattern = "^@(.*)\\{(.*)",replacement = "\\1", x = bg_list[[i]][1])
+  index <- c(index, length(bg_list[[i]]))
+  for (j in 1:length(fields)) {
+    pat <- paste(c("^", fields[j], "$"), collapse = "")
+    column <- grep(pattern = pat, x = colnames(bg_df))
+    clean <- c("abstract", "author")
+    if (is.element(el = fields[j], set = clean)) {
+      temp <- paste(bg_list[[i]][index[j]:(index[j+1]-1)], collapse = "")
+      temp <- gsub(pattern = "[[:space:]]+", replacement = " ", x = temp)
     } else {
-      working.set$aut_mis[i] <- working.set$aut_mis[i]+1
+      temp <- paste(bg_list[[i]][index[j]:(index[j+1]-1)], collapse = ";")
     }
-    working.set$aut_len[i] <- working.set$aut_len[i] + nchar(paste(names, collapse = " "))
-    working.set$aut_com[i] <- paste(c(working.set$aut_com[i], names[1], ", ", names[2], "; "), collapse = "")
+    if (fields[j] == "author") {
+      temp <- gsub(pattern = ".*\\{(.*)\\}.*",replacement = "\\1", x = temp)
+    } else  {
+      temp <- gsub(pattern = ".*\\{{2}(.*)\\}{2}.*",replacement = "\\1", x = temp)
+    }
+    bg_df[i,column] <- tolower(temp)
   }
-  working.set$aut_com[i] <- gsub(pattern = "(.*); $", replacement = "\\1", x = working.set$aut_com[i])
-  working.set$aut_len[i] <- working.set$aut_len[i]/working.set$aut_num[i]
 }
 
-# Cleaining duplicated books
-index <- grep(pattern = "book", x = working.set$DT)
-working.set.a <- working.set[index, ]
-working.set <- working.set[-index, ]
+# ----- Extraction of unique authors -----
+# Organizing by year
+bg_df <- bg_df[order(bg_df$year, bg_df$author), ]
 
-books <- data.frame(table(working.set.a$SO))
-books <- subset(x = books, subset = Freq > 1)
-
-for (i in 1:nrow(books)) {
-  index <- grep(pattern = books$Var1[i], x = working.set.a$SO)
-  working.set.b <- working.set.a[index, ]
-  working.set.a <- working.set.a[-index, ]
-  # Find the most relevant entry to use as base
-  index <- grep(pattern = "book$", x = working.set.b$DT2, ignore.case = TRUE)
-  entry <- working.set.b[index, ]
-  working.set.b <- working.set.b[-index, ]
-  
-  # Fulfil the possible NA values
-  focus.index <- grep(pattern = "TRUE", x = is.na(entry))
-  for (j in focus.index) {
-    if (all(is.na(working.set.b[,j])) == FALSE) {
-      lookout <- max(nchar(working.set.b[,j]), na.rm = TRUE)
-      index <- grep(pattern = lookout, x = nchar(working.set.b[,j]), ignore.case = TRUE)
-      entry[1,j] <- working.set.b[index[1],j]
-    } 
-  }
-  
-  # Fulfil appending values
-  #grep(pattern = "^AB$", x = colnames(entry))
-  focus.index <- c(1, 27)
-  for (j in focus.index) {
-    temp <- trimws(x = unlist(strsplit(x = c(entry[1,j], working.set.b[,j]), split = ';')), which = 'both')
-    if (all(is.na(temp)) == FALSE) {
-      temp <- as.data.frame(temp, stringsAsFactors = FALSE)
-      temp$order <- 1:nrow(temp)
-      temp <- temp[!duplicated(temp$temp), ]
-      temp$lenght <- nchar(temp$temp)
-      temp$phonetic <- ""
-      for (k in 1:nrow(temp)) {
-        temp$phonetic[k] <- paste(phonetic(unlist(strsplit(x = temp$temp[k], split = " "))), collapse = "")
-        temp$phonetic[k] <- substr(temp$phonetic[k], 1, 5)
-      }
-      temp <- temp[order(temp$phonetic, temp$lenght, decreasing = TRUE), ]
-      index <- !duplicated(temp$phonetic)
-      temp <- temp[index, ]
-      temp <- temp[order(temp$order), ]
-      entry[1,j] <- paste(temp$temp, collapse = "; ")
-    }
-  }
-  
-  # authors recount
-  entry$aut_num <-  max(length(unlist(strsplit(x = entry$AU, split = ';'))), 
-                        length(unlist(strsplit(x = entry$aut_com, split = ';'))),
-                        na.rm = TRUE)
-  
-  # total times cited
-  entry$TC <- sum(c(entry$TC, working.set.b$TC), na.rm = TRUE)
-  
-  
-  
-  # Fulfil decoupling values
-  #grep(pattern = "^CR$", x = colnames(entry))
-  focus.index <- c(10, 11, 12, 13, 14, 17)
-  for (j in focus.index) {
-    temp <- trimws(x = unlist(strsplit(x = c(entry[1,j], working.set.b[,j]), split = ';')), which = 'both')
-    if (all(is.na(temp)) == FALSE) {
-      temp <- data.frame(table(na.omit(temp)))
-      entry[1,j] <- paste(temp$Var1, collapse = "; ")
-    }
-  }
-  # Reconstruction of C1 files pending
-  working.set.a <- rbind(working.set.a, entry)
+# Extracting unique authors
+authors <- unlist(strsplit(bg_df$author, split = " and "))
+authors <- authors[!duplicated(authors)]
+authors <- as.data.frame(authors, stringsAsFactors = FALSE)
+colnames(authors) <- "name"
+authors$length <- nchar(authors$name)
+authors$phonetic <- phonetic(authors$name)
+# Deduplication using phonetic and string distance measurements
+tokens <- as.data.frame(table(authors$phonetic), stringsAsFactors = FALSE)
+tokens <- subset(x = tokens, subset = Freq > 1)
+tokens <- tokens$Var1
+for (i in 1:length(tokens)) {
+  index <- grep(pattern = tokens[i], x = authors$phonetic)
+  subset.a <- authors[-index, ]
+  subset.b <- authors[index, ]
+  temp <- stringdistmatrix(a = subset.b$name, b = subset.b$name, method = "jw")
+  temp <- data.frame(which(temp < 0.10, arr.ind = TRUE))
+  temp <- subset(x = temp, subset = !(row == col))
+  if (nrow(temp) == 0) { next }
+  # Reduction to only one value without multiple parameter selection
+  subset.c <- subset.b[temp$row, ]
+  subset.b <- subset.b[-temp$row, ]
+  subset.c <- subset(x = subset.c, subset = length == max(length))
+  subset.c <- subset.c[1, ]
+  subset.b <- rbind(subset.b, subset.c)
+  authors <- rbind(subset.a, subset.b)
 }
-working.set <- rbind(working.set, working.set.a)
-working.set$AU <- gsub(pattern = ';', replacement = "; ", x = working.set$AU, fixed = TRUE)
-bg_data <- working.set
 
-# ----- Preserving data and workspase -----
-# Removing temporal variables
-rm(bm)
-rm(books)
-rm(entry)
-rm(temp)
-rm(working.set.a)
-rm(working.set.b)
-rm(authors)
-rm(focus.index)
-rm(index)
-rm(i)
-rm(j)
-rm(k)
-rm(lookout)
-rm(names)
-rm(patron)
-rm(working.set)
 
-# Storing results in R.data file
-save(list = "bg_data", file = "1_blackbox/1_bibliographic_data.Rdata")
+# ----- Manual corrections -----
+authors$original <- authors$name
+# Missing commas
+index <- grep(pattern = "[,]", x = authors$name, invert = TRUE)
+authors$name[index] <- gsub(pattern = "(^[[:alpha:]]+)(.*$)",
+                            replacement = "\\1,\\2", x = authors$name[index])
+index <- grep(pattern = "(^.+),(.+,.+$)", x = authors$name)
+authors$name[index] <- gsub(pattern = "(^.+),(.+,.+$)",
+                            replacement = "\\1\\2", x = authors$name[index])
+
+# Abbreviated second names
+index <- grep(pattern = "^.*, [[:alpha:]]{2}$", x = authors$name)
+if (length(index) != 0) {
+  for (i in index) {
+    temp <- gsub(pattern = "(^.*, [[:alpha:]]{1})([[:alpha:]]{1}$)",
+                 replacement = "\\2", x = authors$name[i])
+    temp <- iconv(x = temp, from = "UTF-8", "ASCII//TRANSLIT") # Transliteration of the names
+    if (is.element(el = temp, set = c("a", "e", "i", "o", "u")) == FALSE) {
+      authors$name[i]<- gsub(pattern = "(^.*, [[:alpha:]]{1})([[:alpha:]]{1}$)",
+                                 replacement = "\\1 \\2", x = authors$name[i])
+    }
+  }
+}
+
+# ----- Authors name abbreviation -----
+authors$abbre <-authors$name
+# Removing general signs
+index <- grep(pattern = "[\\.()]", x = authors$abbre)
+authors$abbre[index]<- gsub(pattern = "[\\.()]", replacement = "", x = authors$abbre[index])
+for (i in 1:nrow(authors)) {
+  temp <- trimws(unlist(strsplit(authors$abbre[i], split = ",")), which = "both")
+  temp2 <- trimws(unlist(strsplit(temp[2], split = " ")), which = "both")
+  name <- paste(c(toupper(temp[1]), ", "), collapse = "")
+  if (length(temp2) != 0) {
+    for (j in 1:length(temp2)) {
+      name <- paste(c(name, toupper(substr(temp2[j], 1, 1))), collapse = "")
+    }
+  }
+  authors$abbre[i] <- name
+}
+
+# Distinguishing authors
+#authors$abbre <- c(authors$abbre[1:87], authors$abbre[1:87], authors$abbre[1:174])
+authors$a.dup <- authors$abbre
+index <- duplicated(authors$a.dup)
+i<-2
+while(sum(index) != 0) {
+  authors$a.dup[index] <- paste(authors$abbre[index], i, sep = "_")
+  i <- i+1
+  index <- duplicated(authors$a.dup)
+}
+
+# Entry type
+bg_df$entry.type <- as.factor(bg_df$entry.type)
+levels(bg_df$entry.type) <- c("article", "book", "proceeding")
