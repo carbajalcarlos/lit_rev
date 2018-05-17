@@ -218,11 +218,64 @@ journals <- subset(x = journals, select = c("local.id", "name", "a.dup", "iso", 
 colnames(journals) <- c("local.id", "name", "abbr", "iso", "original")
 rownames(journals) <- journals$local.id
 
+
+# ----- Extraction of unique universities -----
+original <- unlist(strsplit(bg_df$affiliation, split = ";"))
+# Removing unwanted information
+index <- grep(pattern = "(reprint author)", x = original)
+original <- gsub(pattern = " \\(reprint author\\)", replacement = "", x = original)
+index <- grep(pattern = "[[:space:]]+", x = original)
+original <- trimws(gsub(pattern = "[[:space:]]+", replacement = " ", x = original), which = "both")
+# Removing names in the list
+for (i in 1:nrow(authors)) {
+  #i <- grep(pattern = "zhiqiang", x = authors$original)
+  #index <- grep(pattern = "zhiqiang", x = original)
+  index <- grep(pattern = authors$original[i], x = original, fixed = TRUE)
+  original[index] <- gsub(pattern = authors$original[i], replacement = "",
+                          x = original[index], fixed = TRUE)
+  index <- grep(pattern = tolower(authors$short[i]), x = original, fixed = )
+  original[index] <- gsub(pattern = tolower(authors$short[i]), replacement = "",
+                          x = original[index], fixed = TRUE)
+}
+universities <- as.data.frame(table(original), stringsAsFactors = FALSE)
+
+# Extracting affiliations names
+universities$name <- NA
+# Extracting university names
+index <- grep(pattern = "univ", x = universities$original)
+universities$name[index] <- gsub(pattern = ".*,(.*univ.*$)", replacement = "\\1",
+                                 x = universities$original[index])
+# Extracting schools names
+index <- grepl(pattern = "sch", x = universities$original)
+index <- index & is.na(universities$name)
+universities$name[index] <- gsub(pattern = ".*,(.*sch.*$)", replacement = "\\1",
+                                 x = universities$original[index])
+# Extracting museums names
+index <- grepl(pattern = "museum", x = universities$original)
+index <- index & is.na(universities$name)
+universities$name[index] <- gsub(pattern = ".*,(.*museum*$)", replacement = "\\1",
+                                 x = universities$original[index])
+# Extracting isolated-by-commas names
+index <- grepl(pattern = "^, .*", x = universities$original)
+index <- index & is.na(universities$name)
+universities$name[index] <- gsub(pattern = "^, (.*$)", replacement = "\\1",
+                                 x = universities$original[index])
+
+# Extracting known intitution names 
+temp <- trimws(sub(pattern = "(^ *[[:alnum:]]+)( |,).*$", replacement = "\\1", na.omit(universities$name)), which = "both" )
+temp <- temp[!duplicated(temp)]
+for (i in 1:length(temp)) {
+  #i <- grep(pattern = "kpmg", x = temp)
+  index <- grepl(pattern = temp[i], x = universities$original)
+  index <- index & is.na(universities$name)
+  pat <- paste(c(".*(", temp[i], ".*$)"), collapse = "")
+  universities$name[index] <- gsub(pattern = pat, replacement = "\\1",
+                                   x = universities$original[index])
+}
+
+# Extracting institutes
+
 # ----- Reconstructing of the bibliography information -----
-
-
 # Entry type
 bg_df$entry.type <- as.factor(bg_df$entry.type)
 levels(bg_df$entry.type) <- c("article", "book", "proceeding")
-
-
