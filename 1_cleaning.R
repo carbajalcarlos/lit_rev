@@ -3,6 +3,7 @@
 require(bibliometrix, quietly = TRUE)
 require(stringdist, quietly = TRUE)
 require(tm, quietly = TRUE)
+require(countrycode, quietly = TRUE)
 
 # Loading data from .bib file
 bg_raw <- readFiles("1_data/wos-digital_innovation-2000-2018.bib")
@@ -148,7 +149,6 @@ while(sum(index) != 0) {
   index <- duplicated(authors$a.dup)
 }
 
-
 # Constructing final structure
 authors <- authors[order(authors$a.dup), ]
 authors$local.id <- paste("a", 1:nrow(authors),sep = "_")
@@ -200,8 +200,7 @@ for (i in 1:nrow(journals)) {
   journals$abbr[i] <- name
 }
 
-# Distinguishing authors
-#authors$abbr <- c(authors$abbr[1:87], authors$abbr[1:87], authors$abbr[1:174])
+# Distinguishing Journals
 journals$a.dup <- journals$abbr
 index <- duplicated(journals$a.dup)
 i<-2
@@ -237,24 +236,83 @@ for (i in 1:nrow(authors)) {
   original[index] <- gsub(pattern = tolower(authors$short[i]), replacement = "",
                           x = original[index], fixed = TRUE)
 }
+# Removing empty symbols
 universities <- as.data.frame(table(original), stringsAsFactors = FALSE)
+index <- grep(pattern = "^,", x = universities$original)
+universities$original[index] <- gsub(pattern = "^, *(.*$)", replacement = "\\1", x = universities$original[index])
+# Removing empty entries
+index <- grep(pattern = "^$", x = universities$original)
+universities <- universities[-index,]
+
+# Extracting countries
+name <- gsub(pattern = ".*(,|[0-9]+)([^,]+).$", replacement = "\\2", x = universities$original)
+countries <- as.data.frame(table(name), stringsAsFactors = FALSE)
+# Manual cleaning
+
+index <- grep(pattern = "usa$", x = countries$name)
+countries$name[index] <- "united states"
+index <- grep(pattern = "scotland$", x = countries$name)
+countries$name[index] <- "United Kingdom"
+index <- grep(pattern = "england$", x = countries$name)
+countries$name[index] <- "United Kingdom"
+index <- grep(pattern = "china$", x = countries$name)
+countries$name[index] <- "china"
+
+countries <- countries[!duplicated(countries$name), ]
+# cleaning 
+countries$name <- trimws(tolower(countries$name), which = "both")
+countries$name <- iconv(countries$name, from = "UTF-8", to = "ASCII//TRANSLIT")
+
+pat <- trimws(tolower(countrycode::codelist$country.name.en), which = "both")
+pat <- iconv(pat, from = "UTF-8", to = "ASCII//TRANSLIT")
+pat <- gsub(pattern = "[[:punct:]]", replacement = "", x = pat)
+
+index <- integer()
+for (i in 1:nrow(countries)) {
+  temp <- stringdist(a = countries$name[i], b = pat, method = "jw")
+  if (length(which(temp < 0.10)) == 0) {
+    index <- c(index, i)
+  }
+    
+}
+
+
+countries[!index]
+
+stringdist(a = countries[i], b = countrycode::codelist$country.name.en[126], method = "cosine")
+
 
 # Extracting affiliations names
 universities$name <- NA
 # Extracting university names
 index <- grep(pattern = "univ", x = universities$original)
-universities$name[index] <- gsub(pattern = ".*,(.*univ.*$)", replacement = "\\1",
-                                 x = universities$original[index])
+universities$name[index] <- trimws(gsub(pattern = ".*?([^,]*(?=univ[ ,]).*)", replacement = "\\1",
+                                        x = universities$original[index], perl = TRUE), which = "both")
+
 # Extracting schools names
-index <- grepl(pattern = "sch", x = universities$original)
+index <- grepl(pattern = "coll", x = universities$original)
 index <- index & is.na(universities$name)
-universities$name[index] <- gsub(pattern = ".*,(.*sch.*$)", replacement = "\\1",
-                                 x = universities$original[index])
+universities$name[index] <- trimws(gsub(pattern = ".*?([^,]*(?=coll[ ,]).*)", replacement = "\\1",
+                                        x = universities$original[index], perl = TRUE), which = "both")
 # Extracting museums names
 index <- grepl(pattern = "museum", x = universities$original)
 index <- index & is.na(universities$name)
 universities$name[index] <- gsub(pattern = ".*,(.*museum*$)", replacement = "\\1",
                                  x = universities$original[index])
+
+
+
+
+index <- which(is.na(x = universities$name))
+temp <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = universities$original[index])
+temp <- as.data.frame(table(unlist(strsplit(temp, split = "\\W"))), stringsAsFactors = FALSE) 
+
+# Extracting schools names
+index <- grepl(pattern = "sch", x = universities$original)
+index <- index & is.na(universities$name)
+universities$name[index] <- trimws(gsub(pattern = ".*?([^,]*(?=sch[ ,]).*)", replacement = "\\1",
+                                        x = universities$original[index], perl = TRUE), which = "both")
+
 # Extracting isolated-by-commas names
 index <- grepl(pattern = "^, .*", x = universities$original)
 index <- index & is.na(universities$name)
@@ -273,7 +331,14 @@ for (i in 1:length(temp)) {
                                    x = universities$original[index])
 }
 
-# Extracting institutes
+# Cleaning institute names
+universities$add.info
+
+temp <- gsub(pattern = "^(.*?),(.*)$", replacement = "\\1", x = universities$name)
+temp <- gsub(pattern = "[[:alpha:]]+", replacement = "A", x = temp)
+temp <- as.data.frame(x = table(temp), stringsAsFactors = FALSE)  
+
+  
 
 # ----- Reconstructing of the bibliography information -----
 # Entry type
