@@ -236,193 +236,228 @@ for (i in 1:nrow(authors)) {
                           x = original[index], fixed = TRUE)
 }
 # Removing empty symbols
-universities <- as.data.frame(table(original), stringsAsFactors = FALSE)
-#index <- grep(pattern = "^,", x = universities$original)
-#universities$original[index] <- gsub(pattern = "^, *(.*$)", replacement = "\\1", x = universities$original[index])
+institutions <- as.data.frame(table(original), stringsAsFactors = FALSE)
+#index <- grep(pattern = "^,", x = institutions$original)
+#institutions$original[index] <- gsub(pattern = "^, *(.*$)", replacement = "\\1", x = institutions$original[index])
 # Removing empty entries
-index <- grep(pattern = "^$", x = universities$original)
-universities <- universities[-index,]
+index <- grep(pattern = "^$", x = institutions$original)
+institutions <- institutions[-index,]
 
 # ----- Extracting affiliation names
-universities$name <- NA
+institutions$name <- NA
 # Extracting university names
-index <- grep(pattern = "univ", x = universities$original)
-universities$name[index] <- trimws(gsub(pattern = ".*?([^,]*(?=univ[ ,]).*)", replacement = "\\1",
-                                        x = universities$original[index], perl = TRUE), which = "both")
+index <- grep(pattern = "univ", x = institutions$original)
+institutions$name[index] <- trimws(gsub(pattern = ".*?([^,]*(?=univ[ ,]).*)", replacement = "\\1",
+                                        x = institutions$original[index], perl = TRUE), which = "both")
 # Extracting college names
-index <- grepl(pattern = "coll", x = universities$original)
-index <- index & is.na(universities$name)
-universities$name[index] <- trimws(gsub(pattern = ".*?([^,]*(?=coll[ ,]).*)", replacement = "\\1",
-                                        x = universities$original[index], perl = TRUE), which = "both")
+index <- grepl(pattern = "coll", x = institutions$original)
+index <- index & is.na(institutions$name)
+institutions$name[index] <- trimws(gsub(pattern = ".*?([^,]*(?=coll[ ,]).*)", replacement = "\\1",
+                                        x = institutions$original[index], perl = TRUE), which = "both")
 # Extracting museums names
-index <- grepl(pattern = "museum", x = universities$original)
-index <- index & is.na(universities$name)
-universities$name[index] <- gsub(pattern = ".*,(.*museum*$)", replacement = "\\1",
-                                 x = universities$original[index])
+index <- grepl(pattern = "museum", x = institutions$original)
+index <- index & is.na(institutions$name)
+institutions$name[index] <- gsub(pattern = ".*,(.*museum*$)", replacement = "\\1",
+                                 x = institutions$original[index])
 
 # Extracting isolated-by-commas names
-index <- grepl(pattern = "^, .*", x = universities$original)
-index <- index & is.na(universities$name)
-universities$name[index] <- gsub(pattern = "^, (.*$)", replacement = "\\1",
-                                 x = universities$original[index])
+index <- grepl(pattern = "^, .*", x = institutions$original)
+index <- index & is.na(institutions$name)
+institutions$name[index] <- gsub(pattern = "^, (.*$)", replacement = "\\1",
+                                 x = institutions$original[index])
 
 # Descarting improbable names
-index <- which(is.na(x = universities$name))
+index <- which(is.na(x = institutions$name))
 for (i in index) {
-  temp <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = universities$original[i])
+  temp <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = institutions$original[i])
   if (nchar(temp)<3) {
-    universities$original[i] <- trimws(gsub(pattern = "^[^,]+,(.*)", replacement = "\\1", x = universities$original[i]), which = "both")
+    institutions$original[i] <- trimws(gsub(pattern = "^[^,]+,(.*)", replacement = "\\1", x = institutions$original[i]), which = "both")
   }
 }
 # Comparing with know institutions
-pat <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = universities$name)
-index <- which(is.na(x = universities$name))
+pat <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = institutions$name)
+index <- which(is.na(x = institutions$name))
 for (i in index) {
-  temp <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = universities$original[i])
+  temp <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = institutions$original[i])
  if (is.element(el = temp, set = pat)) {
-   universities$name[i] <- universities$original[i]
+   institutions$name[i] <- institutions$original[i]
  }
 }
 # Removing not recognized names
-index <- which(is.na(x = universities$name))
-universities <- universities[-index,]
+index <- which(is.na(x = institutions$name))
+institutions <- institutions[-index,]
 
 
 # Clenaing institutions names
-universities <- universities[!duplicated(universities$name), ]
-for (i in 1:nrow(universities)) {
-  #i <- grep(pattern = "wireless", x = universities$name)
-  temp <- gsub(pattern = "^([^ ]+) .*", replacement = "\\1", x = universities$name[i])
+institutions <- institutions[!duplicated(institutions$name), ]
+for (i in 1:nrow(institutions)) {
+  #i <- grep(pattern = "wireless", x = institutions$name)
+  temp <- gsub(pattern = "^([^ ]+) .*", replacement = "\\1", x = institutions$name[i])
   if (nchar(temp)<3) {
-    universities$name[i] <- trimws(gsub(pattern = "^[^ ]+ (.*)", replacement = "\\1", x = universities$name[i]), which = "both")
+    institutions$name[i] <- trimws(gsub(pattern = "^[^ ]+ (.*)", replacement = "\\1", x = institutions$name[i]), which = "both")
   }
 }
-universities <- universities[!duplicated(universities$name), ]
+institutions <- institutions[!duplicated(institutions$name), ]
 
-#save.set <- universities
-#universities <- save.set
+#save.set <- institutions
+#institutions <- save.set
 
 # ----- Extracting additional information
-universities$add.info <- universities$name
+institutions$add.info <- institutions$name
+
+# manual fixes
+index <- grep(pattern = "^univ london ", x = institutions$add.info)
+institutions$add.info[index] <- gsub(pattern = "univ london", replacement = "univ london,", x = institutions$add.info[index])
+
 # Institution
-universities$inst <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = universities$add.info)
-universities$add.info <- trimws(gsub(pattern = "^[^,]+,(.*)", replacement = "\\1", x = universities$add.info), which = "both")
+institutions$inst <- gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = institutions$add.info)
+institutions$add.info <- trimws(gsub(pattern = "^[^,]+,(.*)", replacement = "\\1", x = institutions$add.info), which = "both")
+# Manual cleaning
+index <- grep(pattern = "\\\\&", x = institutions$inst)
+institutions$inst[index] <- gsub(pattern = "\\\\&", replacement = "and", x = institutions$inst[index])
+
+# Generating abbreviations
+pat <- institutions$inst[!duplicated(institutions$inst)]
+tokens <- as.data.frame(pat, stringsAsFactors = FALSE)
+tokens$abbr <- tokens$pat
+tokens$abbr <- gsub(pattern = " and ", replacement = " & ", x = tokens$abbr)
+tokens$abbr <- removeWords(x = tokens$abbr, stopwords(kind = "en"))
+tokens$abbr <- gsub(pattern = "[[:space:]]+", replacement = " ", x = tokens$abbr)
+for (i in 1:nrow(tokens)) {
+  temp <- toupper(unlist(strsplit(tokens$abbr[i], split = " ")))
+  if (length(temp) > 1) {
+    name <- character()
+    for (j in temp) {
+      name <- paste(c(name, substr(j, 1, 1)), collapse = "")
+    }
+  } else {
+    name <- substr(j, 1, 1)
+  }
+  tokens$abbr[i] <- name
+}
+# Differentiation
+#authors$abbr <- c(authors$abbr[1:87], authors$abbr[1:87], authors$abbr[1:174])
+tokens$dup <- tokens$abbr
+index <- duplicated(tokens$dup)
+i<-2
+while(sum(index) != 0) {
+  tokens$dup[index] <- paste(tokens$abbr[index], i, sep = "_")
+  i <- i+1
+  index <- duplicated(tokens$dup)
+}
+# Replacement
+institutions$inst.abbr <- NA
+for (i in 1:nrow(tokens)) {
+  index <- grep(pattern = tokens$pat[i], x = institutions$inst)
+  institutions$inst.abbr[index] <- tokens$dup[i]
+}
+
 # Country
-universities$country <- NA
-index <- grep(pattern = ".*\\.$", x = universities$add.info)
-universities$country[index] <- trimws(sub(pattern = ".*,([^,]+).$",
+institutions$country <- NA
+index <- grep(pattern = ".*\\.$", x = institutions$add.info)
+institutions$country[index] <- trimws(sub(pattern = ".*,([^,]+).$",
                                           replacement = "\\1",
-                                          x = universities$add.info[index]), which = "both")
-universities$add.info <- trimws(sub(pattern = "(.*),[^,]+.$",
+                                          x = institutions$add.info[index]), which = "both")
+institutions$add.info <- trimws(sub(pattern = "(.*),[^,]+.$",
                                     replacement = "\\1",
-                                    x = universities$add.info[index]), which = "both")
+                                    x = institutions$add.info[index]), which = "both")
 # Department
-universities$dept <- NA
-index <- grep(pattern = "[,]", x = universities$add.info)
+institutions$dept <- NA
+index <- grep(pattern = "[,]", x = institutions$add.info)
 for (i in index) {
-  #i <- grep(pattern = "[[:digit:]]+,.*", x = universities$add.info)[1]
-  temp <- trimws(gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = universities$add.info[i]), which = "both")
+  #i <- grep(pattern = "[[:digit:]]+,.*", x = institutions$add.info)[1]
+  temp <- trimws(gsub(pattern = "^([^,]+),.*", replacement = "\\1", x = institutions$add.info[i]), which = "both")
   tokens <- gsub(pattern = "\\D", replacement = "", x = temp)
   if (nchar(tokens) == 0) {
-    universities$dept[i] <- temp
-    universities$add.info[i] <- trimws(gsub(pattern = "^[^,]+,(.*)",
-                                            replacement = "\\1", x = universities$add.info[i]), which = "both")
+    institutions$dept[i] <- temp
+    institutions$add.info[i] <- trimws(gsub(pattern = "^[^,]+,(.*)",
+                                            replacement = "\\1", x = institutions$add.info[i]), which = "both")
   }
 }
-
-
-# additional info
-universities$country <-
-universities$add.info <- ""
-
-
-universities$add.info <- ""
-for (i in 1:nrow(universities)) {
-  temp <- gsub(pattern = "[^,]", replacement = "", x = universities$sub.inst[i])
-}
-
-
-temp <- trimws(gsub(pattern = "[^,.]", replacement = "", x = universities$add.info), which = "both")
-pat <- as.data.frame(x = table(temp), stringsAsFactors = FALSE)
-index <- which(x = temp == "")
-
-View(universities$add.info[index])
-
-
-# Extracting known intitution names 
-temp <- trimws(sub(pattern = "(^ *[[:alnum:]]+)( |,).*$", replacement = "\\1", na.omit(universities$name)), which = "both" )
-temp <- temp[!duplicated(temp)]
-for (i in 1:length(temp)) {
-  #i <- grep(pattern = "kpmg", x = temp)
-  index <- grepl(pattern = temp[i], x = universities$original)
-  index <- index & is.na(universities$name)
-  pat <- paste(c(".*(", temp[i], ".*$)"), collapse = "")
-  universities$name[index] <- gsub(pattern = pat, replacement = "\\1",
-                                   x = universities$original[index])
-}
-
-# Cleaning institute names
-universities$add.info
-
-temp <- gsub(pattern = "^(.*?),(.*)$", replacement = "\\1", x = universities$name)
-temp <- gsub(pattern = "[[:alpha:]]+", replacement = "A", x = temp)
-temp <- as.data.frame(x = table(temp), stringsAsFactors = FALSE)  
-
-
-
-# ----- Extracting countries
-original <- gsub(pattern = ".*(,|[0-9]+)([^,]+).$", replacement = "\\2", x = universities$original)
-original <- trimws(original, which = "both")
-countries <- as.data.frame(table(original), stringsAsFactors = FALSE)
-countries$name <- countries$original
 # Manual cleaning
-index <- grep(pattern = "usa$", x = countries$name)
-countries$name[index] <- "united states"
-index <- grep(pattern = "scotland$", x = countries$name)
-countries$name[index] <- "United Kingdom"
-index <- grep(pattern = "england$", x = countries$name)
-countries$name[index] <- "United Kingdom"
-index <- grep(pattern = "china$", x = countries$name)
-countries$name[index] <- "china"
-# cleaning 
-countries$name <- trimws(tolower(countries$name), which = "both")
-countries$name <- iconv(countries$name, from = "UTF-8", to = "ASCII//TRANSLIT")
+index <- grep(pattern = "\\\\&", x = institutions$dept)
+institutions$dept[index] <- gsub(pattern = "\\\\&", replacement = "and", x = institutions$dept[index])
 
-pat <- trimws(tolower(countrycode::codelist$country.name.en), which = "both")
+# ----- Countries
+
+# Manual cleaning
+# USA 
+index <- grep(pattern = "usa$", x = institutions$country)
+temp <- trimws(gsub(pattern = "(.*)usa$", replacement = "\\1", x = institutions$country[index]), which = "both")
+institutions$add.info[index] <- paste(institutions$add.info[index], temp, sep = ", ")
+institutions$country[index] <- "united states"
+# China
+index <- grep(pattern = "china$", x = institutions$country)
+institutions$country[index] <- "china"
+# United Kingdom
+index <- grep(pattern = "scotland$", x = institutions$country)
+institutions$add.info[index] <- paste(institutions$add.info[index], "scotland", sep = ", ")
+institutions$country[index] <- "united kingdom"
+index <- grep(pattern = "england$", x = institutions$country)
+institutions$add.info[index] <- paste(institutions$add.info[index], "england", sep = ", ")
+institutions$country[index] <- "united kingdom"
+
+# formatting 
+institutions$country  <- trimws(tolower(institutions$country), which = "both")
+institutions$country <- iconv(institutions$country, from = "UTF-8", to = "ASCII//TRANSLIT")
+
+pat <- trimws(tolower(codelist$country.name.en), which = "both")
 pat <- iconv(pat, from = "UTF-8", to = "ASCII//TRANSLIT")
 pat <- gsub(pattern = "[[:punct:]]", replacement = "", x = pat)
 
 index <- integer()
-for (i in 1:nrow(countries)) {
-  temp <- stringdist(a = countries$name[i], b = pat, method = "jw")
+for (i in 1:nrow(institutions)) {
+  temp <- stringdist(a = institutions$country[i], b = pat, method = "jw")
   if (length(which(temp < 0.10)) == 0) {
     index <- c(index, i)
   }
 }
 if (length(index) > 0 ) {
-  countries <- countries[-index, ]
+  institutions$country[index] <- NA
 }
 
 # Complementing information
-countries$continent <- ""
-countries$iso <- ""
-countries$num <- 0
-for (i in 1:nrow(countries)) {
-  index <- which(x = pat == countries$name[i])[1]
-  countries$continent[i] <- codelist$continent[index]
-  countries$iso[i] <- codelist$iso3c[index]
-  countries$num[i] <- codelist$iso3n[index]
+institutions$continent <- ""
+institutions$country.abbr <- ""
+institutions$country.num <- 0
+tokens <- institutions$country[!duplicated(institutions$country)]
+for (i in tokens) {
+  index <- which(x = pat == i)[1]
+  temp <- grep(pattern = i, x = institutions$country)
+  institutions$continent[temp] <- codelist$continent[index]
+  institutions$country.abbr[temp] <- codelist$iso3c[index]
+  institutions$country.num[temp] <- codelist$iso3n[index]
 }
+
 # Constructing final structure
-countries <- countries[order(countries$iso), ]
-countries$local.id <- paste("c", 1:nrow(countries),sep = "_")
-countries <- subset(x = countries, select = c("local.id", "name", "iso", "num", "continent", "original"))
-colnames(countries) <- c("local.id", "name", "abbr", "iso_num", "continent", "original")
-rownames(countries) <- countries$local.id
+institutions <- institutions[order(institutions$continent, institutions$inst), ]
+institutions$local.id <- paste("aff", 1:nrow(institutions), sep = "_")
+institutions <- subset(x = institutions, select = c("local.id", "inst", "inst.abbr", "dept", "add.info",
+                                                    "continent", "country", "country.abbr", "country.num",
+                                                    "name"))
+colnames(institutions) <- c("local.id", "name", "abbr", "dept", "add.info",
+                            "continent", "country", "country.abbr", "country.num",
+                            "original")
+rownames(institutions) <- institutions$local.id
 
-  
+# Removing and storing information 
+rm(bg_list)
+rm(subset.a)
+rm(subset.b)
+rm(subset.c)
+rm(bg_raw)
+rm(clean)
+rm(column)
+rm(fields)
+rm(i)
+rm(j)
+rm(index)
+rm(name)
+rm(original)
+rm(pat)
+rm(temp)
+rm(tokens)
 
-# ----- Reconstructing of the bibliography information -----
-# Entry type
-bg_df$entry.type <- as.factor(bg_df$entry.type)
-levels(bg_df$entry.type) <- c("article", "book", "proceeding")
+# # Saving the rare.comics subset
+save(file = "2_blackbox/1_bg_ds.Rdata", list = "bg_df")
+save.image(file = "2_blackbox/ws_cleaing.Rdata")
