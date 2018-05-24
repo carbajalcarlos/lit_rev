@@ -449,11 +449,7 @@ colnames(institutions) <- c("local.id", "name", "abbr", "dept", "add.info",
                             "original")
 rownames(institutions) <- institutions$local.id
 
-# ----- Standardization of entries -----
-
-#save.set <- bg_df
-#bg_df <- save.set
-
+# ----- Standardization of dataset entries -----
 # authors name
 bg_df$author.full <- NA
 bg_df$author.shrt <- NA
@@ -480,6 +476,51 @@ for (i in 1:nrow(bg_df)) {
   #bg_df$author[i];bg_df$author.fail[i]; bg_df$author.full[i]; bg_df$author.shrt[i];
   #i<-i+1
 }
+
+# Article title
+#Removing unwanted signs
+index <- grep(pattern = ";   ", x = bg_df$title, fixed = TRUE)
+bg_df$title[index] <- gsub(pattern = ";   ", replacement = " ", x = bg_df$title[index])
+index <- grep(pattern = ".*\\.$", x = bg_df$title)
+bg_df$title[index] <- gsub(pattern = "\\.$", replacement = "", x = bg_df$title[index])
+index <- grep(pattern = "r\\&d", x = bg_df$title, fixed = TRUE)
+bg_df$title[index] <- gsub(pattern = "r\\\\&d", replacement = "R&D", x = bg_df$title[index])
+index <- grep(pattern = "[`{'}]+", x = bg_df$title)
+bg_df$title[index] <- gsub(pattern = "[`{'}]", replacement = "", x = bg_df$title[index])
+index <- grep(pattern = " - +", x = bg_df$title)
+bg_df$title[index] <- gsub(pattern = "- +", replacement = "-", x = bg_df$title[index])
+index <- !grepl(pattern = "-and", x = bg_df$title) & grepl(pattern = " +-[[:alpha:]]+", x = bg_df$title)
+bg_df$title[index] <- gsub(pattern = "( -)", replacement = ": ", x = bg_df$title[index])
+# Capitilising special characters
+index <- grep(pattern = "[:] [[:alpha:]]", x = bg_df$title)
+for (i in index) {
+  temp <- toupper(gsub(pattern = "^[^:]+: ([[:alpha:]]).*", replacement = "\\1", x = bg_df$title[i]))
+  bg_df$title[i] <- gsub(pattern = "(^[^;]+: )[[:alpha:]](.*)",
+                         replacement = paste(c("\\1", temp, "\\2"), collapse = ""), x = bg_df$title[i])
+}
+index <- grep(pattern = "[?] [[:alpha:]]", x = bg_df$title)
+for (i in index) {
+  temp <- toupper(gsub(pattern = "^[^?]+\\? ([[:alpha:]]).*", replacement = "\\1", x = bg_df$title[i]))
+  bg_df$title[i] <- gsub(pattern = "(^[^?]+?) *\\? [[:alpha:]](.*)",
+                         replacement = paste(c("\\1? ", temp, "\\2"), collapse = ""), x = bg_df$title[i])
+}
+index <- grep(pattern = "[.] [[:alpha:]]", x = bg_df$title)
+for (i in index) {
+  temp <- toupper(gsub(pattern = "^[^.]+\\. ([[:alpha:]]).*", replacement = "\\1", x = bg_df$title[i]))
+  bg_df$title[i] <- gsub(pattern = "(^[^.]+)\\. [[:alpha:]](.*)",
+                         replacement = paste(c("\\1: ", temp, "\\2"), collapse = ""), x = bg_df$title[i])
+}
+index <- grep(pattern = "[!] [[:alpha:]]", x = bg_df$title)
+for (i in index) {
+  temp <- toupper(gsub(pattern = "^[^!]+! ([[:alpha:]]).*", replacement = "\\1", x = bg_df$title[i]))
+  bg_df$title[i] <- gsub(pattern = "(^[^!]+! )[[:alpha:]](.*)",
+                         replacement = paste(c("\\1", temp, "\\2"), collapse = ""), x = bg_df$title[i])
+}
+# Capitilising first letter
+for (i in 1:nrow(bg_df)) {
+  bg_df$title[i] <- paste(c(toupper(substr(bg_df$title[i], 1, 1)), substr(bg_df$title[i], 2, nchar(bg_df$title[i]))), collapse = "")
+}
+
 
 # Removing and storing information 
 rm(bg_list)
