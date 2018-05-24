@@ -449,6 +449,73 @@ colnames(institutions) <- c("local.id", "name", "abbr", "dept", "add.info",
                             "original")
 rownames(institutions) <- institutions$local.id
 
+
+# ----- Extracting keywords and research area information -----
+# Formatting author keywords
+index <- grep(pattern = ";   ", x = bg_df$keywords, fixed = TRUE)
+bg_df$keywords[index] <- gsub(pattern = ";   ", replacement = " ", x = bg_df$keywords[index])
+bg_df$keywords <- trimws(gsub(pattern = "[[:space:]]+", replacement = " ", x = bg_df$keywords), which = "both" )
+# Counting author keywords
+bg_df$keywords.num <- NA
+index <- which(is.na(bg_df$keywords) == FALSE)
+for (i in index) {
+  temp <- unlist(strsplit(bg_df$keywords[i], split = ";"))
+  bg_df$keywords.num[i] <- length(temp)
+}
+# Extracting unique author keywords
+kw.author <- trimws(unlist(strsplit(bg_df$keywords, split = ";")), which = "both")
+kw.author <- as.data.frame(table(kw.author), stringsAsFactors = FALSE)
+
+# Formating WoS keywords
+index <- grep(pattern = ";   ", x = bg_df$keywords.plus, fixed = TRUE)
+bg_df$keywords.plus[index] <- gsub(pattern = ";   ", replacement = " ", x = bg_df$keywords.plus[index])
+bg_df$keywords.plus <- trimws(gsub(pattern = "[[:space:]]+", replacement = " ", x = bg_df$keywords.plus), which = "both" )
+# Counting wos keywords
+bg_df$keywords.plus.num <- NA
+index <- which(is.na(bg_df$keywords.plus) == FALSE)
+for (i in index) {
+  temp <- unlist(strsplit(bg_df$keywords.plus[i], split = ";"))
+  bg_df$keywords.plus.num[i] <- length(temp)
+}
+# Extracting unique wos keywords
+kw.wos <- trimws(unlist(strsplit(bg_df$keywords.plus, split = ";")), which = "both")
+kw.wos <- as.data.frame(table(kw.wos), stringsAsFactors = FALSE)
+
+# Formating research areas
+index <- grep(pattern = ";   ", x = bg_df$research.areas, fixed = TRUE)
+bg_df$research.areas[index] <- gsub(pattern = ";   ", replacement = " ", x = bg_df$research.areas[index])
+index <- grep(pattern = "\\\\&", x = bg_df$research.areas)
+bg_df$research.areas[index] <- gsub(pattern = "\\\\&", replacement = "and", x = bg_df$research.areas[index])
+bg_df$research.areas <- trimws(gsub(pattern = "[[:space:]]+", replacement = " ", x = bg_df$research.areas), which = "both" )
+# Counting wos keywords
+bg_df$research.areas.num <- NA
+index <- which(is.na(bg_df$research.areas) == FALSE)
+for (i in index) {
+  temp <- unlist(strsplit(bg_df$research.areas[i], split = ";"))
+  bg_df$research.areas.num[i] <- length(temp)
+}
+# Extracting unique research areas
+ra.wos <- trimws(unlist(strsplit(bg_df$research.areas, split = ";")), which = "both")
+ra.wos <- as.data.frame(table(ra.wos), stringsAsFactors = FALSE)
+
+# Formating categories
+index <- grep(pattern = ";   ", x = bg_df$web.of.science.categories, fixed = TRUE)
+bg_df$web.of.science.categories[index] <- gsub(pattern = ";   ", replacement = " ", x = bg_df$web.of.science.categories[index])
+index <- grep(pattern = "\\\\&", x = bg_df$web.of.science.categories)
+bg_df$web.of.science.categories[index] <- gsub(pattern = "\\\\&", replacement = "and", x = bg_df$web.of.science.categories[index])
+bg_df$web.of.science.categories <- trimws(gsub(pattern = "[[:space:]]+",
+                                               replacement = " ", x = bg_df$web.of.science.categories), which = "both" )
+# Counting wos categories
+bg_df$wos.categories.num <- NA
+index <- which(is.na(bg_df$web.of.science.categories) == FALSE)
+for (i in index) {
+  temp <- unlist(strsplit(bg_df$web.of.science.categories[i], split = ";"))
+  bg_df$wos.categories.num[i] <- length(temp)
+}
+# Extracting unique wos categories
+cat.wos <- trimws(unlist(strsplit(bg_df$web.of.science.categories, split = ";")), which = "both")
+cat.wos <- as.data.frame(table(cat.wos), stringsAsFactors = FALSE)
+
 # ----- Standardization of dataset entries -----
 # authors name
 bg_df$author.full <- NA
@@ -543,6 +610,11 @@ for (i in tokens) {
     bg_df$journal.fail[temp] <- bg_df$journal.fail[temp]+1
   }
 }
+
+# Formating entry type
+bg_df$entry.type <- as.factor(bg_df$entry.type)
+levels(bg_df$entry.type) <- c("article", "book", "proceeding")
+bg_df$entry.type <- as.character(bg_df$entry.type)
 
 # Fails report
 temp <- paste(c("Authors formating completed with", 
