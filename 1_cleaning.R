@@ -521,6 +521,39 @@ for (i in 1:nrow(bg_df)) {
   bg_df$title[i] <- paste(c(toupper(substr(bg_df$title[i], 1, 1)), substr(bg_df$title[i], 2, nchar(bg_df$title[i]))), collapse = "")
 }
 
+#save.set <- bg_df
+#bg_df <- save.set
+
+# Editing Journals
+# authors name
+bg_df$journal.clean <- NA
+bg_df$journal.abbr <- NA
+bg_df$journal.fail <- 0
+# Routine to find and construct clean authors name
+tokens <- unique(na.omit(bg_df$journal.iso))
+for (i in tokens) {
+  index <- which(x = journals$iso == i)
+  # Replacing the valid info
+  temp <- which(x = bg_df$journal.iso == i)
+  if (length(index) != 0) {
+    bg_df$journal.clean[temp] <- journals$name[index]
+    bg_df$journal.abbr[temp] <- journals$abbr[index]
+  } else {
+    bg_df$journal.clean[temp] <- bg_df$journal[temp]
+    bg_df$journal.fail[temp] <- bg_df$journal.fail[temp]+1
+  }
+}
+
+# Fails report
+temp <- paste(c("Authors formating completed with", 
+                sum(bg_df$author.fail != 0), 
+                "entries missing"), collapse = " ")
+cat(temp)
+
+temp <- paste(c("Journals formating completed with", 
+                sum(bg_df$journal.fail != 0), 
+                "entries missing"), collapse = " ")
+cat(temp)
 
 # Removing and storing information 
 rm(bg_list)
