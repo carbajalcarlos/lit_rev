@@ -1,5 +1,5 @@
 # ----- Initialization of the project -----
-# Installation and loading of required libraries
+# Loading required libraries
 require(bibliometrix, quietly = TRUE)
 require(stringdist, quietly = TRUE)
 require(tm, quietly = TRUE)
@@ -66,17 +66,19 @@ for (i in 1:length(bg_list)) {
 bg_df <- bg_df[order(bg_df$year, bg_df$author), ]
 
 # Extracting unique authors
-authors <- unlist(strsplit(bg_df$author, split = " and "))
-authors <- authors[!duplicated(authors)]
-authors <- as.data.frame(authors, stringsAsFactors = FALSE)
-colnames(authors) <- "name"
-authors$length <- nchar(authors$name)
-authors$phonetic <- phonetic(authors$name)
+original <- unlist(strsplit(bg_df$author, split = " and "))
+original <- original[!duplicated(original)]
+authors <- as.data.frame(original, stringsAsFactors = FALSE)
+authors$name <- authors$original
+authors$order <- 1:nrow(authors)
+authors$length <- nchar(authors$original)
+authors$phonetic <- phonetic(authors$original)
 # Deduplication using phonetic and string distance measurements
 tokens <- as.data.frame(table(authors$phonetic), stringsAsFactors = FALSE)
 tokens <- subset(x = tokens, subset = Freq > 1)
 tokens <- tokens$Var1
 for (i in 1:length(tokens)) {
+  #i <- grep(pattern = "juellskielse, g", x = authors$name); i <- grep(pattern = authors$phonetic[i], x = tokens)
   index <- grep(pattern = tokens[i], x = authors$phonetic)
   subset.a <- authors[-index, ]
   subset.b <- authors[index, ]
@@ -87,15 +89,13 @@ for (i in 1:length(tokens)) {
   # Reduction to only one value without multiple parameter selection
   subset.c <- subset.b[temp$row, ]
   subset.b <- subset.b[-temp$row, ]
-  subset.c <- subset(x = subset.c, subset = length == max(length))
-  subset.c <- subset.c[1, ]
+  index <- which(subset.c$length == max(subset.c$length))[1]
+  subset.c$name <- subset.c$name[index]
   subset.b <- rbind(subset.b, subset.c)
   authors <- rbind(subset.a, subset.b)
 }
 
-
 # ----- Manual corrections
-authors$original <- authors$name
 # Missing commas
 index <- grep(pattern = "[,]", x = authors$name, invert = TRUE)
 authors$name[index] <- gsub(pattern = "(^[[:alpha:]]+)(.*$)",
@@ -122,6 +122,7 @@ index <- grep(pattern = "[\\.()]", x = authors$name)
 authors$name[index]<- gsub(pattern = "[\\.()]", replacement = "", x = authors$name[index])
 
 # ----- Authors name abbrviation
+authors$unique <- !duplicated(authors$name)
 authors$abbr <-authors$name
 for (i in 1:nrow(authors)) {
   #temp <- trimws(unlist(strsplit("carbajal,", split = ",")), which = "both")
@@ -139,18 +140,26 @@ for (i in 1:nrow(authors)) {
 }
 
 # Distinguishing authors
-#authors$abbr <- c(authors$abbr[1:87], authors$abbr[1:87], authors$abbr[1:174])
+#authors$abbr <- c(authors$abbr[177:352], authors$abbr[265:352], authors$abbr[265:352])
 authors$a.dup <- authors$abbr
-index <- duplicated(authors$a.dup)
+#index[authors$unique == FALSE] <- FALSE
+index <- duplicated(authors$a.dup) & authors$unique
 i<-2
 while(sum(index) != 0) {
   authors$a.dup[index] <- paste(authors$abbr[index], i, sep = "_")
   i <- i+1
-  index <- duplicated(authors$a.dup)
+  index <- duplicated(authors$a.dup) & authors$unique
+}
+# Replacing non unique authors ID
+temp <- which(authors$unique == FALSE)
+for (i in temp) {
+  index <- grep(pattern = authors$name[i], x = authors$name, fixed = TRUE)
+  index <- index[which(authors$unique[index] == TRUE)[1]]
+  authors$a.dup[i] <- authors$a.dup[index]
 }
 
 # Constructing final structure
-authors <- authors[order(authors$a.dup), ]
+authors <- authors[order(authors$order), ]
 authors$local.id <- paste("a", 1:nrow(authors),sep = "_")
 authors <- subset(x = authors, select = c("local.id", "name", "a.dup", "phonetic", "original"))
 colnames(authors) <- c("local.id", "name", "short", "phonetic", "original")
@@ -439,6 +448,38 @@ colnames(institutions) <- c("local.id", "name", "abbr", "dept", "add.info",
                             "continent", "country", "country.abbr", "country.num",
                             "original")
 rownames(institutions) <- institutions$local.id
+
+# ----- Standardization of entries -----
+
+#save.set <- bg_df
+#bg_df <- save.set
+
+# authors name
+bg_df$author.full <- NA
+bg_df$author.shrt <- NA
+bg_df$author.numb <- NA
+bg_df$author.fail <- 0
+# Routine to find and construct clean authors name
+for (i in 1:nrow(bg_df)) {
+  #i <- grep(pattern = "juellskielse", x = bg_df$author)
+  temp <- trimws(unlist(strsplit(bg_df$author[i], split = "and")), which = "both")
+  bg_df$author.numb[i] <- length(temp)
+    for (j in temp) {
+    index <- grep(pattern = j, x = authors$original, fixed = TRUE)
+    if (length(index) != 0) {
+      bg_df$author.full[i] <- paste(na.omit(c(bg_df$author.full[i], authors$name[index])), collapse = "; ")
+      bg_df$author.shrt[i] <- paste(na.omit(c(bg_df$author.shrt[i], authors$short[index])), collapse = "; ")
+    } else {
+      bg_df$author.fail[i] <- bg_df$author.fail[i]+1
+      bg_df$author.full[i] <- paste(na.omit(c(bg_df$author.full[i], j)), collapse = "; ")
+      bg_df$author.shrt[i] <- paste(na.omit(c(bg_df$author.full[i], toupper(j))), collapse = "; ")
+    }
+    #j<-temp[2]
+  }
+  # Debugging rutine
+  #bg_df$author[i];bg_df$author.fail[i]; bg_df$author.full[i]; bg_df$author.shrt[i];
+  #i<-i+1
+}
 
 # Removing and storing information 
 rm(bg_list)
