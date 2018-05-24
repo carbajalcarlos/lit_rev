@@ -2,6 +2,10 @@
 save.set <- bg_df
 
 
+index <- grep(pattern = ";   ", x = bg_df$title, fixed = TRUE)
+bg_df$title[index] <- gsub(pattern = ";   ", replacement = " ", x = bg_df$title[index])
+
+
 bg_df$title[index]
 
 i <- index[1]
