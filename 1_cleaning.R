@@ -487,7 +487,7 @@ bg_df$research.areas[index] <- gsub(pattern = ";   ", replacement = " ", x = bg_
 index <- grep(pattern = "\\\\&", x = bg_df$research.areas)
 bg_df$research.areas[index] <- gsub(pattern = "\\\\&", replacement = "and", x = bg_df$research.areas[index])
 bg_df$research.areas <- trimws(gsub(pattern = "[[:space:]]+", replacement = " ", x = bg_df$research.areas), which = "both" )
-# Counting wos keywords
+# Counting research areas
 bg_df$research.areas.num <- NA
 index <- which(is.na(bg_df$research.areas) == FALSE)
 for (i in index) {
@@ -588,15 +588,12 @@ for (i in 1:nrow(bg_df)) {
   bg_df$title[i] <- paste(c(toupper(substr(bg_df$title[i], 1, 1)), substr(bg_df$title[i], 2, nchar(bg_df$title[i]))), collapse = "")
 }
 
-#save.set <- bg_df
-#bg_df <- save.set
-
-# Editing Journals
-# authors name
+# ----- Editing Journals
+# journal name
 bg_df$journal.clean <- NA
 bg_df$journal.abbr <- NA
 bg_df$journal.fail <- 0
-# Routine to find and construct clean authors name
+# Routine to find and construct clean journals name
 tokens <- unique(na.omit(bg_df$journal.iso))
 for (i in tokens) {
   index <- which(x = journals$iso == i)
@@ -615,6 +612,39 @@ for (i in tokens) {
 bg_df$entry.type <- as.factor(bg_df$entry.type)
 levels(bg_df$entry.type) <- c("article", "book", "proceeding")
 bg_df$entry.type <- as.character(bg_df$entry.type)
+
+# ----- Formatting the C1 information
+
+
+
+# ----- Citated references
+index <- grep(pattern = ";   ", x = bg_df$cited.references, fixed = TRUE)
+bg_df$cited.references[index] <- gsub(pattern = ";   ", replacement = "; ", x = bg_df$cited.references[index])
+
+# ----- Times cited
+bg_df$times.cited <- as.integer(bg_df$times.cited)
+# ----- Years
+bg_df$year <- as.integer(bg_df$year)
+# ----- DOI
+
+# ---- Constructiono f information
+bg_df$reprint.address <- NA
+bg_df$database <- NA
+bg_df$text.id <- NA
+for (i in 1:nrow(bg_df)) {
+  # Reprint address
+  temp <- trimws(unlist(strsplit(bg_df$affiliation[i], split = ";   ")), which = "both")
+  index <- grep(pattern = "(reprint author)", x = temp)
+  bg_df$reprint.address[i] <- paste(temp[index], collapse = "; ")
+  # database
+  bg_df$database[i] <- trimws(unlist(strsplit(bg_df$unique.id[i], split = ":")), which = "both")[1]
+  # text identification
+  temp <- tolower(trimws(unlist(strsplit(bg_df$author.shrt[i], split = ";")), which = "both")[1])
+  bg_df$text.id[i] <- paste(c(temp, bg_df$year[i], bg_df$journal.iso[i]), collapse = " - ")
+}
+
+
+
 
 # Fails report
 temp <- paste(c("Authors formating completed with", 
