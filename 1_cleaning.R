@@ -626,20 +626,34 @@ bg_df$year <- as.integer(bg_df$year)
 #save.set <- bg_df
 #bg_df <- save.set
 
+subset.a <- subset(x = bg_df, subset = author.numb == 1)
+
 # ---- Construction of bibliometric analysis data
 bg_df$reprint.address <- NULL
 bg_df$database <- NULL
 bg_df$text.id <- NULL
+
+table(bg_df$author.numb)
+
+
+
+
+
 for (i in 1:nrow(bg_df)) {
+  temp
+  trimws(unlist(strsplit(subset.a$affiliation[i], split = ";   ")), which = "both"); i <- i+1
+  
+  
   # Reprint address
-  temp <- trimws(unlist(strsplit(bg_df$affiliation[i], split = ";   ")), which = "both")
   index <- grep(pattern = "(reprint author)", x = temp)
   bg_df$reprint.address[i] <- paste(temp[index], collapse = "; ")
-  # database
-  bg_df$database[i] <- trimws(unlist(strsplit(bg_df$unique.id[i], split = ":")), which = "both")[1]
   # text identification
   temp <- tolower(trimws(unlist(strsplit(bg_df$author.shrt[i], split = ";")), which = "both")[1])
   bg_df$text.id[i] <- paste(c(temp, bg_df$year[i], bg_df$journal.iso[i]), collapse = " - ")
+  
+  # Database extraction
+  bg_df$database[i] <- trimws(unlist(strsplit(bg_df$unique.id[i], split = ":")), which = "both")[1]
+  
 }
 
 
