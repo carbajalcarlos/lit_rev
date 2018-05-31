@@ -613,10 +613,6 @@ bg_df$entry.type <- as.factor(bg_df$entry.type)
 levels(bg_df$entry.type) <- c("article", "book", "proceeding")
 bg_df$entry.type <- as.character(bg_df$entry.type)
 
-# ----- Formatting the C1 information
-
-
-
 # ----- Citated references
 index <- grep(pattern = ";   ", x = bg_df$cited.references, fixed = TRUE)
 bg_df$cited.references[index] <- gsub(pattern = ";   ", replacement = "; ", x = bg_df$cited.references[index])
@@ -625,12 +621,15 @@ bg_df$cited.references[index] <- gsub(pattern = ";   ", replacement = "; ", x = 
 bg_df$times.cited <- as.integer(bg_df$times.cited)
 # ----- Years
 bg_df$year <- as.integer(bg_df$year)
-# ----- DOI
 
-# ---- Constructiono f information
-bg_df$reprint.address <- NA
-bg_df$database <- NA
-bg_df$text.id <- NA
+# ----- Current edition -----
+#save.set <- bg_df
+#bg_df <- save.set
+
+# ---- Construction of bibliometric analysis data
+bg_df$reprint.address <- NULL
+bg_df$database <- NULL
+bg_df$text.id <- NULL
 for (i in 1:nrow(bg_df)) {
   # Reprint address
   temp <- trimws(unlist(strsplit(bg_df$affiliation[i], split = ";   ")), which = "both")
@@ -645,7 +644,7 @@ for (i in 1:nrow(bg_df)) {
 
 
 
-
+# ----- Closing sequence -----
 # Fails report
 temp <- paste(c("Authors formating completed with", 
                 sum(bg_df$author.fail != 0), 
