@@ -170,7 +170,7 @@ networkPlot(NetMatrix = bm_bcl_cou, n = dim(bm_bcl_cou)[1], Title = "University'
             type = "kamada", size = TRUE, labelsize = 0.8, edgesize = 2,
             remove.multiple = TRUE, remove.isolates = TRUE)
 
-# Co-occurences analysis
+# Co-occurrences analysis
 ## Aggregator's keywords
 bm_coc_dkw <- biblioNetwork(M = bm, analysis = "co-occurrences", network = "keywords", ";")
 set.seed(69)
@@ -185,7 +185,6 @@ networkPlot(NetMatrix = bm_coc_akw, normalize = "association", weighted = TRUE, 
             Title = "Author's keywords co-ocurrences",
             remove.multiple = TRUE, remove.isolates = TRUE,
             type = "fruchterman", size = TRUE, labelsize = 0.8, edgesize = 5)
-
 ## Subject category
 ### masking the subject category under  author's keywords
 bm2 <- bm
