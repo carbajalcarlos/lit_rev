@@ -129,16 +129,204 @@ $(document).ready(function () {
 <h1>Bibliometric analysis</h1>
 <p>Bibliometrics is statistical analysis of written publications, such as books or articles. Citation analysis is a commonly used bibliometric method which is based on constructing the citation graph, a network or graph representation of the citations between documents. Many research fields use bibliometric methods to explore the impact of their field, the impact of a set of researchers, the impact of a particular paper, or to identify particularly impactful papers within a specific field of research. Data from citation indexes can be analyzed to determine the popularity and impact of specific articles, authors, and publications.</p>
 <p>This analysis was developed using the package develop for R from Aria, M &amp; Cuccurullo, C:</p>
+<blockquote>
 <p>Aria, M. &amp; Cuccurullo, C. (2017) bibliometrix: An R-tool for comprehensive science mapping analysis, Journal of Informetrics, 11(4), pp 959-975, Elsevier.</p>
+</blockquote>
 <p>For further information regarding this package visit <a href="http://www.bibliometrix.org" class="uri">http://www.bibliometrix.org</a>.</p>
-<pre class="r"><code>summary(cars)</code></pre>
-<pre><code>##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00</code></pre>
+<div id="initialization" class="section level2">
+<h2>Initialization</h2>
+<p>To develop the analysis, R requires the use of the bibliometrix package.</p>
+<pre class="r"><code># Loading the required libraries
+require(bibliometrix, quietly = TRUE)</code></pre>
+<p>The next step is to load the dataset obtained either from WoS Clarative analytics or Scopus databases. The bibliometrix package offers functions to import files from <code>*.txt</code> or <code>*.bib</code> files using the function <code>readFiles()</code>. Then, the loaded data needs to be structured into a dataframe using the function <code>convert2df()</code>.</p>
+<pre class="r"><code># Importing data from WoS-export
+bm &lt;- readFiles(&quot;1_data/wos-digital_innovation-2000-2018.bib&quot;)
+# Structuring data as a dataframe
+bm &lt;- convert2df(bm, dbsource = &quot;isi&quot;, format = &quot;bibtex&quot;)</code></pre>
+</div>
+<div id="bibliometric-analysis-1" class="section level2">
+<h2>Bibliometric analysis</h2>
+<p>The next step is to analyse the data to extract and relate the citation information, using the function <code>biblioAnalysis()</code> the dataset is analysed. Then, a summary of the bibliography is presented using the function <code>summary()</code>.</p>
+<pre class="r"><code># blibliometric analysis
+bm_anl &lt;- biblioAnalysis(bm, sep = &quot;; &quot;) # It is necesary to identify the separator character used by the database.
+# Printing bibliometric summary
+bm_smm &lt;- summary(object = bm_anl, k = 12) # k represents the number of entries shown in the summary</code></pre>
+<pre><code>## 
+## 
+## Main Information about data
+## 
+##  Documents                             154 
+##  Sources (Journals, Books, etc.)       130 
+##  Keywords Plus (ID)                    376 
+##  Author&#39;s Keywords (DE)                443 
+##  Period                                2001 - 2018 
+##  Average citations per documents       6.162 
+## 
+##  Authors                               350 
+##  Author Appearances                    392 
+##  Authors of single authored documents  41 
+##  Authors of multi authored documents   309 
+## 
+##  Documents per Author                  0.44 
+##  Authors per Document                  2.27 
+##  Co-Authors per Documents              2.55 
+##  Collaboration Index                   2.89 
+##  
+## 
+## Annual Scientific Production
+## 
+##  Year    Articles
+##     2001        1
+##     2002        1
+##     2005        2
+##     2007        1
+##     2008        1
+##     2009        1
+##     2010        4
+##     2011        3
+##     2012        4
+##     2013       14
+##     2014        9
+##     2015       27
+##     2016       27
+##     2017       47
+##     2018       12
+## 
+## Annual Percentage Growth Rate 19.42201 
+## 
+## 
+## Most Productive Authors
+## 
+##    Authors        Articles Authors        Articles Fractionalized
+## 1   LYYTINEN K           5   GRAY M                          2.00
+## 2   BERENTE N            4   RADOIU D                        2.00
+## 3   YOO Y                4   YOO Y                           1.92
+## 4   ARTS K               3   NAMBISAN S                      1.75
+## 5   LINDGREN R           3   VOM BROCKE J                    1.53
+## 6   MATHIASSEN L         3   BOUDREAU KJ                     1.50
+## 7   NAMBISAN S           3   LOEBLER H                       1.50
+## 8   SVAHN F              3   BERENTE N                       1.42
+## 9   VOM BROCKE J         3   LYYTINEN K                      1.42
+## 10  BOUDREAU KJ          2   AHMED F                         1.00
+## 11  BRUNSWICKER S        2   BATT C                          1.00
+## 12  DEMIRKAN H           2   CARPO M                         1.00
+## 
+## 
+## Top manuscripts per citations
+## 
+##                                                   Paper           TC
+## 1  YOO Y; HENFRIDSSON O; LYYTINEN K,(2010),INF. SYST. RES.       157
+## 2  YOO Y; BOLAND RJ; LYYTINEN K; MAJCHRZAK A,(2012),ORGAN SCI.   137
+## 3  LUSCH RF; NAMBISAN S,(2015),MIS Q.                            124
+## 4  BOUDREAU KJ,(2012),ORGAN SCI.                                  85
+## 5  FICHMAN RG; DOS SANTOS BL; ZHENG ZE,(2014),MIS Q.              45
+## 6  NAMBISAN S,(2013),J. ASSOC. INF. SYST.                         43
+## 7  BARRETT M; OBORN E; ORLIKOWSKI WJ; YATES JA,(2012),ORGAN SCI.  37
+## 8  ARTS K; VAN DER WAL R; ADAMS WM,(2015),AMBIO                   26
+## 9  YOO Y,(2013),J. ASSOC. INF. SYST.                              25
+## 10 MIDDLETON KM,(2001),J. MORPHOL.                                22
+## 11 NYLEN D; HOLMSTROM J,(2015),BUS. HORIZ.                        21
+## 12 LEE J; BERENTE N,(2012),ORGAN SCI.                             17
+##    TCperYear
+## 1      19.62
+## 2      22.83
+## 3      41.33
+## 4      14.17
+## 5      11.25
+## 6       8.60
+## 7       6.17
+## 8       8.67
+## 9       5.00
+## 10      1.29
+## 11      7.00
+## 12      2.83
+## 
+## 
+## Most Productive Countries (of corresponding authors)
+## 
+##      Country   Articles   Freq SCP MCP
+## 1  USA               31 0.2199  26   5
+## 2  ENGLAND           21 0.1489  12   9
+## 3  AUSTRALIA          9 0.0638   9   0
+## 4  ITALY              9 0.0638   8   1
+## 5  SWEDEN             7 0.0496   3   4
+## 6  SWITZERLAND        6 0.0426   2   4
+## 7  GERMANY            5 0.0355   2   3
+## 8  NETHERLANDS        5 0.0355   4   1
+## 9  SPAIN              5 0.0355   3   2
+## 10 CANADA             4 0.0284   4   0
+## 11 TAIWAN             4 0.0284   4   0
+## 12 CHINA              3 0.0213   3   0
+## 
+## 
+## SCP: Single Country Publications
+## 
+## MCP: Multiple Country Publications
+## 
+## 
+## Total Citations per Country
+## 
+##     Country      Total Citations Average Article Citations
+## 1  USA                       633                    20.419
+## 2  ENGLAND                   162                     7.714
+## 3  SWEDEN                     33                     4.714
+## 4  BRAZIL                     26                    13.000
+## 5  SCOTLAND                   26                     8.667
+## 6  AUSTRALIA                  20                     2.222
+## 7  CANADA                     10                     2.500
+## 8  SWITZERLAND                 9                     1.500
+## 9  GERMANY                     6                     1.200
+## 10 NETHERLANDS                 6                     1.200
+## 11 SERBIA                      4                     1.333
+## 12 TAIWAN                      3                     0.750
+## 
+## 
+## Most Relevant Sources
+## 
+##                                                                      Sources       
+## 1  MIS QUARTERLY                                                                   
+## 2  2015 48TH HAWAII INTERNATIONAL CONFERENCE ON SYSTEM SCIENCES (HICSS)            
+## 3  AMBIO                                                                           
+## 4  APOLLO-THE INTERNATIONAL ART MAGAZINE                                           
+## 5  ORGANIZATION SCIENCE                                                            
+## 6  JOURNAL OF THE ASSOCIATION FOR INFORMATION SYSTEMS                              
+## 7  BUSINESS HORIZONS                                                               
+## 8  ICERI2014: 7TH INTERNATIONAL CONFERENCE OF EDUCATION RESEARCH AND   INNOVATION  
+## 9  MIS QUARTERLY EXECUTIVE                                                         
+## 10 PROCEEDINGS OF THE EUROPEAN INTEGRATION: BETWEEN TRADITION AND   MODERNITY VOL 5
+## 11 2010 IEEE INTERNATIONAL FREQUENCY CONTROL SYMPOSIUM (FCS)                       
+## 12 2011 4TH INTERNATIONAL CONFERENCE OF EDUCATION RESEARCH AND INNOVATION   (ICERI)
+##    Articles
+## 1         7
+## 2         4
+## 3         4
+## 4         4
+## 5         4
+## 6         3
+## 7         2
+## 8         2
+## 9         2
+## 10        2
+## 11        1
+## 12        1
+## 
+## 
+## Most Relevant Keywords
+## 
+##         Author Keywords (DE)      Articles Keywords-Plus (ID)     Articles
+## 1  DIGITAL INNOVATION                   29 TECHNOLOGY                   15
+## 2  INNOVATION                           11 MODEL                        10
+## 3  DIGITAL;INNOVATION                    4 INNOVATION                    9
+## 4  OPEN INNOVATION                       4 DESIGN                        8
+## 5  CASE STUDY                            3 DIGITAL INNOVATION            8
+## 6  DIGITAL TECHNOLOGIES                  3 INTERNET                      7
+## 7  MOBILE PHONE                          3 KNOWLEDGE                     6
+## 8  SERVICE INNOVATION                    3 PERSPECTIVE                   6
+## 9  ACCOUNTING INFORMATION SYSTEMS        2 SYSTEMS                       6
+## 10 AFRICA                                2 CAPABILITIES                  5
+## 11 BUSINESS INFORMATICS                  2 INFORMATION-SYSTEMS           5
+## 12 CHINA                                 2 INFORMATION-TECHNOLOGY        5</code></pre>
+</div>
 </div>
 
 
