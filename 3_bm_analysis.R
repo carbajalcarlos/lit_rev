@@ -183,8 +183,9 @@ bm_coc_akw <- biblioNetwork(M = bm, analysis = "co-occurrences", network = "auth
 set.seed(69)
 networkPlot(NetMatrix = bm_coc_akw, normalize = "association", weighted = TRUE, n = 30,
             Title = "Author's keywords co-ocurrences",
-            remove.multiple = TRUE, remove.isolates = TRUE,
-            type = "fruchterman", size = TRUE, labelsize = 0.8, edgesize = 5)
+            remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
+            curved = FALSE, cluster = "walktrap",
+            type = "fruchterman", size = TRUE, labelsize = 0.75, edgesize = 3)
 ## Subject category
 ### masking the subject category under  author's keywords
 bm2 <- bm
@@ -194,10 +195,21 @@ names(bm2)[index.akw] <- "DE2"
 names(bm2)[index.sc] <- "DE"
 ### masked extraction
 bm_coc_sc <- biblioNetwork(M = bm2, analysis = "co-occurrences", network = "author_keywords", ";")
-set.seed(69)
-networkPlot(NetMatrix = bm_coc_sc, normalize = "association", weighted = TRUE, n = 30,
+set.seed(70)
+networkPlot(NetMatrix = bm_coc_sc, normalize = "association", weighted = TRUE, n = 40,
             Title = "Subject categories's co-ocurrences",
-            remove.multiple = TRUE, remove.isolates = TRUE, degree = 2,
-            type = "fruchterman", size = TRUE, labelsize = 0.8, edgesize = 5, halo = TRUE)
+            remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
+            curved = FALSE, cluster = "walktrap",
+            type = "fruchterman", size = TRUE, labelsize = 0.6, edgesize = 3)
 
 # Co-word analisis
+bm_cst <- conceptualStructure(M = bm, field = "TI",
+                              method = "MCA", stemming = TRUE,
+                              labelsize = 10, documents = 15)
+
+#Historical co-citation network
+bm_hcc <- histNetwork(M = bm, n = 20, sep = ";")
+set.seed(5)
+histPlot(histResults = bm_hcc, size = FALSE,
+         remove.isolates = TRUE,
+         label = TRUE, arrowsize = 0.5, labelsize = 0.5)
