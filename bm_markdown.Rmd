@@ -1,0 +1,25 @@
+---
+title: "Bibliometric analysis"
+author: "Carlos Carbajal"
+date: "1 June 2018"
+output:
+  html_document:
+    self_contained: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Bibliometric analysis
+Bibliometrics is statistical analysis of written publications, such as books or articles. Citation analysis is a commonly used bibliometric method which is based on constructing the citation graph, a network or graph representation of the citations between documents. Many research fields use bibliometric methods to explore the impact of their field, the impact of a set of researchers, the impact of a particular paper, or to identify particularly impactful papers within a specific field of research. Data from citation indexes can be analyzed to determine the popularity and impact of specific articles, authors, and publications.
+
+This analysis was developed using the package develop for R from Aria, M & Cuccurullo, C:
+
+  Aria, M. & Cuccurullo, C. (2017) bibliometrix: An R-tool for comprehensive science mapping analysis, Journal of
+  Informetrics, 11(4), pp 959-975, Elsevier.
+
+For further information regarding this package visit http://www.bibliometrix.org.
+
+```{r initiallisation}
+summary(cars)
+```
