@@ -8,7 +8,7 @@ citation("bibliometrix")
 if (require(bibliometrix) == FALSE) {
   install.packages("bibliometrix", dependencies = TRUE)   ### load bibliometrix package
 }
-require(bibliometrix)
+require(package = bibliometrix, quietly = TRUE)
 
 ## ----Data loading--------------------------------------------------------
 
@@ -24,7 +24,7 @@ results <- biblioAnalysis(M, sep = ";")
 S <- summary(object = results, k = 10, pause = FALSE)
 
 ## ----plot generic function-----------------------------------------------
-plot(x = results, k = 10, pause = FALSE)
+plot(x = results, k = 10, pause = TRUE)
 
 ## ------------------------------------------------------------------------
 # M$CR[1]
