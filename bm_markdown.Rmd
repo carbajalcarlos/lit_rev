@@ -1,0 +1,47 @@
+---
+title: "Bibliometric analysis"
+author: "Carlos Carbajal"
+date: "1 June 2018"
+output:
+  html_document:
+    self_contained: no
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Bibliometric analysis
+Bibliometrics is statistical analysis of written publications, such as books or articles. Citation analysis is a commonly used bibliometric method which is based on constructing the citation graph, a network or graph representation of the citations between documents. Many research fields use bibliometric methods to explore the impact of their field, the impact of a set of researchers, the impact of a particular paper, or to identify particularly impactful papers within a specific field of research. Data from citation indexes can be analyzed to determine the popularity and impact of specific articles, authors, and publications.
+
+This analysis was developed using the package develop for R from Aria, M & Cuccurullo, C:
+
+> Aria, M. & Cuccurullo, C. (2017) bibliometrix: An R-tool for comprehensive science mapping analysis, Journal of Informetrics, 11(4), pp 959-975, Elsevier.
+
+For further information regarding this package visit http://www.bibliometrix.org.
+
+## Initialization
+To develop the analysis, R requires the use of the bibliometrix package.
+```{r initiallisation, message = FALSE}
+# Loading the required libraries
+require(bibliometrix, quietly = TRUE)
+```
+The next step is to load the dataset obtained either from WoS Clarative analytics or Scopus databases. The bibliometrix package offers functions to import files from `*.txt` or `*.bib` files using the function `readFiles()`. Then, the loaded data needs to be structured into a dataframe using the function `convert2df()`. 
+```{r load dataset, eval = FALSE, message = FALSE}
+# Importing data from WoS-export
+bm <- readFiles("1_data/wos-digital_innovation-2000-2018.bib")
+# Structuring data as a dataframe
+bm <- convert2df(bm, dbsource = "isi", format = "bibtex")
+```
+```{r load Rdata, include=FALSE}
+load(file = "2_blackbox/1_bm.Rdata")
+rownames(bm) <- bm$SR
+```
+## Bibliometric analysis
+The next step is to analyse the data to extract and relate the citation information, using the function `biblioAnalysis()` the dataset is analysed. Then, a summary of the bibliography is presented using the function `summary()`.
+```{r bibliometric analysis, }
+# blibliometric analysis
+bm_anl <- biblioAnalysis(bm, sep = "; ") # It is necesary to identify the separator character used by the database.
+# Printing bibliometric summary
+bm_smm <- summary(object = bm_anl, k = 12) # k represents the number of entries shown in the summary
+```
+
