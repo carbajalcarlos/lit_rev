@@ -1,0 +1,45 @@
+---
+title: "test"
+author: "cc"
+date: "7 June 2018"
+output:
+  html_document:
+    self_contained: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Plot should show at high resolution
+
+```{r echo=FALSE, comment = ""}
+# load some data
+require(plyr)
+rbi <- ddply(baseball, .(year), summarise,  
+  mean_rbi = mean(rbi, na.rm = TRUE))
+```
+
+```{r}
+# plot
+plot(mean_rbi ~ year, type = "l", data = rbi)
+```
+
+# Second attempt
+```{r, fig.width = 2, fig.height = 2}
+plot(mean_rbi ~ year, type = "l", data = rbi)
+```
+
+# Third attempt
+```{r, out.width = 2, out.height = 2}
+plot(mean_rbi ~ year, type = "l", data = rbi)
+```
+
+# Fourth attempt
+```{r, out.width = '200px', out.height = '200px'}
+plot(mean_rbi ~ year, type = "l", data = rbi)
+```
+
+# Fifth attempt
+```{r, out.width = '\\maxwidth'}
+plot(mean_rbi ~ year, type = "l", data = rbi)

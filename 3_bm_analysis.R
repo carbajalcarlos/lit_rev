@@ -13,7 +13,7 @@ bm_anl <- biblioAnalysis(bm, sep = "; ")
 bm_smm <- summary(object = bm_anl, k = 12, pause = FALSE)
 
 # Printing production graphs
-plot(x = bm_anl, k = 12, pause = FALSE)
+plot(x = bm_anl, k = 12, pause = TRUE)
 
 # Obtaining most cited references by article and author 
 # bm$CR[3] # Used to define the appropriated separatord fiels
@@ -110,7 +110,7 @@ bm_bcp_art <- biblioNetwork(M = bm, analysis = "coupling", network = "references
 set.seed(69)
 networkPlot(NetMatrix = bm_bcp_art, normalize = "salton",
             weighted = TRUE, n = 20, Title = "Article's coupuling",
-            type = "fruchterman", size = TRUE, remove.multiple = TRUE) 
+            type = "fruchterman", size = TRUE, remove.multiple = TRUE, edgesize = 5) 
 ## Coupuling authors
 bm_bcp_aut <- biblioNetwork(M = bm, analysis = "coupling", network = "authors", ";")
 set.seed(69)
@@ -177,7 +177,7 @@ set.seed(69)
 networkPlot(NetMatrix = bm_coc_dkw, normalize = "association", weighted = TRUE, n = 30,
             Title = "Aggregators's keywords co-ocurrences",
             remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
-            type = "fruchterman", size = TRUE, labelsize = 0.8, edgesize = 5)
+            type = "fruchterman", size = TRUE, labelsize = 1.2, edgesize = 5)
 ## Authors's keywords
 bm_coc_akw <- biblioNetwork(M = bm, analysis = "co-occurrences", network = "author_keywords", ";")
 set.seed(69)
@@ -200,7 +200,7 @@ networkPlot(NetMatrix = bm_coc_sc, normalize = "association", weighted = TRUE, n
             Title = "Subject categories's co-ocurrences",
             remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
             curved = FALSE, cluster = "walktrap",
-            type = "fruchterman", size = TRUE, labelsize = 0.6, edgesize = 3)
+            type = "fruchterman", size = TRUE, labelsize = 1.2, edgesize = 5)
 
 # Co-word analisis
 bm_cst <- conceptualStructure(M = bm, field = "TI",

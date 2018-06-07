@@ -38,10 +38,234 @@ rownames(bm) <- bm$SR
 ```
 ## Bibliometric analysis
 The next step is to analyse the data to extract and relate the citation information, using the function `biblioAnalysis()` the dataset is analysed. Then, a summary of the bibliography is presented using the function `summary()`.
-```{r bibliometric analysis, }
+```{r bibliometric analysis}
 # blibliometric analysis
 bm_anl <- biblioAnalysis(bm, sep = "; ") # It is necesary to identify the separator character used by the database.
 # Printing bibliometric summary
 bm_smm <- summary(object = bm_anl, k = 12) # k represents the number of entries shown in the summary
 ```
 
+```{r bibliometric plots, fig.show = hold, out.width="1600px", out.height="1600px", fig.width=7}
+plot(x = bm_anl, k = 12, pause = FALSE)
+```
+
+```{r global citations}
+# Obtaining most cited references by article and author 
+# bm$CR[3] # Used to define the appropriated separatord fiels
+bm_cit_art <- citations(M = bm, field = "article", sep = "; ")
+head(bm_cit_art$Cited, n = 12)
+bm_cit_aut <- citations(M = bm, field = "author", sep = "; ")
+head(bm_cit_aut$Cited, n = 12)
+```
+
+```{r local citations}
+# Obtaining the most cited local references
+bm_cit_loc <- localCitations(M = bm,  sep = "; ")
+## By Article
+head(bm_cit_loc$Papers, n = 12)
+## By Author
+head(bm_cit_loc$Authors, n = 12)
+```
+
+```{r dominance}
+# Calculating authors dominance factor
+bm_dom <- dominance(results = bm_anl, k = 12)
+bm_dom
+```
+
+```{r h-index}
+# Calculating the authors h-index
+## One author: Yoo Youngjin
+bm_hin_yoo <- Hindex(M = bm, authors = "YOO Y", sep = ";", years = 10)
+bm_hin_yoo$H
+bm_hin_yoo$CitationList
+## One author: Yoo Youngjin
+bm_hin_nam <- Hindex(M = bm, authors = "NAMBISAN S", sep = ";", years = 10)
+bm_hin_nam$H
+bm_hin_nam$CitationList
+## The 12 most productive authors
+authors <- gsub(pattern = ",", replacement = " ", x = names(bm_anl$Authors)[1:12]) # Extracting the 12 most productive authors
+bm_hin <- Hindex(M = bm, authors = authors, sep = ";", years = 10)
+bm_hin$H
+bm_hin$CitationList
+```
+
+```{r lotkas coefficient, out.width="1600px", out.height="1600px"}
+# Estimation of the Lotkas Law coefficient
+bm_ltk <- lotka(bm_anl)
+bm_ltk$AuthorProd
+## Estimation coefficients
+bm_ltk$Beta # beta
+bm_ltk$C # constant
+bm_ltk$R2 # Goodness of fit
+bm_ltk$p.value # P-value of K-S two sample test
+## Distribution comparison plot
+bm_ltk_obs <- bm_ltk$AuthorProd[,3] # Observed distribution
+bm_ltk_the <- 10^(log10(bm_ltk$C)-2*log10(bm_ltk$AuthorProd[,1])) # Theoretical distribution
+plot(x = bm_ltk$AuthorProd[,1], y = bm_ltk_the, col = "red",
+     type = "l", ylim = c(0,1), 
+     main = "Scientific Productivity",
+     xlab = "Articles", ylab = "Frequency of authors") 
+lines(x = bm_ltk$AuthorProd[,1], y = bm_ltk_obs, col = "blue")
+legend(x = "topright",  lty = c(1,1,1), cex = 1, bty = "n",
+       c("Theoretical (B=2)", "Observed"), col = c("red", "blue"))
+
+```
+
+```{r bibliometric matrices}
+#names(bm)
+#bm$SO[3] # Used to define the appropriated separatord fiels
+## Printing the 12 most productive articles
+bm_cma_jou <- cocMatrix(M = bm, Field = "SO", sep = ";")
+sort(Matrix::colSums(bm_cma_jou), decreasing = TRUE)[1:12]
+## Printing the 12 most productive authors
+bm_cma_aut <- cocMatrix(M = bm, Field = "AU", sep = ";")
+sort(Matrix::colSums(bm_cma_aut), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+## Printing the 12 most productive universities
+bm_cma_uni <- cocMatrix(M = bm, Field = "AU_UN", sep = ";")
+sort(Matrix::colSums(bm_cma_uni), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+## Printing the 12 most productive first author country
+bm <- metaTagExtraction(M = bm, Field = "AU_CO", sep = ";")
+bm_cma_cou <- cocMatrix(M = bm, Field = "AU_CO", sep = ";")
+sort(Matrix::colSums(bm_cma_cou), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+## Printing the 12 most cited references
+bm_cma_ctr <- cocMatrix(M = bm, Field = "CR", sep = ";")
+sort(Matrix::colSums(bm_cma_ctr), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+## Printing the 12 most cited first author
+bm <- metaTagExtraction(M = bm, Field = "CR_AU", sep = ";")
+bm_cma_cau <- cocMatrix(M = bm, Field = "CR_AU", sep = ";")
+sort(Matrix::colSums(bm_cma_cau), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+## Printing the 12 most cited publication
+bm <- metaTagExtraction(M = bm, Field = "CR_SO", sep = ";")
+bm_cma_cjo <- cocMatrix(M = bm, Field = "CR_SO", sep = ";")
+sort(Matrix::colSums(bm_cma_cjo), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+## Printing the 12 most used author's keyword
+bm_cma_akw <- cocMatrix(M = bm, Field = "DE", sep = ";")
+sort(Matrix::colSums(bm_cma_akw), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+## Printing the 12 most used database aggregator's keyword
+bm_cma_dkw <- cocMatrix(M = bm, Field = "ID", sep = ";")
+sort(Matrix::colSums(bm_cma_dkw), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+## Printing the 12 most used database aggregator's subject category
+bm_cma_dsc <- cocMatrix(M = bm, Field = "SC", sep = ";")
+sort(Matrix::colSums(bm_cma_dsc), decreasing = TRUE)[1:12] # Printing the 12 most productive articles
+```
+
+```{r coupling, out.width="1600px", out.height="1600px"}
+## Coupling articles
+bm_bcp_art <- biblioNetwork(M = bm, analysis = "coupling", network = "references", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcp_art, normalize = "salton",
+            weighted = TRUE, n = 20, Title = "Article's coupuling",
+            labelsize = 0.5, 
+            type = "fruchterman", size = TRUE, remove.multiple = TRUE, edgesize = 5) 
+## Coupuling authors
+bm_bcp_aut <- biblioNetwork(M = bm, analysis = "coupling", network = "authors", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcp_aut, normalize = "salton",
+            weighted = TRUE, n = 20, Title = "Author's coupuling",
+            labelsize = 0.5, 
+            type = "fruchterman", size = TRUE, remove.multiple = TRUE)
+## Coupuling journals
+bm_bcp_jou <- biblioNetwork(M = bm, analysis = "coupling", network = "sources", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcp_jou, normalize = "salton",
+            weighted = TRUE, n = 20, Title = "Journal's coupuling",
+            labelsize = 0.5, 
+            type = "fruchterman", size = TRUE, remove.multiple = TRUE)
+## Coupuling countries
+bm_bcp_cou <- biblioNetwork(M = bm, analysis = "coupling", network = "countries", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcp_cou, normalize = "salton",
+            weighted = TRUE, n = 20, Title = "Country's coupuling",
+            type = "fruchterman", size = TRUE, remove.multiple = TRUE, labelsize = 0.5)
+```
+
+```{r co-citation, out.width="1600px", out.height="1600px"}
+## Co-citation articles
+bm_bcc_art <- biblioNetwork(M = bm, analysis = "co-citation", network = "references", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcc_art, n = 30, Title = "Article's co-citation network",
+            type = "fruchterman", size = TRUE, remove.multiple = TRUE, 
+            labelsize = 0.5, edgesize = 2)
+## Co-citation authors
+bm_bcc_aut <- biblioNetwork(M = bm, analysis = "co-citation", network = "authors", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcc_aut, n = 20, Title = "Author's co-citation network",
+            type = "fruchterman", size = TRUE, remove.multiple = TRUE, 
+            labelsize = 0.5, edgesize = 2)
+## Co-citation journals
+bm_bcc_jou <- biblioNetwork(M = bm, analysis = "co-citation", network = "sources", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcc_jou, n = 20, Title = "Author's co-citation network",
+            type = "fruchterman", size = TRUE, remove.multiple = TRUE, 
+            labelsize = 0.5, edgesize = 2)
+```
+
+```{r collaborations, out.width="1600px", out.height="1600px"}
+# Author's collaboration
+bm_bcl_aut <- biblioNetwork(M = bm, analysis = "collaboration", network = "authors", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcl_aut, n = dim(bm_bcl_aut)[1], Title = "Author's collaboration",
+            type = "kamada", size = TRUE, labelsize = 0.5, edgesize = 2,
+            remove.multiple = TRUE, remove.isolates = TRUE, degree = 5)
+# University's collaboration
+bm_bcl_uni <- biblioNetwork(M = bm, analysis = "collaboration", network = "universities", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcl_uni, n = dim(bm_bcl_uni)[1], Title = "University's collaboration",
+            type = "kamada", size = TRUE, labelsize = 0.5, edgesize = 2,
+            remove.multiple = TRUE, remove.isolates = TRUE, degree = 5)
+# Country's collaboration
+bm_bcl_cou <- biblioNetwork(M = bm, analysis = "collaboration", network = "countries", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_bcl_cou, n = dim(bm_bcl_cou)[1], Title = "University's collaboration",
+            type = "kamada", size = TRUE, labelsize = 0.5, edgesize = 2,
+            remove.multiple = TRUE, remove.isolates = TRUE)
+```
+
+```{r co-occurrences, out.width="1600px", out.height="1600px"}
+## Aggregator's keywords
+bm_coc_dkw <- biblioNetwork(M = bm, analysis = "co-occurrences", network = "keywords", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_coc_dkw, normalize = "association", weighted = TRUE, n = 30,
+            Title = "Aggregators's keywords co-ocurrences",
+            remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
+            type = "fruchterman", size = TRUE, labelsize = 0.5, edgesize = 5)
+## Authors's keywords
+bm_coc_akw <- biblioNetwork(M = bm, analysis = "co-occurrences", network = "author_keywords", ";")
+set.seed(69)
+networkPlot(NetMatrix = bm_coc_akw, normalize = "association", weighted = TRUE, n = 30,
+            Title = "Author's keywords co-ocurrences",
+            remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
+            curved = FALSE, cluster = "walktrap",
+            type = "fruchterman", size = TRUE, labelsize = 0.5, edgesize = 3)
+## Subject category
+### masking the subject category under  author's keywords
+bm2 <- bm
+index.akw <- which(names(bm2) == "DE")
+index.sc <- which(names(bm2) == "SC")
+names(bm2)[index.akw] <- "DE2"
+names(bm2)[index.sc] <- "DE"
+### masked extraction
+bm_coc_sc <- biblioNetwork(M = bm2, analysis = "co-occurrences", network = "author_keywords", ";")
+set.seed(70)
+networkPlot(NetMatrix = bm_coc_sc, normalize = "association", weighted = TRUE, n = 40,
+            Title = "Subject categories's co-ocurrences",
+            remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
+            curved = FALSE, cluster = "walktrap",
+            type = "fruchterman", size = TRUE, labelsize = 0.5, edgesize = 5)
+```
+
+```{r co-word, fig.show='hold', out.width="1600px", out.height="1600px"}
+bm_cst <- conceptualStructure(M = bm, field = "TI",
+                              method = "MCA", stemming = TRUE,
+                              labelsize = 6, documents = 15)
+
+```
+
+```{r historical co-citation, out.width="1600px", out.height="1600px"}
+bm_hcc <- histNetwork(M = bm, n = 20, sep = ";")
+set.seed(5)
+histPlot(histResults = bm_hcc, size = FALSE,
+         remove.isolates = TRUE,
+         label = TRUE, arrowsize = 0.5, labelsize = 0.5)
+```
