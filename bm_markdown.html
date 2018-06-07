@@ -327,10 +327,9 @@ bm_smm &lt;- summary(object = bm_anl, k = 12) # k represents the number of entri
 ## 11 BUSINESS INFORMATICS                  2 INFORMATION-SYSTEMS           5
 ## 12 CHINA                                 2 INFORMATION-TECHNOLOGY        5</code></pre>
 <pre class="r"><code>plot(x = bm_anl, k = 12, pause = FALSE)</code></pre>
-<p><img src="bm_markdown_files/figure-html/bibliometric%20plots-1.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/bibliometric%20plots-2.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/bibliometric%20plots-3.png" width="1600px" height="1600px" /></p>
 <pre><code>## Warning: Removed 1 rows containing missing values (position_stack).</code></pre>
 <pre><code>## Warning: Removed 1 rows containing missing values (geom_path).</code></pre>
-<p><img src="bm_markdown_files/figure-html/bibliometric%20plots-4.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/bibliometric%20plots-5.png" width="1600px" height="1600px" /></p>
+<p><img src="bm_markdown_files/figure-html/bibliometric%20plots-1.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/bibliometric%20plots-2.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/bibliometric%20plots-3.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/bibliometric%20plots-4.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/bibliometric%20plots-5.png" width="1600px" height="1600px" /></p>
 <pre class="r"><code># Obtaining most cited references by article and author 
 # bm$CR[3] # Used to define the appropriated separatord fiels
 bm_cit_art &lt;- citations(M = bm, field = &quot;article&quot;, sep = &quot;; &quot;)
@@ -802,93 +801,908 @@ sort(Matrix::colSums(bm_cma_dsc), decreasing = TRUE)[1:12] # Printing the 12 mos
 <pre class="r"><code>## Coupling articles
 bm_bcp_art &lt;- biblioNetwork(M = bm, analysis = &quot;coupling&quot;, network = &quot;references&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcp_art, normalize = &quot;salton&quot;,
+networkPlot(NetMatrix = bm_bcp_art, normalize = &quot;salton&quot;,
             weighted = TRUE, n = 20, Title = &quot;Article&#39;s coupuling&quot;,
             labelsize = 0.5, 
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE, edgesize = 5) </code></pre>
 <p><img src="bm_markdown_files/figure-html/coupling-1.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH c843d86 UNW- 21 183 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
+## | weight (e/n), num (e/n), width (e/n)
+## + edges from c843d86 (vertex names):
+##  [1] MSISKA B, 2018--HANELT A, 2017     MSISKA B, 2018--LI W, 2017        
+##  [3] MSISKA B, 2018--NAMBISAN S, 2017   MSISKA B, 2018--SVAHN F, 2017-1   
+##  [5] MSISKA B, 2018--SALDANHA TJV, 2017 MSISKA B, 2018--HUANG J, 2017     
+##  [7] MSISKA B, 2018--CHEN JKC, 2017     MSISKA B, 2018--ABRELL T, 2016    
+##  [9] MSISKA B, 2018--SORENSEN C, 2015   MSISKA B, 2018--NYLEN D, 2015     
+## [11] MSISKA B, 2018--FICHMAN RG, 2014   MSISKA B, 2018--NAMBISAN S, 2013  
+## [13] MSISKA B, 2018--YOO Y, 2013        MSISKA B, 2018--YOO Y, 2012       
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 3, mod: 0.068
+## + groups:
+##   $`1`
+##   [1] &quot;TUMBAS P, 2014&quot;    &quot;YOO Y, 2013&quot;       &quot;YOO Y, 2012&quot;      
+##   [4] &quot;BOUDREAU KJ, 2012&quot; &quot;LEE J, 2012&quot;       &quot;BARRETT M, 2012&quot;  
+##   [7] &quot;YOO Y, 2010&quot;      
+##   
+##   $`2`
+##    [1] &quot;MSISKA B, 2018&quot;   &quot;NAMBISAN S, 2017&quot; &quot;SVAHN F, 2017-1&quot; 
+##    [4] &quot;HUANG J, 2017&quot;    &quot;CHEN JKC, 2017&quot;   &quot;ABRELL T, 2016&quot;  
+##    [7] &quot;SORENSEN C, 2015&quot; &quot;NYLEN D, 2015&quot;    &quot;NAMBISAN S, 2013&quot;
+##   [10] &quot;RAO B, 2011&quot;     
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                vertex cluster btw_centrality
+## 13     TUMBAS P, 2014       1     16.9964286
+## 15        YOO Y, 2013       1      0.2500000
+## 16        YOO Y, 2012       1      0.2000000
+## 17  BOUDREAU KJ, 2012       1      6.6337413
+## 18        LEE J, 2012       1     16.1146187
+## 19    BARRETT M, 2012       1     19.8959457
+## 21        YOO Y, 2010       1      2.6102564
+## 1      MSISKA B, 2018       2      2.1899684
+## 4    NAMBISAN S, 2017       2      2.7300366
+## 5     SVAHN F, 2017-1       2      0.3333333
+## 7       HUANG J, 2017       2      0.0000000
+## 8      CHEN JKC, 2017       2     11.5641026
+## 9      ABRELL T, 2016       2      0.0000000
+## 10   SORENSEN C, 2015       2      2.1250000
+## 11      NYLEN D, 2015       2      4.2151515
+## 14   NAMBISAN S, 2013       2      0.2500000
+## 20        RAO B, 2011       2     22.5001082
+## 2      HANELT A, 2017       3      0.7833333
+## 3          LI W, 2017       3     25.8892108
+## 6  SALDANHA TJV, 2017       3     12.8517399
+## 12   FICHMAN RG, 2014       3      3.3242424</code></pre>
 <pre class="r"><code>## Coupuling authors
 bm_bcp_aut &lt;- biblioNetwork(M = bm, analysis = &quot;coupling&quot;, network = &quot;authors&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcp_aut, normalize = &quot;salton&quot;,
+networkPlot(NetMatrix = bm_bcp_aut, normalize = &quot;salton&quot;,
             weighted = TRUE, n = 20, Title = &quot;Author&#39;s coupuling&quot;,
             labelsize = 0.5, 
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE)</code></pre>
 <p><img src="bm_markdown_files/figure-html/coupling-2.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH c9393be UNW- 20 190 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
+## | weight (e/n), num (e/n), width (e/n)
+## + edges from c9393be (vertex names):
+##  [1] HANELT A--BUSSE S       HANELT A--KOLBE LM     
+##  [3] HANELT A--VOM BROCKE J  HANELT A--NAMBISAN S   
+##  [5] HANELT A--LYYTINEN K    HANELT A--MAJCHRZAK A  
+##  [7] HANELT A--SVAHN F       HANELT A--MATHIASSEN L 
+##  [9] HANELT A--LINDGREN R    HANELT A--HENFRIDSSON O
+## [11] HANELT A--ABRELL T      HANELT A--PIHLAJAMAA M 
+## [13] HANELT A--KANTO L       HANELT A--UEBERNICKEL F
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 5, mod: 0.44
+## + groups:
+##   $`1`
+##   [1] &quot;NAMBISAN S&quot;    &quot;LYYTINEN K&quot;    &quot;MAJCHRZAK A&quot;   &quot;HENFRIDSSON O&quot;
+##   [5] &quot;YOO Y&quot;         &quot;BOLAND RJ&quot;    
+##   
+##   $`2`
+##   [1] &quot;FICHMAN RG&quot;    &quot;DOS SANTOS BL&quot; &quot;ZHENG ZE&quot;     
+##   
+##   $`3`
+##   [1] &quot;HANELT A&quot; &quot;BUSSE S&quot;  &quot;KOLBE LM&quot;
+##   
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##           vertex cluster btw_centrality
+## 5     NAMBISAN S       1        1.00000
+## 6     LYYTINEN K       1        0.00000
+## 7    MAJCHRZAK A       1        1.00000
+## 11 HENFRIDSSON O       1        0.00000
+## 16         YOO Y       1        0.00000
+## 20     BOLAND RJ       1        1.00000
+## 17    FICHMAN RG       2       10.33333
+## 18 DOS SANTOS BL       2       10.33333
+## 19      ZHENG ZE       2       10.33333
+## 1       HANELT A       3       14.25000
+## 2        BUSSE S       3       14.25000
+## 3       KOLBE LM       3       14.25000
+## 8        SVAHN F       4        0.00000
+## 9   MATHIASSEN L       4        0.00000
+## 10    LINDGREN R       4        0.00000
+## 4   VOM BROCKE J       5        3.80000
+## 12      ABRELL T       5        3.80000
+## 13  PIHLAJAMAA M       5        3.80000
+## 14       KANTO L       5        3.80000
+## 15 UEBERNICKEL F       5        3.80000</code></pre>
 <pre class="r"><code>## Coupuling journals
 bm_bcp_jou &lt;- biblioNetwork(M = bm, analysis = &quot;coupling&quot;, network = &quot;sources&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcp_jou, normalize = &quot;salton&quot;,
+networkPlot(NetMatrix = bm_bcp_jou, normalize = &quot;salton&quot;,
             weighted = TRUE, n = 20, Title = &quot;Journal&#39;s coupuling&quot;,
             labelsize = 0.5, 
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE)</code></pre>
 <p><img src="bm_markdown_files/figure-html/coupling-3.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH ca25eb5 UNW- 22 137 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
+## | weight (e/n), num (e/n), width (e/n)
+## + edges from ca25eb5 (vertex names):
+## [1] INFORMATION TECHNOLOGY FOR DEVELOPMENT--BUSINESS HORIZONS                      
+## [2] INFORMATION TECHNOLOGY FOR DEVELOPMENT--INFORMATION SYSTEMS JOURNAL            
+## [3] INFORMATION TECHNOLOGY FOR DEVELOPMENT--FRONTIERS OF BUSINESS RESEARCH IN CHINA
+## [4] INFORMATION TECHNOLOGY FOR DEVELOPMENT--MIS QUARTERLY                          
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 2, mod: 0.035
+## + groups:
+##   $`1`
+##   [1] &quot;LAND USE POLICY&quot;                                                           
+##   [2] &quot;HCI IN BUSINESS, GOVERNMENT, AND ORGANIZATIONS: ECOMMERCE AND   INNOVATION&quot;
+##   [3] &quot;INTED2015&quot;                                                                 
+##   [4] &quot;ICERI2014&quot;                                                                 
+##   [5] &quot;SERVICE SUPPLY CHAIN SYSTEMS: A SYSTEMS ENGINEERING APPROACH&quot;              
+##   
+##   $`2`
+##    [1] &quot;INFORMATION TECHNOLOGY FOR DEVELOPMENT&quot;                                                                    
+##    [2] &quot;BUSINESS HORIZONS&quot;                                                                                         
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                                                                                                        vertex
+## 9                                                                                             LAND USE POLICY
+## 11                                 HCI IN BUSINESS, GOVERNMENT, AND ORGANIZATIONS: ECOMMERCE AND   INNOVATION
+## 15                                                                                                  INTED2015
+## 16                                                                                                  ICERI2014
+## 22                                               SERVICE SUPPLY CHAIN SYSTEMS: A SYSTEMS ENGINEERING APPROACH
+## 1                                                                      INFORMATION TECHNOLOGY FOR DEVELOPMENT
+## 2                                                                                           BUSINESS HORIZONS
+## 3                                                                                 INFORMATION SYSTEMS JOURNAL
+## 4                                                                                             RESEARCH POLICY
+## 5                                                                     FRONTIERS OF BUSINESS RESEARCH IN CHINA
+## 6                                                                                               MIS QUARTERLY
+## 7               2017 PORTLAND INTERNATIONAL CONFERENCE ON MANAGEMENT OF ENGINEERING AND   TECHNOLOGY (PICMET)
+## 8                                                                                              SCIENTOMETRICS
+## 10                                                                                 INFORMATION \\&amp; MANAGEMENT
+## 12                                                                            JOURNAL OF KNOWLEDGE MANAGEMENT
+## 13                                                                   JOURNAL OF STRATEGIC INFORMATION SYSTEMS
+## 14                                       2015 48TH HAWAII INTERNATIONAL CONFERENCE ON SYSTEM SCIENCES (HICSS)
+## 17                                                         JOURNAL OF THE ASSOCIATION FOR INFORMATION SYSTEMS
+## 18                                                                                       ORGANIZATION SCIENCE
+## 19                  2011 PROCEEDINGS OF PICMET 11: TECHNOLOGY MANAGEMENT IN THE ENERGY-SMART   WORLD (PICMET)
+## 20                                                                               INFORMATION SYSTEMS RESEARCH
+## 21 RESHAPING ACCOUNTING AND MANAGEMENT CONTROL SYSTEMS: NEW OPPORTUNITIES   FROM BUSINESS INFORMATION SYSTEMS
+##    cluster btw_centrality
+## 9        1     24.9769502
+## 11       1      7.5719697
+## 15       1     12.0455882
+## 16       1     15.4486928
+## 22       1     20.2673224
+## 1        2      1.5588235
+## 2        2     24.6251867
+## 3        2      5.5055556
+## 4        2      1.3678571
+## 5        2     25.4207198
+## 6        2      0.0000000
+## 7        2     11.2270563
+## 8        2      6.8143218
+## 10       2      0.1421569
+## 12       2     19.4516807
+## 13       2     13.0425813
+## 14       2      4.8159091
+## 17       2      1.9333333
+## 18       2      0.0000000
+## 19       2      1.2833333
+## 20       2      8.3607631
+## 21       2      3.7916667</code></pre>
 <pre class="r"><code>## Coupuling countries
 bm_bcp_cou &lt;- biblioNetwork(M = bm, analysis = &quot;coupling&quot;, network = &quot;countries&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcp_cou, normalize = &quot;salton&quot;,
+networkPlot(NetMatrix = bm_bcp_cou, normalize = &quot;salton&quot;,
             weighted = TRUE, n = 20, Title = &quot;Country&#39;s coupuling&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE, labelsize = 0.5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/coupling-4.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH cb2df94 UNW- 22 162 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
+## | weight (e/n), num (e/n), width (e/n)
+## + edges from cb2df94 (vertex names):
+##  [1] USA--AUSTRALIA     USA--ENGLAND       USA--AUSTRIA      
+##  [4] USA--GERMANY       USA--SWITZERLAND   USA--CHINA        
+##  [7] USA--NORWAY        USA--SPAIN         USA--ITALY        
+## [10] USA--POLAND        USA--NETHERLANDS   USA--DENMARK      
+## [13] USA--LIECHTENSTEIN USA--SWEDEN        USA--TAIWAN       
+## [16] USA--SINGAPORE     USA--FINLAND       USA--ROMANIA      
+## [19] USA--SERBIA       
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 4, mod: 0.13
+## + groups:
+##   $`1`
+##    [1] &quot;USA&quot;         &quot;ENGLAND&quot;     &quot;GERMANY&quot;     &quot;CHINA&quot;      
+##    [5] &quot;NORWAY&quot;      &quot;SPAIN&quot;       &quot;ITALY&quot;       &quot;NETHERLANDS&quot;
+##    [9] &quot;SWEDEN&quot;      &quot;TAIWAN&quot;     
+##   
+##   $`2`
+##   [1] &quot;AUSTRIA&quot; &quot;POLAND&quot;  &quot;DENMARK&quot;
+##   
+##   $`3`
+##   [1] &quot;AUSTRALIA&quot;     &quot;SWITZERLAND&quot;   &quot;LIECHTENSTEIN&quot; &quot;SINGAPORE&quot;    
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##           vertex cluster btw_centrality
+## 1            USA       1      0.8611111
+## 3        ENGLAND       1      0.0000000
+## 5        GERMANY       1     14.8874459
+## 7          CHINA       1      3.2000000
+## 8         NORWAY       1     20.4238095
+## 11         SPAIN       1     31.2357143
+## 12         ITALY       1      0.9857143
+## 14   NETHERLANDS       1     31.3056277
+## 17        SWEDEN       1      0.0000000
+## 18        TAIWAN       1      0.7000000
+## 4        AUSTRIA       2     11.0523810
+## 13        POLAND       2      7.4792208
+## 15       DENMARK       2      0.0000000
+## 2      AUSTRALIA       3     17.3087302
+## 6    SWITZERLAND       3      0.0000000
+## 16 LIECHTENSTEIN       3      2.4921356
+## 19     SINGAPORE       3     20.0049062
+## 20       FINLAND       3     14.9592352
+## 21       ROMANIA       3     26.8976190
+## 22        SERBIA       3      5.1666667
+## 9          CHILE       4     15.4093074
+## 10        MEXICO       4     15.4093074</code></pre>
 <pre class="r"><code>## Co-citation articles
 bm_bcc_art &lt;- biblioNetwork(M = bm, analysis = &quot;co-citation&quot;, network = &quot;references&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcc_art, n = 30, Title = &quot;Article&#39;s co-citation network&quot;,
+networkPlot(NetMatrix = bm_bcc_art, n = 30, Title = &quot;Article&#39;s co-citation network&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE, 
             labelsize = 0.5, edgesize = 2)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-citation-1.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH cedbd1f UN-- 30 317 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
+## | (e/n), width (e/n)
+## + edges from cedbd1f (vertex names):
+##  [1] YOO Y 2012-1--YOO YJ 2010-1        YOO Y 2012-1--ZITTRAIN JL 2006    
+##  [3] YOO Y 2012-1--COHEN WM 1990        YOO Y 2012-1--EISENHARDT KM 1989  
+##  [5] YOO Y 2012-1--FICHMAN RG 2014      YOO Y 2012-1--MELVILLE N 2004     
+##  [7] YOO Y 2012-1--NAMBISAN S 2013      YOO Y 2012-1--TILSON D 2010-1     
+##  [9] YOO Y 2012-1--YOO Y 2010-1         YOO Y 2012-1--SHAPIRO C 1999      
+## [11] YOO Y 2012-1--BOLAND RJ 2007       YOO Y 2012-1--BAILEY DE 2012      
+## [13] YOO Y 2012-1--BOUDREAU K 2010      YOO Y 2012-1--HENFRIDSSON O 2014-1
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 5, mod: 0.028
+## + groups:
+##   $`1`
+##   [1] &quot;MELVILLE N 2004&quot; &quot;ROMER PM 1990&quot;  
+##   
+##   $`2`
+##    [1] &quot;ZITTRAIN JL 2006&quot;     &quot;BOLAND RJ 2007&quot;       &quot;BAILEY DE 2012&quot;      
+##    [4] &quot;BOUDREAU K 2010&quot;      &quot;FARAJ S 2011-1&quot;       &quot;HENFRIDSSON O 2014-1&quot;
+##    [7] &quot;LEE J 2012&quot;           &quot;ANDERSON P 1990&quot;      &quot;BOUDREAU KJ 2012&quot;    
+##   [10] &quot;LUCAS HC 2009&quot;        &quot;TRIPSAS M 2009&quot;       &quot;YOO Y 2013&quot;          
+##   [13] &quot;TUSHMAN ML 1986&quot;      &quot;VON HIPPEL ERIC 2005&quot; &quot;YOO Y 2010-2&quot;        
+##   
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                   vertex cluster btw_centrality
+## 7        MELVILLE N 2004       1      4.0438375
+## 11         ROMER PM 1990       1      0.0000000
+## 3       ZITTRAIN JL 2006       2      1.8088560
+## 13        BOLAND RJ 2007       2      5.5551985
+## 14        BAILEY DE 2012       2      2.7956541
+## 15       BOUDREAU K 2010       2      1.4096290
+## 17        FARAJ S 2011-1       2      1.6541667
+## 18  HENFRIDSSON O 2014-1       2      2.5641388
+## 19            LEE J 2012       2      1.8088560
+## 20       ANDERSON P 1990       2      3.3782144
+## 21      BOUDREAU KJ 2012       2      2.7956541
+## 23         LUCAS HC 2009       2      0.6152689
+## 24        TRIPSAS M 2009       2      4.0454690
+## 25            YOO Y 2013       2      1.3169092
+## 27       TUSHMAN ML 1986       2      2.4644188
+## 28  VON HIPPEL ERIC 2005       2      7.7894088
+## 29          YOO Y 2010-2       2      0.0000000
+## 1           YOO Y 2012-1       3      8.6019014
+## 2          YOO YJ 2010-1       3     14.4449643
+## 5     EISENHARDT KM 1989       3      4.3036759
+## 8        NAMBISAN S 2013       3      7.8485284
+## 9        TILSON D 2010-1       3     14.4449643
+## 10          YOO Y 2010-1       3      5.7851217
+## 4          COHEN WM 1990       4      0.0000000
+## 6        FICHMAN RG 2014       4      1.1035465
+## 12        SHAPIRO C 1999       5      2.6594182
+## 16 CHESBROUGH H. W. 2003       5      2.8555743
+## 22      BOUDREAU KJ 2009       5      3.8446740
+## 26      EISENMANN T 2006       5      4.6430950
+## 30       ZAMMUTO RF 2007       5      3.4188563</code></pre>
 <pre class="r"><code>## Co-citation authors
 bm_bcc_aut &lt;- biblioNetwork(M = bm, analysis = &quot;co-citation&quot;, network = &quot;authors&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcc_aut, n = 20, Title = &quot;Author&#39;s co-citation network&quot;,
+networkPlot(NetMatrix = bm_bcc_aut, n = 20, Title = &quot;Author&#39;s co-citation network&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE, 
             labelsize = 0.5, edgesize = 2)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-citation-2.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH d0c5ce2 UN-- 20 178 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
+## | (e/n), width (e/n)
+## + edges from d0c5ce2 (vertex names):
+##  [1] NAMBISAN S--ANONYMOUS      NAMBISAN S--FARAJ S       
+##  [3] NAMBISAN S--GAWER A        NAMBISAN S--HENFRIDSSON O 
+##  [5] NAMBISAN S--YOO Y          NAMBISAN S--YOO YJ        
+##  [7] NAMBISAN S--BRYNJOLFSSON E NAMBISAN S--EISENHARDT KM 
+##  [9] NAMBISAN S--FICHMAN RG     NAMBISAN S--LUCAS HC      
+## [11] NAMBISAN S--TILSON D       NAMBISAN S--LEE J         
+## [13] NAMBISAN S--BOLAND RJ      NAMBISAN S--BALDWIN C Y   
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 20, mod: 0
+## + groups:
+##   $`1`
+##   [1] &quot;NAMBISAN S&quot;
+##   
+##   $`2`
+##   [1] &quot;ANONYMOUS&quot;
+##   
+##   $`3`
+##   [1] &quot;FARAJ S&quot;
+##   
+##   $`4`
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##             vertex cluster btw_centrality
+## 1       NAMBISAN S       1      1.0176471
+## 2        ANONYMOUS       2      0.1732026
+## 3          FARAJ S       3      0.1732026
+## 4          GAWER A       4      0.1732026
+## 5    HENFRIDSSON O       5      1.0732026
+## 6            YOO Y       6      0.1732026
+## 7           YOO YJ       7      1.0732026
+## 8   BRYNJOLFSSON E       8      1.0732026
+## 9    EISENHARDT KM       9      0.9555556
+## 10      FICHMAN RG      10      1.0732026
+## 11        LUCAS HC      11      0.1732026
+## 12        TILSON D      12      0.1732026
+## 13           LEE J      13      0.9555556
+## 14       BOLAND RJ      14      0.1732026
+## 15     BALDWIN C Y      15      0.1732026
+## 16     BOUDREAU KJ      16      1.0732026
+## 17  CHESBROUGH H W      17      0.9555556
+## 18     MAJCHRZAK A      18      0.1732026
+## 19   ORLIKOWSKI WJ      19      1.0176471
+## 20 VON HIPPEL ERIC      20      0.1732026</code></pre>
 <pre class="r"><code>## Co-citation journals
 bm_bcc_jou &lt;- biblioNetwork(M = bm, analysis = &quot;co-citation&quot;, network = &quot;sources&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcc_jou, n = 20, Title = &quot;Author&#39;s co-citation network&quot;,
+networkPlot(NetMatrix = bm_bcc_jou, n = 20, Title = &quot;Author&#39;s co-citation network&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE, 
             labelsize = 0.5, edgesize = 2)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-citation-3.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH d1fbcc4 UN-- 20 186 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
+## | (e/n), width (e/n)
+## + edges from d1fbcc4 (vertex names):
+##  [1] COMMUN ACM--HARVARD BUS REV      COMMUN ACM--MIS QUART           
+##  [3] COMMUN ACM--INFORM SYST J        COMMUN ACM--INFORM SYST RES     
+##  [5] COMMUN ACM--ORGAN SCI            COMMUN ACM--RES POLICY          
+##  [7] COMMUN ACM--MANAGE SCI           COMMUN ACM--AM ECON REV         
+##  [9] COMMUN ACM--ADMIN SCI QUART      COMMUN ACM--J STRATEGIC INF SYST
+## [11] COMMUN ACM--STRATEGIC MANAGE J   COMMUN ACM--ACAD MANAGE J       
+## [13] COMMUN ACM--J PROD INNOVAT MANAG COMMUN ACM--ACAD MANAGE REV     
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 20, mod: 0
+## + groups:
+##   $`1`
+##   [1] &quot;COMMUN ACM&quot;
+##   
+##   $`2`
+##   [1] &quot;HARVARD BUS REV&quot;
+##   
+##   $`3`
+##   [1] &quot;MIS QUART&quot;
+##   
+##   $`4`
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                  vertex cluster btw_centrality
+## 1            COMMUN ACM       1      0.2352941
+## 2       HARVARD BUS REV       2      0.2352941
+## 3             MIS QUART       3      0.2352941
+## 4         INFORM SYST J       4      0.1176471
+## 5       INFORM SYST RES       5      0.2352941
+## 6             ORGAN SCI       6      0.2352941
+## 7            RES POLICY       7      0.2352941
+## 8            MANAGE SCI       8      0.2352941
+## 9           AM ECON REV       9      0.2352941
+## 10      ADMIN SCI QUART      10      0.2352941
+## 11 J STRATEGIC INF SYST      11      0.2352941
+## 12   STRATEGIC MANAGE J      12      0.2352941
+## 13        ACAD MANAGE J      13      0.2352941
+## 14 J PROD INNOVAT MANAG      14      0.1176471
+## 15      ACAD MANAGE REV      15      0.2352941
+## 16     J ASSOC INF SYST      16      0.1176471
+## 17              SCIENCE      17      0.1176471
+## 18             Q J ECON      18      0.1176471
+## 19          J MARKETING      19      0.1176471
+## 20 MIT SLOAN MANAGE REV      20      0.2352941</code></pre>
 <pre class="r"><code># Author&#39;s collaboration
 bm_bcl_aut &lt;- biblioNetwork(M = bm, analysis = &quot;collaboration&quot;, network = &quot;authors&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcl_aut, n = dim(bm_bcl_aut)[1], Title = &quot;Author&#39;s collaboration&quot;,
+networkPlot(NetMatrix = bm_bcl_aut, n = dim(bm_bcl_aut)[1], Title = &quot;Author&#39;s collaboration&quot;,
             type = &quot;kamada&quot;, size = TRUE, labelsize = 0.5, edgesize = 2,
             remove.multiple = TRUE, remove.isolates = TRUE, degree = 5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/collaborations-1.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH d3036bc UN-- 99 237 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
+## | (e/n), width (e/n)
+## + edges from d3036bc (vertex names):
+##  [1] KESNER A  --LAFOREST R   KESNER A  --OTAZO R     
+##  [3] KESNER A  --JENNIFER K   KESNER A  --PAN T       
+##  [5] LAFOREST R--OTAZO R      LAFOREST R--JENNIFER K  
+##  [7] LAFOREST R--PAN T        OTAZO R   --JENNIFER K  
+##  [9] OTAZO R   --PAN T        JENNIFER K--PAN T       
+## [11] HERRMANN M--BOEHME P     HERRMANN M--MONDRITZKI T
+## [13] HERRMANN M--EHLERS JP    HERRMANN M--KAVADIAS S  
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 17, mod: 0.91
+## + groups:
+##   $`1`
+##   [1] &quot;TUMBAS S&quot;      &quot;VOM BROCKE J&quot;  &quot;ABRELL T&quot;      &quot;PIHLAJAMAA M&quot; 
+##   [5] &quot;KANTO L&quot;       &quot;UEBERNICKEL F&quot; &quot;TUMBAS P&quot;      &quot;MATKOVIC P&quot;   
+##   [9] &quot;SAKAL M&quot;      
+##   
+##   $`2`
+##   [1] &quot;BERENTE N&quot;     &quot;NAMBISAN S&quot;    &quot;LYYTINEN K&quot;    &quot;MAJCHRZAK A&quot;  
+##   [5] &quot;HENFRIDSSON O&quot; &quot;YOO Y&quot;        
+##   
+##   $`3`
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                     vertex cluster btw_centrality
+## 24                TUMBAS S       1           33.0
+## 26            VOM BROCKE J       1           40.0
+## 47                ABRELL T       1            0.0
+## 48            PIHLAJAMAA M       1            0.0
+## 49                 KANTO L       1            0.0
+## 50           UEBERNICKEL F       1            0.0
+## 71                TUMBAS P       1            0.0
+## 72              MATKOVIC P       1            0.0
+## 73                 SAKAL M       1            0.0
+## 25               BERENTE N       2           45.0
+## 27              NAMBISAN S       2            0.0
+## 28              LYYTINEN K       2           22.0
+## 29             MAJCHRZAK A       2            0.5
+## 33           HENFRIDSSON O       2            0.0
+## 70                   YOO Y       2           10.5
+## 51                  ARTS K       3           42.0
+## 52               IORIS AAR       3            0.0
+## 53             MACLEOD CJA       3            0.0
+## 54                   HAN X       3            0.0
+## 55              SRIPADA SG       3            0.0
+## 56               BRAGA JRZ       3            0.0
+## 57         VAN DER   WAL R       3            0.0
+## 58           VAN DER WAL R       4           42.0
+## 59                 NEWEY S       4            0.0
+## 60              DAVIDSON P       4            0.0
+## 61                 NAZIR S       4            0.0
+## 62             FAIRHURST G       4            0.0
+## 63            VERDICCHIO F       4            0.0
+## 64               IRVINE RJ       4            0.0
+## 1                 KESNER A       5            0.0
+## 2               LAFOREST R       5            0.0
+## 3                  OTAZO R       5            0.0
+## 4               JENNIFER K       5            0.0
+## 5                    PAN T       5            0.0
+## 34             NICOLETE PC       6            0.0
+## 35     SOMMER BILESSIMO SM       6            0.0
+## 36 DA   SILVA CRISTIANO MA       6            0.0
+## 37     SCHARDOSIM SIMAO JP       6            0.0
+## 38           DA   SILVA JB       6            0.0
+## 30                 SVAHN F       7            0.0
+## 31            MATHIASSEN L       7            0.0
+## 32              LINDGREN R       7            0.0
+## 39            ZAVOLOKINA L       8            0.0
+## 40                DOLATA M       8            0.0
+## 41               SCHWABE G       8            0.0
+## 82                KRUER RM       9            0.0
+## 83               HARRIS LH       9            0.0
+## 84               GOODWIN H       9            0.0
+## 85             KORNBLUTH J       9            0.0
+## 86               THOMAS KP       9            0.0
+## 87               SLATER LA       9            0.0
+## 88                 HAUT ER       9            0.0
+## 94                 IKEBE Y      10            0.0
+## 95                  CAI DS      10            0.0
+## 96              MIYAZAKI Y      10            0.0
+## 97                  ASAI N      10            0.0
+## 98               KIKUCHI Y      10            0.0
+## 99        ASHOUR-ABDALLA M      10            0.0
+## 6               HERRMANN M      11            0.0
+## 7                 BOEHME P      11            0.0
+## 8             MONDRITZKI T      11            0.0
+## 9                EHLERS JP      11            0.0
+## 10              KAVADIAS S      11            0.0
+## 11               TRUEBEL H      11            0.0
+## 12                DREYER M      12            0.0
+## 13              CHEFNEUX L      12            0.0
+## 14              GOLDBERG A      12            0.0
+## 15          VON HEIMBURG J      12            0.0
+## 16            PATRIGNANI N      12            0.0
+## 17             SCHOFIELD M      12            0.0
+## 18              SHILLING C      12            0.0
+## 65           MONTGOMERY AP      13            0.0
+## 66              HAYWARD DV      13            0.0
+## 67                  DUNN W      13            0.0
+## 68             CARBONARO M      13            0.0
+## 69              AMRHEIN CG      13            0.0
+## 89                  KUO CC      14            0.0
+## 90                 TSAI MH      14            0.0
+## 91                  LAI CL      14            0.0
+## 92                SHIAO YH      14            0.0
+## 93                 SHEN CY      14            0.0
+## 42           BRUNSWICKER S      15            0.0
+## 43                MATEI SA      15            0.0
+## 44               ZENTNER M      15            0.0
+## 45               ZENTNER L      15            0.0
+## 46               KLIMECK G      15            0.0
+## 74              CATALANI C      16            0.0
+## 75                 GREEN E      16            0.0
+## 76                 OWITI P      16            0.0
+## 77                  KENY A      16            0.0
+## 78                 DIERO L      16            0.0
+## 79                 YEUNG A      16            0.0
+## 80             ISRAELSKI D      16            0.0
+## 81              BIONDICH P      16            0.0
+## 19                 HORST J      17            0.0
+## 20                 WELTY N      17            0.0
+## 21            SCHNOBRICH M      17            0.0
+## 22                 SINHA P      17            0.0
+## 23             KULKARNI PR      17            0.0</code></pre>
 <pre class="r"><code># University&#39;s collaboration
 bm_bcl_uni &lt;- biblioNetwork(M = bm, analysis = &quot;collaboration&quot;, network = &quot;universities&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcl_uni, n = dim(bm_bcl_uni)[1], Title = &quot;University&#39;s collaboration&quot;,
+networkPlot(NetMatrix = bm_bcl_uni, n = dim(bm_bcl_uni)[1], Title = &quot;University&#39;s collaboration&quot;,
             type = &quot;kamada&quot;, size = TRUE, labelsize = 0.5, edgesize = 2,
             remove.multiple = TRUE, remove.isolates = TRUE, degree = 5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/collaborations-2.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH d366838 UN-- 40 74 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
+## | (e/n), width (e/n)
+## + edges from d366838 (vertex names):
+## [1] MEM SLOAN KETTERING CANC CTR--WASHINGTON UNIV                
+## [2] MEM SLOAN KETTERING CANC CTR--NEW YORK UNIV LAGONE HLTH      
+## [3] MEM SLOAN KETTERING CANC CTR--UNIV COLORADO                  
+## [4] MEM SLOAN KETTERING CANC CTR--UNIV TEXAS MD ANDERSON CANC CTR
+## [5] WASHINGTON UNIV             --NEW YORK UNIV LAGONE HLTH      
+## [6] WASHINGTON UNIV             --UNIV COLORADO                  
+## [7] WASHINGTON UNIV             --UNIV TEXAS MD ANDERSON CANC CTR
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 6, mod: 0.83
+## + groups:
+##   $`1`
+##   [1] &quot;UNIV CAMBRIDGE&quot;       &quot;UNIV WARWICK&quot;         &quot;UNIV NOTTINGHAM&quot;     
+##   [4] &quot;WAGENINGEN UNIV&quot;      &quot;UNIV FED MATO GROSSO&quot; &quot;UNIV EDINBURGH&quot;      
+##   [7] &quot;JAMES HUTTON INST&quot;    &quot;UNIV ABERDEEN&quot;        &quot;UNIV LONDON&quot;         
+##   
+##   $`2`
+##    [1] &quot;UNIV OSLO&quot;                 &quot;UNIV LIECHTENSTEIN&quot;       
+##    [3] &quot;UNIV GEORGIA&quot;              &quot;UNIV WISCONSIN&quot;           
+##    [5] &quot;CASE WESTERN RESERVE UNIV&quot; &quot;UNIV GOTHENBURG&quot;          
+##    [7] &quot;GEORGIA STATE UNIV&quot;        &quot;UNIV BORAS&quot;               
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                                                vertex cluster
+## 6                                      UNIV CAMBRIDGE       1
+## 20                                       UNIV WARWICK       1
+## 26                                    UNIV NOTTINGHAM       1
+## 27                                    WAGENINGEN UNIV       1
+## 28                               UNIV FED MATO GROSSO       1
+## 29                                     UNIV EDINBURGH       1
+## 30                                  JAMES HUTTON INST       1
+## 31                                      UNIV ABERDEEN       1
+## 40                                        UNIV LONDON       1
+## 7                                           UNIV OSLO       2
+## 18                                 UNIV LIECHTENSTEIN       2
+## 19                                       UNIV GEORGIA       2
+## 21                                     UNIV WISCONSIN       2
+## 22                          CASE WESTERN RESERVE UNIV       2
+## 23                                    UNIV GOTHENBURG       2
+## 24                                 GEORGIA STATE UNIV       2
+## 25                                         UNIV BORAS       2
+## 32                                        TEMPLE UNIV       2
+## 33                                      UNIV SO CALIF       2
+## 34 INNOVAT SUPPORT EMERGENCY DIS AND DISASTER INSTEDD       3
+## 35                                UNIV CALIF BERKELEY       3
+## 36                                          DUKE UNIV       3
+## 37        ACAD MODEL PREVENT AND TREATMENT HIV AMPATH       3
+## 38                                       INDIANA UNIV       3
+## 39                                      STANFORD UNIV       3
+## 1                        MEM SLOAN KETTERING CANC CTR       4
+## 2                                     WASHINGTON UNIV       4
+## 3                           NEW YORK UNIV LAGONE HLTH       4
+## 4                                       UNIV COLORADO       4
+## 5                     UNIV TEXAS MD ANDERSON CANC CTR       4
+## 8                                   EADA BUSINESS SCH       5
+## 9                                            UNIV VIC       5
+## 10                                 EGADE BUSINESS SCH       5
+## 11                                    UNIV DESARROLLO       5
+## 12                                   OUTLIER VENTURES       5
+## 13                             UNIV SVIZZERA ITALIANA       6
+## 14                                GDANSK UNIV TECHNOL       6
+## 15                                  DANUBE UNIV KREMS       6
+## 16                                      UNIV NACL SUR       6
+## 17                 INST COMP SCI AND ENGN UNS CONICET       6
+##    btw_centrality
+## 6            15.0
+## 20            0.0
+## 26            7.0
+## 27            0.0
+## 28            6.0
+## 29            0.0
+## 30            0.0
+## 31            6.0
+## 40           12.0
+## 7             0.0
+## 18            0.0
+## 19            9.5
+## 21            0.0
+## 22           18.0
+## 23            0.0
+## 24           14.0
+## 25            0.0
+## 32            2.5
+## 33            0.0
+## 34            0.0
+## 35            0.0
+## 36            0.0
+## 37            0.0
+## 38            0.0
+## 39            0.0
+## 1             0.0
+## 2             0.0
+## 3             0.0
+## 4             0.0
+## 5             0.0
+## 8             0.0
+## 9             0.0
+## 10            0.0
+## 11            0.0
+## 12            0.0
+## 13            0.0
+## 14            0.0
+## 15            0.0
+## 16            0.0
+## 17            0.0</code></pre>
 <pre class="r"><code># Country&#39;s collaboration
 bm_bcl_cou &lt;- biblioNetwork(M = bm, analysis = &quot;collaboration&quot;, network = &quot;countries&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_bcl_cou, n = dim(bm_bcl_cou)[1], Title = &quot;University&#39;s collaboration&quot;,
+networkPlot(NetMatrix = bm_bcl_cou, n = dim(bm_bcl_cou)[1], Title = &quot;University&#39;s collaboration&quot;,
             type = &quot;kamada&quot;, size = TRUE, labelsize = 0.5, edgesize = 2,
             remove.multiple = TRUE, remove.isolates = TRUE)</code></pre>
 <p><img src="bm_markdown_files/figure-html/collaborations-3.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH d3d543e UN-- 26 53 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
+## | (e/n), width (e/n)
+## + edges from d3d543e (vertex names):
+##  [1] CANADA   --SWEDEN        USA      --ENGLAND      
+##  [3] USA      --GERMANY       USA      --SWITZERLAND  
+##  [5] USA      --CHINA         USA      --NORWAY       
+##  [7] USA      --SPAIN         USA      --NETHERLANDS  
+##  [9] USA      --DENMARK       USA      --LIECHTENSTEIN
+## [11] USA      --SWEDEN        USA      --FRANCE       
+## [13] USA      --KENYA         AUSTRALIA--ITALY        
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 7, mod: 0.31
+## + groups:
+##   $`1`
+##   [1] &quot;CANADA&quot; &quot;NORWAY&quot; &quot;SWEDEN&quot;
+##   
+##   $`2`
+##   [1] &quot;USA&quot;     &quot;ENGLAND&quot; &quot;GERMANY&quot; &quot;CHINA&quot;   &quot;BELGIUM&quot; &quot;ITALY&quot;   &quot;FRANCE&quot; 
+##   [8] &quot;KENYA&quot;  
+##   
+##   $`3`
+##   [1] &quot;LIECHTENSTEIN&quot; &quot;FINLAND&quot;       &quot;SERBIA&quot;       
+##   
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##           vertex cluster btw_centrality
+## 1         CANADA       1       0.000000
+## 9         NORWAY       1       4.200000
+## 20        SWEDEN       1      25.266667
+## 2            USA       2     117.866667
+## 4        ENGLAND       2      88.266667
+## 6        GERMANY       2      22.216667
+## 8          CHINA       2       0.000000
+## 13       BELGIUM       2       0.000000
+## 14         ITALY       2      24.000000
+## 23        FRANCE       2       0.000000
+## 26         KENYA       2       0.000000
+## 19 LIECHTENSTEIN       3      27.833333
+## 22       FINLAND       3       0.000000
+## 25        SERBIA       3       0.000000
+## 5        AUSTRIA       4      11.283333
+## 7    SWITZERLAND       4      74.900000
+## 15     ARGENTINA       4       0.000000
+## 16        POLAND       4       0.000000
+## 18       DENMARK       4       1.083333
+## 10         CHILE       5       0.000000
+## 11        MEXICO       5       0.000000
+## 12         SPAIN       5       7.333333
+## 17   NETHERLANDS       6       4.616667
+## 21        BRAZIL       6       1.600000
+## 24      SCOTLAND       6       5.533333
+## 3      AUSTRALIA       7       0.000000</code></pre>
 <pre class="r"><code>## Aggregator&#39;s keywords
 bm_coc_dkw &lt;- biblioNetwork(M = bm, analysis = &quot;co-occurrences&quot;, network = &quot;keywords&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_coc_dkw, normalize = &quot;association&quot;, weighted = TRUE, n = 30,
+networkPlot(NetMatrix = bm_coc_dkw, normalize = &quot;association&quot;, weighted = TRUE, n = 30,
             Title = &quot;Aggregators&#39;s keywords co-ocurrences&quot;,
             remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
             type = &quot;fruchterman&quot;, size = TRUE, labelsize = 0.5, edgesize = 5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-occurrences-1.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH d4e6cf4 UNW- 31 207 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
+## | weight (e/n), num (e/n), width (e/n)
+## + edges from d4e6cf4 (vertex names):
+##  [1] TECHNOLOGY--SOFTWARE            TECHNOLOGY--ORGANIZATIONS      
+##  [3] TECHNOLOGY--COLLABORATION       TECHNOLOGY--MANAGEMENT         
+##  [5] TECHNOLOGY--COMPETITION         TECHNOLOGY--INNOVATION         
+##  [7] TECHNOLOGY--DESIGN              TECHNOLOGY--INTERNET           
+##  [9] TECHNOLOGY--DIGITAL INNOVATION  TECHNOLOGY--PERSPECTIVE        
+## [11] TECHNOLOGY--PERFORMANCE         TECHNOLOGY--MODEL              
+## [13] TECHNOLOGY--SYSTEMS             TECHNOLOGY--PRODUCT            
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 3, mod: 0.16
+## + groups:
+##   $`1`
+##    [1] &quot;TECHNOLOGY&quot;            &quot;SOFTWARE&quot;             
+##    [3] &quot;COMPETITION&quot;           &quot;DESIGN&quot;               
+##    [5] &quot;INTERNET&quot;              &quot;CAPABILITIES&quot;         
+##    [7] &quot;SYSTEMS&quot;               &quot;INDUSTRY&quot;             
+##    [9] &quot;ARCHITECTURE&quot;          &quot;NETWORK EXTERNALITIES&quot;
+##   [11] &quot;ORGANIZATION&quot;         
+##   
+##   $`2`
+##    [1] &quot;COLLABORATION&quot;          &quot;INNOVATION&quot;            
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                    vertex cluster btw_centrality
+## 1              TECHNOLOGY       1      39.742806
+## 2                SOFTWARE       1       5.203321
+## 6             COMPETITION       1       2.499545
+## 8                  DESIGN       1      12.833221
+## 10               INTERNET       1       6.699297
+## 15           CAPABILITIES       1      10.866844
+## 19                SYSTEMS       1      18.148012
+## 25               INDUSTRY       1      10.208848
+## 26           ARCHITECTURE       1       4.444937
+## 28  NETWORK EXTERNALITIES       1      13.238439
+## 31           ORGANIZATION       1       2.344693
+## 4           COLLABORATION       2       6.092372
+## 7              INNOVATION       2      12.786803
+## 9                NETWORKS       2      13.943785
+## 11     DIGITAL INNOVATION       2       5.491861
+## 12            PERSPECTIVE       2       2.860674
+## 13    ABSORPTIVE-CAPACITY       2       3.780117
+## 14              KNOWLEDGE       2      11.370107
+## 16            PERFORMANCE       2      18.378570
+## 17                  MODEL       2      24.315802
+## 18 INFORMATION-TECHNOLOGY       2      10.287283
+## 20                PRODUCT       2       2.743966
+## 21    INFORMATION-SYSTEMS       2       3.382528
+## 22    PRODUCT DEVELOPMENT       2      24.687318
+## 23                 AGENDA       2       4.380829
+## 24        RESEARCH AGENDA       2       4.389801
+## 27   KNOWLEDGE MANAGEMENT       2      11.813810
+## 3           ORGANIZATIONS       3      18.198209
+## 5              MANAGEMENT       3       1.246439
+## 29         IMPLEMENTATION       3       6.002577
+## 30               ADOPTION       3       2.462538</code></pre>
 <pre class="r"><code>## Authors&#39;s keywords
 bm_coc_akw &lt;- biblioNetwork(M = bm, analysis = &quot;co-occurrences&quot;, network = &quot;author_keywords&quot;, &quot;;&quot;)
 set.seed(69)
-temp &lt;- networkPlot(NetMatrix = bm_coc_akw, normalize = &quot;association&quot;, weighted = TRUE, n = 30,
+networkPlot(NetMatrix = bm_coc_akw, normalize = &quot;association&quot;, weighted = TRUE, n = 30,
             Title = &quot;Author&#39;s keywords co-ocurrences&quot;,
             remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
             curved = FALSE, cluster = &quot;walktrap&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, labelsize = 0.5, edgesize = 3)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-occurrences-2.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH d58d851 UNW- 31 135 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
+## | weight (e/n), num (e/n), width (e/n)
+## + edges from d58d851 (vertex names):
+##  [1] INNOVATION        --DIGITAL INNOVATION    
+##  [2] INNOVATION        --DIGITAL               
+##  [3] INNOVATION        --ORGANIZATIONAL        
+##  [4] INNOVATION        --ENTREPRENEURSHIP      
+##  [5] INNOVATION        --ECOSYSTEMS            
+##  [6] INNOVATION        --MOBILE PHONE          
+##  [7] INNOVATION        --INFORMATION TECHNOLOGY
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 2, mod: 0.4
+## + groups:
+##   $`1`
+##    [1] &quot;INNOVATION&quot;             &quot;DIGITAL INNOVATION&quot;    
+##    [3] &quot;DIGITAL&quot;                &quot;ORGANIZATIONAL&quot;        
+##    [5] &quot;ENTREPRENEURSHIP&quot;       &quot;ECOSYSTEMS&quot;            
+##    [7] &quot;MOBILE PHONE&quot;           &quot;INFORMATION TECHNOLOGY&quot;
+##    [9] &quot;OPEN INNOVATION&quot;        &quot;CASE STUDY&quot;            
+##   [11] &quot;PLATFORMS&quot;              &quot;NATURE CONSERVATION&quot;   
+##   [13] &quot;DIGITAL TECHNOLOGIES&quot;   &quot;SERVICE INNOVATION&quot;    
+##   [15] &quot;ARCHITECTURE&quot;           &quot;RESEARCH&quot;              
+##   
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                                 vertex cluster btw_centrality
+## 1                           INNOVATION       1      35.666667
+## 2                   DIGITAL INNOVATION       1      30.433333
+## 3                              DIGITAL       1       0.000000
+## 4                       ORGANIZATIONAL       1       0.000000
+## 5                     ENTREPRENEURSHIP       1       4.833333
+## 6                           ECOSYSTEMS       1      17.266667
+## 7                         MOBILE PHONE       1       7.966667
+## 23              INFORMATION TECHNOLOGY       1       5.066667
+## 24                     OPEN INNOVATION       1       1.500000
+## 25                          CASE STUDY       1      17.066667
+## 26                           PLATFORMS       1      10.366667
+## 27                 NATURE CONSERVATION       1       9.333333
+## 28                DIGITAL TECHNOLOGIES       1      17.400000
+## 29                  SERVICE INNOVATION       1       2.900000
+## 30                        ARCHITECTURE       1       5.600000
+## 31                            RESEARCH       1       0.000000
+## 8                                  RRI       2       0.000000
+## 9  RESPONSIBLE RESEARCH AND INNOVATION       2       0.000000
+## 10                  RESEARCH INTEGRITY       2       0.000000
+## 11              RESPONSIBLE INNOVATION       2       0.000000
+## 12                               TRUST       2       0.000000
+## 13      RESPONSIBLE DIGITAL INNOVATION       2       0.000000
+## 14                           CORPORATE       2       0.000000
+## 15         SOCIAL RESPONSIBILITY (CSR)       2       0.000000
+## 16       CORPORATE SHARED VALUES (CSV)       2       0.000000
+## 17                         SUSTAINABLE       2       0.000000
+## 18             DEVELOPMENT GOALS (SDG)       2       0.000000
+## 19                              VALUES       2       0.000000
+## 20                  ETHICAL LEADERSHIP       2       0.000000
+## 21                     BUSINESS ETHICS       2       0.000000
+## 22             RESPONSIBLE INVESTMENTS       2       0.000000</code></pre>
 <pre class="r"><code>## Subject category
 ### masking the subject category under  author&#39;s keywords
 bm2 &lt;- bm
@@ -899,12 +1713,135 @@ names(bm2)[index.sc] &lt;- &quot;DE&quot;
 ### masked extraction
 bm_coc_sc &lt;- biblioNetwork(M = bm2, analysis = &quot;co-occurrences&quot;, network = &quot;author_keywords&quot;, &quot;;&quot;)
 set.seed(70)
-temp &lt;- networkPlot(NetMatrix = bm_coc_sc, normalize = &quot;association&quot;, weighted = TRUE, n = 40,
+networkPlot(NetMatrix = bm_coc_sc, normalize = &quot;association&quot;, weighted = TRUE, n = 40,
             Title = &quot;Subject categories&#39;s co-ocurrences&quot;,
             remove.multiple = TRUE, remove.isolates = TRUE, halo = TRUE,
             curved = FALSE, cluster = &quot;walktrap&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, labelsize = 0.5, edgesize = 5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-occurrences-3.png" width="1600px" height="1600px" /></p>
+<pre><code>## $graph
+## IGRAPH d602169 UNW- 46 78 -- 
+## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
+## | weight (e/n), num (e/n), width (e/n)
+## + edges from d602169 (vertex names):
+## [1] INFORMATION SCIENCE \\&amp; LIBRARY SCIENCE--MANAGEMENT                               
+## [2] INFORMATION SCIENCE \\&amp; LIBRARY SCIENCE--BUSINESS                                 
+## [3] MANAGEMENT                             --BUSINESS                                 
+## [4] MANAGEMENT                             --PLANNING \\&amp; DEVELOPMENT                 
+## [5] MANAGEMENT                             --COMPUTER SCIENCE, INFORMATION SYSTEMS    
+## [6] MANAGEMENT                             --INFORMATION SCIENCE \\&amp; LIBRARY   SCIENCE
+## + ... omitted several edges
+## 
+## $cluster_obj
+## IGRAPH clustering walktrap, groups: 9, mod: 0.49
+## + groups:
+##   $`1`
+##   [1] &quot;ECONOMICS&quot;                            
+##   [2] &quot;TRANSPORTATION&quot;                       
+##   [3] &quot;TRANSPORTATION SCIENCE \\&amp; TECHNOLOGY&quot;
+##   [4] &quot;GEOGRAPHY&quot;                            
+##   
+##   $`2`
+##    [1] &quot;INFORMATION SCIENCE \\&amp; LIBRARY SCIENCE&quot;    
+##    [2] &quot;MANAGEMENT&quot;                                 
+##    [3] &quot;BUSINESS&quot;                                   
+##   + ... omitted several groups/vertices
+## 
+## $cluster_res
+##                                                vertex cluster
+## 8                                           ECONOMICS       1
+## 12                                     TRANSPORTATION       1
+## 13              TRANSPORTATION SCIENCE \\&amp; TECHNOLOGY       1
+## 27                                          GEOGRAPHY       1
+## 1             INFORMATION SCIENCE \\&amp; LIBRARY SCIENCE       2
+## 2                                          MANAGEMENT       2
+## 4                                            BUSINESS       2
+## 7                            PLANNING \\&amp; DEVELOPMENT       2
+## 14              COMPUTER SCIENCE, INFORMATION SYSTEMS       2
+## 15          INFORMATION SCIENCE \\&amp; LIBRARY   SCIENCE       2
+## 21         OPERATIONS RESEARCH \\&amp; MANAGEMENT SCIENCE       2
+## 23             COMPUTER SCIENCE, THEORY \\&amp;   METHODS       2
+## 24                                  BUSINESS, FINANCE       2
+## 28            SOCIAL   SCIENCES, MATHEMATICAL METHODS       2
+## 32                                      SOCIAL ISSUES       2
+## 35                            ENGINEERING, INDUSTRIAL       2
+## 46        MATHEMATICS, INTERDISCIPLINARY APPLICATIONS       2
+## 19          COMPUTER SCIENCE, ARTIFICIAL INTELLIGENCE       3
+## 20          INFORMATION SCIENCE \\&amp;   LIBRARY SCIENCE       3
+## 25   COMPUTER SCIENCE, INTERDISCIPLINARY APPLICATIONS       3
+## 33            COMPUTER SCIENCE, INFORMATION   SYSTEMS       3
+## 34               COMPUTER SCIENCE, THEORY \\&amp; METHODS       3
+## 40      IMAGING SCIENCE \\&amp;   PHOTOGRAPHIC TECHNOLOGY       3
+## 45                                           ROBOTICS       3
+## 3                               ENVIRONMENTAL STUDIES       4
+## 5        GREEN \\&amp; SUSTAINABLE SCIENCE \\&amp; TECHNOLOGY       4
+## 6                              ENVIRONMENTAL SCIENCES       4
+## 16 COMPUTER SCIENCE,   INTERDISCIPLINARY APPLICATIONS       5
+## 17             ENGINEERING, ELECTRICAL \\&amp; ELECTRONIC       5
+## 18                                 TELECOMMUNICATIONS       5
+## 22             COMPUTER SCIENCE, SOFTWARE ENGINEERING       5
+## 26           COMPUTER SCIENCE, SOFTWARE   ENGINEERING       5
+## 29       OPERATIONS RESEARCH \\&amp; MANAGEMENT   SCIENCE       5
+## 39                                   PHYSICS, APPLIED       5
+## 41                             ANATOMY \\&amp; MORPHOLOGY       6
+## 42                                            BIOLOGY       6
+## 43 COMPUTER SCIENCE, INTERDISCIPLINARY   APPLICATIONS       6
+## 44                                            ZOOLOGY       6
+## 36                                        LINGUISTICS       7
+## 37                      LITERARY THEORY \\&amp; CRITICISM       7
+## 38                           LANGUAGE \\&amp; LINGUISTICS       7
+## 9                                    CULTURAL STUDIES       8
+## 10                                      COMMUNICATION       8
+## 11                            FILM, RADIO, TELEVISION       8
+## 30                     ENGINEERING, MULTIDISCIPLINARY       9
+## 31       OPERATIONS RESEARCH \\&amp;   MANAGEMENT SCIENCE       9
+##    btw_centrality
+## 8       8.0000000
+## 12      0.0000000
+## 13      0.0000000
+## 27      0.0000000
+## 1       0.0000000
+## 2     108.6206349
+## 4      80.0873016
+## 7      61.7539683
+## 14    111.1126984
+## 15      0.0000000
+## 21     27.3333333
+## 23      0.6666667
+## 24      8.4444444
+## 28      4.7190476
+## 32     29.6523810
+## 35      0.0000000
+## 46     29.6523810
+## 19    136.4055556
+## 20      0.0000000
+## 25     78.6261905
+## 33      4.6250000
+## 34      3.6722222
+## 40      0.0000000
+## 45      3.6722222
+## 3       8.0000000
+## 5       0.0000000
+## 6       0.0000000
+## 16      0.0000000
+## 17     59.8000000
+## 18    117.9126984
+## 22      0.0000000
+## 26     27.1396825
+## 29     18.0000000
+## 39     19.6500000
+## 41      0.0000000
+## 42      0.0000000
+## 43      0.0000000
+## 44      0.0000000
+## 36      0.0000000
+## 37      0.0000000
+## 38      0.0000000
+## 9       0.0000000
+## 10      0.0000000
+## 11      0.0000000
+## 30      0.0000000
+## 31      0.0000000</code></pre>
 <pre class="r"><code>bm_cst &lt;- conceptualStructure(M = bm, field = &quot;TI&quot;,
                               method = &quot;MCA&quot;, stemming = TRUE,
                               labelsize = 6, documents = 15)</code></pre>
@@ -913,10 +1850,9 @@ temp &lt;- networkPlot(NetMatrix = bm_coc_sc, normalize = &quot;association&quot
 <pre><code>## Articles analysed   100 
 ## Articles analysed   154</code></pre>
 <pre class="r"><code>set.seed(5)
-temp &lt;- histPlot(histResults = bm_hcc, size = FALSE,
+histPlot(histResults = bm_hcc, size = FALSE,
          remove.isolates = TRUE,
          label = TRUE, arrowsize = 0.5, labelsize = 0.5)</code></pre>
-<p><img src="bm_markdown_files/figure-html/historical%20co-citation-1.png" width="1600px" height="1600px" /></p>
 <pre><code>## 
 ##  Legend
 ## 
@@ -1230,6 +2166,17 @@ temp &lt;- histPlot(histResults = bm_hcc, size = FALSE,
 ## 2018 - 152          10.1080/13683500.2016.1141179 2018   0   0
 ## 2018 - 153                                   &lt;NA&gt; 2018   0   0
 ## 2018 - 154          10.1080/00405841.2017.1390336 2018   0   0</code></pre>
+<pre><code>## IGRAPH e14ff19 DN-- 40 62 -- 
+## + attr: name (v/c), id (v/c), size (v/n)
+## + edges from e14ff19 (vertex names):
+## [1] YOO Y, 2012, ORGAN SCI            -&gt;BOUDREAU KJ, 2012, ORGAN SCI
+## [2] YOO Y, 2012, ORGAN SCI            -&gt;LEE J, 2012, ORGAN SCI      
+## [3] YOO Y, 2012, ORGAN SCI            -&gt;BARRETT M, 2012, ORGAN SCI  
+## [4] NAMBISAN S, 2013, J ASSOC INF SYST-&gt;BOUDREAU KJ, 2012, ORGAN SCI
+## [5] NAMBISAN S, 2013, J ASSOC INF SYST-&gt;LEE J, 2012, ORGAN SCI      
+## [6] YOO Y, 2013, J ASSOC INF SYST     -&gt;YOO Y, 2012, ORGAN SCI      
+## + ... omitted several edges</code></pre>
+<p><img src="bm_markdown_files/figure-html/historical%20co-citation-1.png" width="1600px" height="1600px" /></p>
 </div>
 </div>
 

@@ -45,7 +45,7 @@ bm_anl <- biblioAnalysis(bm, sep = "; ") # It is necesary to identify the separa
 bm_smm <- summary(object = bm_anl, k = 12) # k represents the number of entries shown in the summary
 ```
 
-```{r bibliometric plots, fig.show = hold, out.width="1600px", out.height="1600px", fig.width=7}
+```{r bibliometric plots, fig.show = 'hold', out.width="1600px", out.height="1600px", fig.width=7}
 plot(x = bm_anl, k = 12, pause = FALSE)
 ```
 
@@ -262,7 +262,7 @@ bm_cst <- conceptualStructure(M = bm, field = "TI",
 
 ```
 
-```{r historical co-citation, out.width="1600px", out.height="1600px"}
+```{r historical co-citation, out.width="1600px", out.height="1600px", fig.show= 'hold'}
 bm_hcc <- histNetwork(M = bm, n = 20, sep = ";")
 set.seed(5)
 histPlot(histResults = bm_hcc, size = FALSE,
