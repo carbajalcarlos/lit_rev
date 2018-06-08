@@ -155,21 +155,21 @@ bm_smm &lt;- summary(object = bm_anl, k = 12) # k represents the number of entri
 ## 
 ## Main Information about data
 ## 
-##  Documents                             154 
+##  Articles                              154 
 ##  Sources (Journals, Books, etc.)       130 
 ##  Keywords Plus (ID)                    376 
 ##  Author&#39;s Keywords (DE)                443 
 ##  Period                                2001 - 2018 
-##  Average citations per documents       6.162 
+##  Average citations per article         6.162 
 ## 
 ##  Authors                               350 
 ##  Author Appearances                    392 
-##  Authors of single authored documents  41 
-##  Authors of multi authored documents   309 
+##  Authors of single authored articles   41 
+##  Authors of multi authored articles    309 
 ## 
-##  Documents per Author                  0.44 
-##  Authors per Document                  2.27 
-##  Co-Authors per Documents              2.55 
+##  Articles per Author                   0.44 
+##  Authors per Article                   2.27 
+##  Co-Authors per Articles               2.55 
 ##  Collaboration Index                   2.89 
 ##  
 ## 
@@ -752,25 +752,25 @@ sort(Matrix::colSums(bm_cma_cjo), decreasing = TRUE)[1:12] # Printing the 12 mos
 <pre class="r"><code>## Printing the 12 most used author&#39;s keyword
 bm_cma_akw &lt;- cocMatrix(M = bm, Field = &quot;DE&quot;, sep = &quot;;&quot;)
 sort(Matrix::colSums(bm_cma_akw), decreasing = TRUE)[1:12] # Printing the 12 most productive articles</code></pre>
-<pre><code>##     DIGITAL INNOVATION             INNOVATION                DIGITAL 
-##                     31                     22                      8 
-##        OPEN INNOVATION             CASE STUDY       ENTREPRENEURSHIP 
-##                      5                      4                      3 
-##           MOBILE PHONE INFORMATION TECHNOLOGY    NATURE CONSERVATION 
+<pre><code>##                            DIGITAL INNOVATION             INNOVATION 
+##                     43                     31                     22 
+##                DIGITAL        OPEN INNOVATION             CASE STUDY 
+##                      8                      5                      4 
+##       ENTREPRENEURSHIP           MOBILE PHONE INFORMATION TECHNOLOGY 
 ##                      3                      3                      3 
-##   DIGITAL TECHNOLOGIES     SERVICE INNOVATION     INNOVATION PROCESS 
-##                      3                      3                      2</code></pre>
+##    NATURE CONSERVATION   DIGITAL TECHNOLOGIES     SERVICE INNOVATION 
+##                      3                      3                      3</code></pre>
 <pre class="r"><code>## Printing the 12 most used database aggregator&#39;s keyword
 bm_cma_dkw &lt;- cocMatrix(M = bm, Field = &quot;ID&quot;, sep = &quot;;&quot;)
 sort(Matrix::colSums(bm_cma_dkw), decreasing = TRUE)[1:12] # Printing the 12 most productive articles</code></pre>
-<pre><code>##         TECHNOLOGY          KNOWLEDGE              MODEL 
-##                 17                 11                 11 
-##         INNOVATION DIGITAL INNOVATION             DESIGN 
-##                 10                 10                  9 
-##           INTERNET        PERSPECTIVE            SYSTEMS 
-##                  8                  8                  8 
-##        PERFORMANCE      ORGANIZATIONS           NETWORKS 
-##                  7                  6                  6</code></pre>
+<pre><code>##                            TECHNOLOGY          KNOWLEDGE 
+##                 46                 17                 11 
+##              MODEL         INNOVATION DIGITAL INNOVATION 
+##                 11                 10                 10 
+##             DESIGN           INTERNET        PERSPECTIVE 
+##                  9                  8                  8 
+##            SYSTEMS        PERFORMANCE      ORGANIZATIONS 
+##                  8                  7                  6</code></pre>
 <pre class="r"><code>## Printing the 12 most used database aggregator&#39;s subject category
 bm_cma_dsc &lt;- cocMatrix(M = bm, Field = &quot;SC&quot;, sep = &quot;;&quot;)
 sort(Matrix::colSums(bm_cma_dsc), decreasing = TRUE)[1:12] # Printing the 12 most productive articles</code></pre>
@@ -807,10 +807,10 @@ networkPlot(NetMatrix = bm_bcp_art, normalize = &quot;salton&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE, edgesize = 5) </code></pre>
 <p><img src="bm_markdown_files/figure-html/coupling-1.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH c843d86 UNW- 21 183 -- 
+## IGRAPH 3b72718 UNW- 21 183 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
 ## | weight (e/n), num (e/n), width (e/n)
-## + edges from c843d86 (vertex names):
+## + edges from 3b72718 (vertex names):
 ##  [1] MSISKA B, 2018--HANELT A, 2017     MSISKA B, 2018--LI W, 2017        
 ##  [3] MSISKA B, 2018--NAMBISAN S, 2017   MSISKA B, 2018--SVAHN F, 2017-1   
 ##  [5] MSISKA B, 2018--SALDANHA TJV, 2017 MSISKA B, 2018--HUANG J, 2017     
@@ -867,10 +867,10 @@ networkPlot(NetMatrix = bm_bcp_aut, normalize = &quot;salton&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE)</code></pre>
 <p><img src="bm_markdown_files/figure-html/coupling-2.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH c9393be UNW- 20 190 -- 
+## IGRAPH 3beaa98 UNW- 20 190 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
 ## | weight (e/n), num (e/n), width (e/n)
-## + edges from c9393be (vertex names):
+## + edges from 3beaa98 (vertex names):
 ##  [1] HANELT A--BUSSE S       HANELT A--KOLBE LM     
 ##  [3] HANELT A--VOM BROCKE J  HANELT A--NAMBISAN S   
 ##  [5] HANELT A--LYYTINEN K    HANELT A--MAJCHRZAK A  
@@ -926,10 +926,10 @@ networkPlot(NetMatrix = bm_bcp_jou, normalize = &quot;salton&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE)</code></pre>
 <p><img src="bm_markdown_files/figure-html/coupling-3.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH ca25eb5 UNW- 22 137 -- 
+## IGRAPH 3cf0a33 UNW- 22 137 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
 ## | weight (e/n), num (e/n), width (e/n)
-## + edges from ca25eb5 (vertex names):
+## + edges from 3cf0a33 (vertex names):
 ## [1] INFORMATION TECHNOLOGY FOR DEVELOPMENT--BUSINESS HORIZONS                      
 ## [2] INFORMATION TECHNOLOGY FOR DEVELOPMENT--INFORMATION SYSTEMS JOURNAL            
 ## [3] INFORMATION TECHNOLOGY FOR DEVELOPMENT--FRONTIERS OF BUSINESS RESEARCH IN CHINA
@@ -1006,10 +1006,10 @@ networkPlot(NetMatrix = bm_bcp_cou, normalize = &quot;salton&quot;,
             type = &quot;fruchterman&quot;, size = TRUE, remove.multiple = TRUE, labelsize = 0.5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/coupling-4.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH cb2df94 UNW- 22 162 -- 
+## IGRAPH 3d57e55 UNW- 22 162 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
 ## | weight (e/n), num (e/n), width (e/n)
-## + edges from cb2df94 (vertex names):
+## + edges from 3d57e55 (vertex names):
 ##  [1] USA--AUSTRALIA     USA--ENGLAND       USA--AUSTRIA      
 ##  [4] USA--GERMANY       USA--SWITZERLAND   USA--CHINA        
 ##  [7] USA--NORWAY        USA--SPAIN         USA--ITALY        
@@ -1066,10 +1066,10 @@ networkPlot(NetMatrix = bm_bcc_art, n = 30, Title = &quot;Article&#39;s co-citat
             labelsize = 0.5, edgesize = 2)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-citation-1.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH cedbd1f UN-- 30 317 -- 
+## IGRAPH 3ee5d12 UN-- 30 317 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
 ## | (e/n), width (e/n)
-## + edges from cedbd1f (vertex names):
+## + edges from 3ee5d12 (vertex names):
 ##  [1] YOO Y 2012-1--YOO YJ 2010-1        YOO Y 2012-1--ZITTRAIN JL 2006    
 ##  [3] YOO Y 2012-1--COHEN WM 1990        YOO Y 2012-1--EISENHARDT KM 1989  
 ##  [5] YOO Y 2012-1--FICHMAN RG 2014      YOO Y 2012-1--MELVILLE N 2004     
@@ -1134,10 +1134,10 @@ networkPlot(NetMatrix = bm_bcc_aut, n = 20, Title = &quot;Author&#39;s co-citati
             labelsize = 0.5, edgesize = 2)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-citation-2.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH d0c5ce2 UN-- 20 178 -- 
+## IGRAPH 3fa54fc UN-- 20 178 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
 ## | (e/n), width (e/n)
-## + edges from d0c5ce2 (vertex names):
+## + edges from 3fa54fc (vertex names):
 ##  [1] NAMBISAN S--ANONYMOUS      NAMBISAN S--FARAJ S       
 ##  [3] NAMBISAN S--GAWER A        NAMBISAN S--HENFRIDSSON O 
 ##  [5] NAMBISAN S--YOO Y          NAMBISAN S--YOO YJ        
@@ -1192,10 +1192,10 @@ networkPlot(NetMatrix = bm_bcc_jou, n = 20, Title = &quot;Author&#39;s co-citati
             labelsize = 0.5, edgesize = 2)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-citation-3.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH d1fbcc4 UN-- 20 186 -- 
+## IGRAPH 40371e6 UN-- 20 186 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
 ## | (e/n), width (e/n)
-## + edges from d1fbcc4 (vertex names):
+## + edges from 40371e6 (vertex names):
 ##  [1] COMMUN ACM--HARVARD BUS REV      COMMUN ACM--MIS QUART           
 ##  [3] COMMUN ACM--INFORM SYST J        COMMUN ACM--INFORM SYST RES     
 ##  [5] COMMUN ACM--ORGAN SCI            COMMUN ACM--RES POLICY          
@@ -1250,10 +1250,10 @@ networkPlot(NetMatrix = bm_bcl_aut, n = dim(bm_bcl_aut)[1], Title = &quot;Author
             remove.multiple = TRUE, remove.isolates = TRUE, degree = 5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/collaborations-1.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH d3036bc UN-- 99 237 -- 
+## IGRAPH 40d8ab6 UN-- 99 237 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
 ## | (e/n), width (e/n)
-## + edges from d3036bc (vertex names):
+## + edges from 40d8ab6 (vertex names):
 ##  [1] KESNER A  --LAFOREST R   KESNER A  --OTAZO R     
 ##  [3] KESNER A  --JENNIFER K   KESNER A  --PAN T       
 ##  [5] LAFOREST R--OTAZO R      LAFOREST R--JENNIFER K  
@@ -1387,10 +1387,10 @@ networkPlot(NetMatrix = bm_bcl_uni, n = dim(bm_bcl_uni)[1], Title = &quot;Univer
             remove.multiple = TRUE, remove.isolates = TRUE, degree = 5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/collaborations-2.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH d366838 UN-- 40 74 -- 
+## IGRAPH 41031e4 UN-- 40 74 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
 ## | (e/n), width (e/n)
-## + edges from d366838 (vertex names):
+## + edges from 41031e4 (vertex names):
 ## [1] MEM SLOAN KETTERING CANC CTR--WASHINGTON UNIV                
 ## [2] MEM SLOAN KETTERING CANC CTR--NEW YORK UNIV LAGONE HLTH      
 ## [3] MEM SLOAN KETTERING CANC CTR--UNIV COLORADO                  
@@ -1506,10 +1506,10 @@ networkPlot(NetMatrix = bm_bcl_cou, n = dim(bm_bcl_cou)[1], Title = &quot;Univer
             remove.multiple = TRUE, remove.isolates = TRUE)</code></pre>
 <p><img src="bm_markdown_files/figure-html/collaborations-3.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH d3d543e UN-- 26 53 -- 
+## IGRAPH 4134bbd UN-- 26 53 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c), num
 ## | (e/n), width (e/n)
-## + edges from d3d543e (vertex names):
+## + edges from 4134bbd (vertex names):
 ##  [1] CANADA   --SWEDEN        USA      --ENGLAND      
 ##  [3] USA      --GERMANY       USA      --SWITZERLAND  
 ##  [5] USA      --CHINA         USA      --NORWAY       
@@ -1571,10 +1571,10 @@ networkPlot(NetMatrix = bm_coc_dkw, normalize = &quot;association&quot;, weighte
             type = &quot;fruchterman&quot;, size = TRUE, labelsize = 0.5, edgesize = 5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-occurrences-1.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH d4e6cf4 UNW- 31 207 -- 
+## IGRAPH 41b9928 UNW- 31 207 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
 ## | weight (e/n), num (e/n), width (e/n)
-## + edges from d4e6cf4 (vertex names):
+## + edges from 41b9928 (vertex names):
 ##  [1] TECHNOLOGY--SOFTWARE            TECHNOLOGY--ORGANIZATIONS      
 ##  [3] TECHNOLOGY--COLLABORATION       TECHNOLOGY--MANAGEMENT         
 ##  [5] TECHNOLOGY--COMPETITION         TECHNOLOGY--INNOVATION         
@@ -1642,10 +1642,10 @@ networkPlot(NetMatrix = bm_coc_akw, normalize = &quot;association&quot;, weighte
             type = &quot;fruchterman&quot;, size = TRUE, labelsize = 0.5, edgesize = 3)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-occurrences-2.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH d58d851 UNW- 31 135 -- 
+## IGRAPH 41eefce UNW- 31 135 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
 ## | weight (e/n), num (e/n), width (e/n)
-## + edges from d58d851 (vertex names):
+## + edges from 41eefce (vertex names):
 ##  [1] INNOVATION        --DIGITAL INNOVATION    
 ##  [2] INNOVATION        --DIGITAL               
 ##  [3] INNOVATION        --ORGANIZATIONAL        
@@ -1720,10 +1720,10 @@ networkPlot(NetMatrix = bm_coc_sc, normalize = &quot;association&quot;, weighted
             type = &quot;fruchterman&quot;, size = TRUE, labelsize = 0.5, edgesize = 5)</code></pre>
 <p><img src="bm_markdown_files/figure-html/co-occurrences-3.png" width="1600px" height="1600px" /></p>
 <pre><code>## $graph
-## IGRAPH d602169 UNW- 46 78 -- 
+## IGRAPH 421e164 UNW- 46 78 -- 
 ## + attr: name (v/c), size (v/n), label.cex (v/n), color (v/c),
 ## | weight (e/n), num (e/n), width (e/n)
-## + edges from d602169 (vertex names):
+## + edges from 421e164 (vertex names):
 ## [1] INFORMATION SCIENCE \\&amp; LIBRARY SCIENCE--MANAGEMENT                               
 ## [2] INFORMATION SCIENCE \\&amp; LIBRARY SCIENCE--BUSINESS                                 
 ## [3] MANAGEMENT                             --BUSINESS                                 
@@ -1842,10 +1842,9 @@ networkPlot(NetMatrix = bm_coc_sc, normalize = &quot;association&quot;, weighted
 ## 11      0.0000000
 ## 30      0.0000000
 ## 31      0.0000000</code></pre>
-<pre class="r"><code>bm_cst &lt;- conceptualStructure(M = bm, field = &quot;TI&quot;,
-                              method = &quot;MCA&quot;, stemming = TRUE,
-                              labelsize = 6, documents = 15)</code></pre>
-<p><img src="bm_markdown_files/figure-html/co-word-1.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/co-word-2.png" width="1600px" height="1600px" /><img src="bm_markdown_files/figure-html/co-word-3.png" width="1600px" height="1600px" /></p>
+<pre class="r"><code>bm_cst &lt;- conceptualStructure(M = bm, field = &quot;TI&quot;, stemming = TRUE,
+                              labelsize = 6)</code></pre>
+<p><img src="bm_markdown_files/figure-html/co-word-1.png" width="1600px" height="1600px" /></p>
 <pre class="r"><code>bm_hcc &lt;- histNetwork(M = bm, n = 20, sep = &quot;;&quot;)</code></pre>
 <pre><code>## Articles analysed   100 
 ## Articles analysed   154</code></pre>
@@ -2166,9 +2165,9 @@ histPlot(histResults = bm_hcc, size = FALSE,
 ## 2018 - 152          10.1080/13683500.2016.1141179 2018   0   0
 ## 2018 - 153                                   &lt;NA&gt; 2018   0   0
 ## 2018 - 154          10.1080/00405841.2017.1390336 2018   0   0</code></pre>
-<pre><code>## IGRAPH e14ff19 DN-- 40 62 -- 
+<pre><code>## IGRAPH 45cf9c5 DN-- 40 62 -- 
 ## + attr: name (v/c), id (v/c), size (v/n)
-## + edges from e14ff19 (vertex names):
+## + edges from 45cf9c5 (vertex names):
 ## [1] YOO Y, 2012, ORGAN SCI            -&gt;BOUDREAU KJ, 2012, ORGAN SCI
 ## [2] YOO Y, 2012, ORGAN SCI            -&gt;LEE J, 2012, ORGAN SCI      
 ## [3] YOO Y, 2012, ORGAN SCI            -&gt;BARRETT M, 2012, ORGAN SCI  
